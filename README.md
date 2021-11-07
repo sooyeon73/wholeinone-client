@@ -1,3 +1,15 @@
+### Basic Setting
+`src/components` : 컴포넌트
+`src/pages` : 컴포넌트로 구성된 페이지 화면 
+`App.js` : 페이지들 간의 라우터 설정
+
+`src/components/common/BasicTemplate` : 모바일 사이즈 / pc 사이즈 (편의를 위해 임시로 테두리 설정) 출력 사이즈 조정
+
+#### 사용 패키지
+styled-components@5.3.3
+react-router-dom@5.2.0
+react-icons@4.3.1
+
 # -211029
 #### 찜 매장 목록 구현
 ![04](https://user-images.githubusercontent.com/73420533/139116049-b976f6c0-065b-4f86-b86e-0a8bf8cb0c27.jpg)
