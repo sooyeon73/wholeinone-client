@@ -1,4 +1,4 @@
-### Basic Setting
+## Basic Setting
 `src/components` : 컴포넌트
 `src/pages` : 컴포넌트로 구성된 페이지 화면 
 `App.js` : 페이지들 간의 라우터 설정
