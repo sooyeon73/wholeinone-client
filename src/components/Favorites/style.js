@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import {IoChevronBackSharp} from "react-icons/io5"
+import { IoChevronBackSharp } from "react-icons/io5"
 
 export const BackButton = styled(IoChevronBackSharp)`
     width: 30px;
     height: 40px;
     display: block;
-    margin: 20px 0px 5px 20px;
+    padding: 20px 0px 5px 20px;
 
 `
 export const Header = styled.div`
@@ -24,15 +24,9 @@ export const StoreContainer = styled.div`
     border-bottom: 1px solid lightgrey;
 `;
 
-export const StoreName = styled.div`
-    font-size: 1em;
-    display: inline;
-
-`
-
 export const TextWrapper = styled.div`
     display: inline-block;
-    width:220px;
+    width:210px;//
     padding-left:15px;
     vertical-align: top;
     height: 110px;
@@ -101,10 +95,5 @@ export const ImageWrapper = styled.div`
 `
 
 export const Container = styled.div`
-    background-color: white;
-    padding: 5px;
-    @media (max-width: 375px){
-        width:100%;
-    }
-    width: 375px;
+    width:100%;
 `

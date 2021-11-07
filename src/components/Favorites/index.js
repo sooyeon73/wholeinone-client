@@ -1,7 +1,6 @@
 import React from "react";
 import * as S from "./style";
 import dummy from "./dummy.json";
-
 const Favorites = () =>{
 
     const data = dummy.data;
