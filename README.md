@@ -10,7 +10,7 @@ styled-components@5.3.3
 react-router-dom@5.2.0
 react-icons@4.3.1
 
-# -211029
+## -211029
 #### 찜 매장 목록 구현
 ![04](https://user-images.githubusercontent.com/73420533/139116049-b976f6c0-065b-4f86-b86e-0a8bf8cb0c27.jpg)
 
