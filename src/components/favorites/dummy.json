@@ -1,0 +1,52 @@
+{
+    "data": [
+      {
+        "storeIdx" : 1,
+        "storeName" : "storeName1",
+        "storeImage" : "https://via.placeholder.com/150",
+        "storeType" : "storeType",
+        "storeCost" : 99999,
+        "reserveStatus" : true,
+        "couponStatus" : true
+      },
+      {
+        "storeIdx" : 2,
+        "storeName" : "storeName2",
+        "storeImage" : "https://via.placeholder.com/150",
+        "storeType" : "storeType",
+        "storeCost" : 99999,
+        "reserveStatus" : false,
+        "couponStatus" : false
+      },
+      {
+        "storeIdx" : 3,
+        "storeName" : "storeName3",
+        "storeImage" : "https://via.placeholder.com/150",
+        "storeType" : "storeType",
+        "storeCost" : 99999,
+        "reserveStatus" : false,
+        "couponStatus" : true
+      },
+      {
+        "storeIdx" : 4,
+        "storeName" : "storeName4",
+        "storeImage" : "https://via.placeholder.com/150",
+        "storeType" : "storeType",
+        "storeCost" : 99999,
+        "reserveStatus" : true,
+        "couponStatus" : true
+      },
+      {
+        "storeIdx" : 5,
+        "storeName" : "storeName5",
+        "storeImage" : "https://via.placeholder.com/150",
+        "storeType" : "storeType",
+        "storeCost" : 99999,
+        "reserveStatus" : true,
+        "couponStatus" : false
+      }
+    ]
+}
+      
+
+        
