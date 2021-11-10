@@ -19,10 +19,6 @@ export const Header = styled.div`
         padding: 0px 0px 10px 20px;
     }
     `
-export const StoreContainer = styled.div`
-    padding:20px 20px 20px 20px;
-    border-bottom: 1px solid lightgrey;
-`;
 
 export const TextWrapper = styled.div`
     display: inline-block;
@@ -46,10 +42,10 @@ export const TextWrapper = styled.div`
     }
     h3{
         position: absolute;
-        bottom:10px;
-        right:15px;
+        bottom: 5px;
+        right:18px;
         font-weight: 700;
-        font-size: 1.3em;
+        font-size: 18px;
         margin:0px;
     }
 
@@ -60,7 +56,7 @@ export const TextWrapper = styled.div`
         text-align:center;
         border-radius: 4px; 
         display: inline-block;
-        background-color: #379FFF;
+        background-color:#22a8a5;
         margin-top:0px;
         margin-bottom:5px;
         margin-right:5px;
@@ -73,7 +69,7 @@ export const TextWrapper = styled.div`
         text-align:center;
         display: inline-block;
         border-radius: 4px; 
-        background-color: #FF974D;
+        background-color: #f7766d;
         margin-top:0px;
         margin-bottom:5px;
         margin-right:5px;
@@ -81,9 +77,11 @@ export const TextWrapper = styled.div`
 
 `
 
-export const ImageWrapper = styled.div`
+export const StoreContainer = styled.div`
     text-align: left;
-    display: block;        
+    display: block;     
+    padding:25px 25px 25px 25px;
+    border-bottom: 1px solid lightgrey;   
     img{
         height:115px;
         width: 115px;

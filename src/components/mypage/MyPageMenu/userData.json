@@ -1,0 +1,15 @@
+{
+    "data": 
+      {
+        "userIdx" : 1,
+        "userName" : "박수연",
+        "userImage" : "https://via.placeholder.com/65",
+        "reserveCount" : 9,
+        "favoriteCount" : 4,
+        "userPoint" : 3000,
+        "couponCount" : 5
+      }
+}
+      
+
+        
