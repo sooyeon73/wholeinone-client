@@ -6,6 +6,8 @@ export const Container = styled.div`
         width: 100vw;
     }
     width: 375px;
+    height: 100%;
+    
     border: 1px solid lightgrey;
     background-color:white;
     `;
