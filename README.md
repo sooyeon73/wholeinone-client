@@ -34,3 +34,17 @@ react-icons@4.3.1
 - 임의로 pc에서의 출력 고려하여 세팅
 - 찜 매장 css 소량 수정
 - 마이 페이지 메뉴 : userData, adData 따로 더미 데이터 사용
+
+#### 메인 화면 새로이 구성 / 메인 - 마이페이지, 메인 - 찜 매장 연결 / 검색 화면 구성
+![Animation](https://user-images.githubusercontent.com/66289619/141231899-45c1169f-3fe3-4aec-95af-4a1db0c3e443.gif)
+
+- src/components/Burger 디렉토리에 Burger 컴포넌트 구현
+- transition을 이용한 메뉴 이동 애니메이션 수현
+- z-index를 활용하여 Burger 메뉴가 나타날 시 마스크 형태로 흑색 반투명 화면 표시
+
+#### 검색 기능 구현 / 버튼 폴더 생성
+![Animation2](https://user-images.githubusercontent.com/66289619/141231907-38c0710a-e83b-43ed-89d3-a2158026b4b1.gif)
+
+- src/components/Search 디렉토리에 Search 컴포넌트 구현
+- map과 filter를 통한 검색 기능 구현
+- Search의 위치 아이콘 사용을 위해 `style.js`에 `import { IoLocationSharp } from "react-icons/io5` 임포트
