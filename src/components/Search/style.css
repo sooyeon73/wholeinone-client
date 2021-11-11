@@ -1,0 +1,13 @@
+p{
+    margin-left: 2rem;
+    font-size:1rem;
+    font-weight: bold;
+    color: rgba(128,128,128,1);
+    text-align: left;
+}
+
+#loc2{
+    position: absolute;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}

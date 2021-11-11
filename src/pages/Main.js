@@ -1,14 +1,13 @@
 import React from "react";
 import BasicTemplate from "../components/common/BasicTemplate";
-//import Main from "../components/main";
+import Main from "../components/main";
 
-const Main = () => {
+const MainPage = () => {
 return(
 <BasicTemplate>
-    Main
-    //
+    <Main/>
 </BasicTemplate>
 );
 }
 
-export default Main;
+export default MainPage;
