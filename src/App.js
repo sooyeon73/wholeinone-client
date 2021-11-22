@@ -6,6 +6,7 @@ import Main from './pages/Main';
 import FavoritesPage from './pages/FavoritesPage';
 import MyPage from './pages/MyPage';
 import SearchPage from './pages/SearchPage'
+import ReserveListPage from './pages/ReserveListPage';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/mypage" component={MyPage} />
             <Route path="/favorites" component={FavoritesPage} />
             <Route path="/search" component={SearchPage}/>
+            <Route path="/reserves" component={ReserveListPage}/>
           </Switch>
       </div>
     </Router>
