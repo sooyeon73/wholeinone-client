@@ -1,48 +1,180 @@
 import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as BiIcons from 'react-icons/bi';
-import { Link } from 'react-router-dom';
 import { IconContext } from 'react-icons';
 import './style.css';
-//import {TouchableOpacity} from 'react-native';
 import * as S from "./style";
-import { View, Text, Button } from "react-native";
 
-//import Chip from '@mui/material/Chip';
-//import Stack from '@mui/material/Stack';
+import { createTheme } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
-//import { Chip } from 'react-native-elements';
-//import Icon from 'react-native-vector-icons/FontAwesome';
-
-//import ReactiveButton from 'reactive-button';
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { ThemeProvider } from '@material-ui/styles';
+import { TimePicker } from '@material-ui/pickers'
+import { KeyboardTimePicker } from '@material-ui/pickers'
+import { KeyboardDateTimePicker } from '@material-ui/pickers'
 
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import { createTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { makeStyles } from "@material-ui/core/styles";
-import { withStyles } from '@mui/styles';
-import Typography from "@material-ui/core/Typography";
-//import Slider from "@material-ui/core/Slider";
-//import Checkbox from "react-native-checkbox-animated";
-//import CheckBox from 'react-native-checkbox-heaven';
-//import CheckBox from 'react-native-icon-checkbox';
-
-import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { grey } from '@mui/material/colors';
-//import Button from '@mui/material/Button';
-//import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
-//import Typography from '@mui/material/Typography';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import DatePicker from "react-horizontal-datepicker";
 import Pagination from '@mui/material/Pagination';
-import { PaginationItem } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import TimePicker from '@mui/lab/TimePicker';
-//import MobileTimePicker from '@mui/lab/MobileTimePicker';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import { grey } from '@mui/material/colors';
+import { TextField } from '@mui/material';
+
+import { withStyles } from '@mui/styles';
+
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
+import MomentUtils from "@date-io/moment";
+import { Global } from '@emotion/react';
+import DatePicker from "react-horizontal-datepicker";
+import defaultDayjs, { QUnitType } from "dayjs";
+import { width } from '@mui/system';
+
+const CURRENT_THEME = {
+    background: "#1B262C",
+    el1: "#ffffff",
+    el2: "#263137",
+    el3: "#ffffff",
+    text: "#22A8A5",
+    textInv: "#22A8A5",
+    main: "#22A8A5",
+    secondary: "#4DBBEB",
+    danger: "#22A8A5",
+    warning: "",
+    font1: `"Roboto Slab", "Times New Roman", serif`,
+    font2: `"Roboto light"`,
+  };
+  
+  const styles = {
+    paper: {
+      padding: "2px 4px",
+      display: "flex",
+      alignItems: "center",
+      backgroundColor: CURRENT_THEME.el3,
+      borderColor: CURRENT_THEME.danger
+    },
+    inputIcons: {
+      padding: 2,
+      color: CURRENT_THEME.textInv
+    },
+    input: {
+      flex: 1,
+      marginLeft: 8,
+      color: CURRENT_THEME.textInv
+    }
+  };
+  
+  const useStyles_timepicker = makeStyles(styles);
+  const StyledDateTime = withStyles({
+    "& .MuiPickersToolbar-toolbar": {
+      backgroundColor: CURRENT_THEME.textInv
+    },
+    root: {
+      MuiPickersToolbar: {
+        toolbar: {
+          backgroundColor: CURRENT_THEME.textInv,
+          "& .MuiPickersToolbar-toolbar": {
+            backgroundColor: CURRENT_THEME.textInv
+          }
+        }
+      }
+    }
+  })(MobileTimePicker);
+  
+  const CssTextField = withStyles({
+    root: {
+      //all
+      "& .MuiIconButton-root": {
+        color: CURRENT_THEME.textInv
+      },
+      // filled
+      "& .MuiFilledInput-underline": {
+        "&:before": {
+          borderBottomColor: "transparent"
+        },
+        "&:after": {
+          borderBottomColor: "transparent"
+        }
+      },
+      "& .MuiFilledInput-input": {
+        color: CURRENT_THEME.textInv
+      },
+      "& .MuiFilledInput-root": {
+        borderRadius: "10px 10px 10px 10px",
+        backgroundColor: CURRENT_THEME.el3,
+        "&.Mui-focused": {
+          //borderColor: "#1ab5e1",
+          //backgroundColor: CURRENT_THEME.el2,
+        }
+      },
+  
+      "& .MuiInputLabel-formControl": {
+        color: CURRENT_THEME.textInv,
+        height: "auto"
+      }
+    }
+  })(TextField);
+  
+  const materialTheme = createTheme({
+    palette: {
+      primary: {
+        main: CURRENT_THEME.main
+      }
+    },
+    overrides: {
+      MuiPickersToolbar: {
+        toolbar: {
+          backgroundColor: CURRENT_THEME.el3
+        }
+      },
+      MuiPickersCalendarHeader: {
+        iconButton: {
+          backgroundColor: "transparent",
+          color: CURRENT_THEME.main
+        },
+        dayLabel: {
+          color: CURRENT_THEME.textInv,
+        },
+        transitionContainer: {
+          color: CURRENT_THEME.textInv
+        }
+      },
+      MuiPickersBasePicker: {
+        pickerView: {
+          backgroundColor: CURRENT_THEME.background
+        }
+      },
+      MuiPickersDay: {
+        day: {
+          color: CURRENT_THEME.textInv
+        }
+      },
+  
+      MuiDialogActions: {
+        root: {
+          backgroundColor: CURRENT_THEME.background
+        }
+      },
+      MuiPickersClock: {
+        clock: {
+          backgroundColor: CURRENT_THEME.el2
+        }
+      },
+      MuiPickersClockNumber: {
+        clockNumber: {
+          color: CURRENT_THEME.textInv
+        }
+      }
+    }
+  });
+
+
 
 const drawerBleeding = 0;
 
@@ -204,15 +336,37 @@ function Mainbuttons(props) {
         }
     };
 
+    var day;
+    var time;
+    const moment= require('moment') 
+
     const selectedDay = val => {
-        console.log(val);
+        var d=new Date(val.getTime());
+        var dd=d.getMonth()+1;
+        var ddd=d.getDate();
+        console.log(dd+"월"+ddd+"일");
     };
 
     const selectedTime = val => {
         console.log(val);
+        var mm=moment();
+        var t=mm.hour();
+        var tt=mm.minutes();
+        console.log(t+":"+tt);
+
+        //var t=new Date(val.getTime());
+        //var tt=t.getHours();
+        //var ttt=t.getMinutes();
+        //console.log(tt+"시"+ttt+"분");
     };
 
     const classes = useStyles();
+
+    const [timevalue, settimeValue] = React.useState(new Date('2018-01-01T00:00:00.000Z'));
+
+    const [myDate, setmyDate] = useState();
+
+
 
     return (
         <>
@@ -359,7 +513,7 @@ function Mainbuttons(props) {
                                 }}
                             >
                                 <div className='time_filter_select_day'>
-                                    <DatePicker
+                                    <DatePicker id='datepicker'
                                         getSelectedDay={selectedDay}
                                         endDate={0}
                                         labelFormat={"y.M."}
@@ -379,12 +533,27 @@ function Mainbuttons(props) {
                                     overflow: 'auto',
                                 }}
                             >
-                                <Stack spacing={2}>
-                                    <Pagination
-                                        classes={{ul: classes.ul}}
-                                        count={24}
-                                    />
-                                </Stack>
+                                <div className='time_filter_select_time'>
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <Stack>
+                                        </Stack>
+                                    </LocalizationProvider>
+                                    <ThemeProvider theme={materialTheme}>
+                                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                                            <TimePicker id='timepicker'
+                                                style={{ marginTop: "0px", width:"100%", borderRadius:"12px", border:"2px solid #22A8A5"}}
+                                                format={"HH:MM"}
+                                                inputVariant="filled"
+                                                TextFieldComponent={CssTextField}
+                                                size="medium"
+                                                value={myDate}
+                                                onChange={setmyDate, selectedTime}
+                                                label="티업 시각"
+                                                formattime={value=>{return value}}
+                                            />
+                                        </MuiPickersUtilsProvider>
+                                    </ThemeProvider>
+                                </div>
                             </StyledBox>
                         </SwipeableDrawer>
                     </Root>
@@ -400,19 +569,3 @@ function Mainbuttons(props) {
     );
   }
 export default Mainbuttons;
-/*
-            <React.Fragment>
-                <Pullie
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                    teaser={
-                        <View style={{ height: 70, backgroundColor: 'rgba(128,0,0,0.2)' }}>
-                        <Text>Drag me</Text>
-                        </View>
-                    }
-                    teaserHeight={70}>
-                    <View>
-                        <Text>Hey there!</Text>
-                    </View>
-                </Pullie>
-            </React.Fragment>*/

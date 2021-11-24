@@ -328,3 +328,8 @@ input[type="checkbox"]:checked + label {
     margin-bottom: 1rem;
     margin-left: 2.5rem;
 }
+
+.time_filter_select_time{
+    height: 300px;
+    margin-top: 1rem;
+}
