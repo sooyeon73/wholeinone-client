@@ -48,3 +48,12 @@ react-icons@4.3.1
 - src/components/Search 디렉토리에 Search 컴포넌트 구현
 - map과 filter를 통한 검색 기능 구현
 - Search의 위치 아이콘 사용을 위해 `style.js`에 `import { IoLocationSharp } from "react-icons/io5` 임포트
+
+## -211126
+#### 예약 내역 / 예약 상세 페이지 구현
+![스크린샷(6)](https://user-images.githubusercontent.com/73420533/143240487-9903bcdd-456f-4fed-9fc5-5f911b5385c5.png)
+![스크린샷(3)](https://user-images.githubusercontent.com/73420533/143240500-902f84cf-b970-4ce4-a44d-24b1ffb3632e.png)
+
+- ui 제작 시에 고려하지 못했던 예약 내역 페이지 ui 새로 작성하여 구현 (피그마에도 추가완료)
+- 예약 상태와 이용 완료 상태로 구분
+- 예약 내역 페이지에서 reservationIdx 값을 예약 상세 페이지로 넘겨 각 예약 페이지 구별

@@ -1,0 +1,43 @@
+{
+    "data": [
+      {
+        "reservationIdx" : 1,
+        "storeName" : "올버디스크린골프",
+        "reservationTime" : "2021.09.23 오전 10:30",
+        "useTime" : 60,
+        "selectedHall" : 3,
+        "personCount" : 1,
+        "alreadyUsed" : false
+      },
+      {
+        "reservationIdx" : 2,
+        "storeName" : "올버디스크린골프",
+        "reservationTime" : "2021.09.23 오전 10:30",
+        "useTime" : 60,
+        "selectedHall" : 3,
+        "personCount" : 1,
+        "alreadyUsed" : false
+      },
+      {
+        "reservationIdx" : 3,
+        "storeName" : "올버디스크린골프",
+        "reservationTime" : "2021.09.23 오전 10:30",
+        "useTime" : 30,
+        "selectedHall" : 3,
+        "personCount" : 1,
+        "alreadyUsed" : false
+      },
+      {
+        "reservationIdx" : 4,
+        "storeName" : "올버디스크린골프",
+        "reservationTime" : "2021.09.23 오전 10:30",
+        "useTime" : 60,
+        "selectedHall" : 3,
+        "personCount" : 1,
+        "alreadyUsed" : true
+      }
+    ]
+}
+      
+
+        

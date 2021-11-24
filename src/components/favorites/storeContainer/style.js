@@ -1,24 +1,5 @@
 import styled from "styled-components";
-import { IoChevronBackSharp } from "react-icons/io5"
 
-export const BackButton = styled(IoChevronBackSharp)`
-    width: 30px;
-    height: 40px;
-    display: block;
-    padding: 20px 0px 5px 20px;
-
-`
-export const Header = styled.div`
-    border-bottom: 2px solid  lightgrey;
-    margin: 0px 20px 0 20px;
-    display:block;
-    h1{
-        font-size: 1.3em;
-        font-weight:bold;
-        text-align: left;
-        padding: 0px 0px 10px 20px;
-    }
-    `
 
 export const TextWrapper = styled.div`
     display: inline-block;
