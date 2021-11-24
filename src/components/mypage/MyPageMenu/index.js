@@ -11,30 +11,32 @@ const MyPageMenu = () =>{
    <S.Container>
         <S.UserWrapper>
            <img src={userData.userImage} alt="userimg"/>
-           <h3>{userData.userName} 님</h3>
+           <h3>{userData.nickName} 님</h3>
        </S.UserWrapper>
        <S.Menu>
         <table>
         <tr>
             <th>
+            <Link to={{pathname:`/myreserve`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <h4>예약 내역</h4><br/>
-                <h5>{userData.reserveCount} 건</h5>
+                <h5>{userData.cntReservation} 건</h5>
+            </Link>
             </th>
             <th>
             <Link to={{pathname:`/favorites`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <h4>찜 매장</h4><br/>
-                <h5>{userData.favoriteCount} 개</h5>
+                <h5>{userData.cntLikeStore} 개</h5>
             </Link>
             </th>
             </tr>
         <tr>
             <th>
                 <h4>포인트</h4><br/>
-                <h5>{userData.userPoint} P</h5>
+                <h5>{userData.point} P</h5>
             </th>
             <th>
                 <h4>쿠폰</h4><br/>
-                <h5>{userData.couponCount} 개</h5>
+                <h5>{userData.cntCoupon} 개</h5>
             </th>
         </tr>
         </table>
