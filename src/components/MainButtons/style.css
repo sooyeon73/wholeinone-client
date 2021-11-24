@@ -326,7 +326,7 @@ input[type="checkbox"]:checked + label {
 
 .time_filter_select_day{
     margin-bottom: 1rem;
-    margin-left: 2.5rem;
+    margin-left: 0rem;
 }
 
 .time_filter_select_time{
