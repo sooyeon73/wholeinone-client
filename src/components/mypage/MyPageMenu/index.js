@@ -5,6 +5,20 @@ import user from "./userData.json";
 import ad from "./adData.json";
 
 const MyPageMenu = () =>{
+    fetch("/users/mypage")
+        .then((response) => {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log("data : ", data);
+            console.log("result : ", data.result);
+            console.log("nickName : ", data.result.nickName);
+            console.log("cntReservation : ", data.result.cntReservation);
+            console.log("cntLikeStore : ", data.result.cntLikeStore);
+            console.log("point : ", data.result.point);
+            console.log("cntCoupon : ", data.result.cntCoupon);
+        });
+
     const userData = user.data;
     const adData = ad.data;
     return(
