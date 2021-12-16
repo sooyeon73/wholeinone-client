@@ -1,10 +1,16 @@
 import styled from "styled-components";
-import { IoCall } from "react-icons/io5";
-import {BsShareFill} from "react-icons/bs"
+import { IoCall,IoGolf } from "react-icons/io5";
+import {BsShareFill} from "react-icons/bs";
+import {MdPlace} from "react-icons/md";
+import { BiTime} from "react-icons/bi";
+import {AiFillCreditCard} from "react-icons/ai";
+import {GiGolfTee} from "react-icons/gi";
+
 export const IconContainer =styled.div`
 
 display:inline-block;
-padding:20px;
+padding:22px;
+width:120px;
 h3{
     display:inline;
     font-size: 17px;
@@ -12,7 +18,6 @@ h3{
     margin:0;
     line-height:31px;
     color: #434343;
-    text-align:center;
 
 }
 `
@@ -21,32 +26,126 @@ export const CallIcon = styled(IoCall)`
     height: 25px;
     padding: 6px;
     vertical-align:top;  
-    text-align: center;
 `
+
+
+export const TimeIcon = styled(BiTime)`
+width: 25px;
+height: 25wpx;
+padding: 6px;
+vertical-align:middle;  
+color: #434343;
+
+`
+export const GolfIcon = styled(GiGolfTee)`
+width: 25px;
+height: 25wpx;
+padding: 6px;
+vertical-align:middle;  
+color: #434343;
+
+
+`
+
+export const ServiceIcon = styled(IoGolf)`
+width: 25px;
+height: 25wpx;
+padding: 6px;
+vertical-align:middle;  
+color: #434343;
+
+
+`
+export const CardIcon = styled(AiFillCreditCard)`
+width: 25px;
+height: 25wpx;
+padding: 6px;
+vertical-align:middle;  
+color: #434343;
+
+`
+
+
+export const PlaceIcon = styled(MdPlace)`
+    width: 25px;
+    height: 25wpx;
+    padding: 6px;
+    vertical-align:middle;  
+    color: #434343;
+
+`
+
+
 
 export const ShareIcon = styled(BsShareFill)`
     width: 25px;
     height: 25px;
     padding: 6px;
     vertical-align:top;  
-    text-align: center;
 `
-export const ReserveStatusContainer=styled.div`
-text-align: left;
-display: block;     
-padding:15px 25px 20px 25px;
+export const StoreInfo=styled.div`
+padding:10px;
 
-h3{
-    color:#424242;
-    font-weight: 400;
-    font-size: 0.8em;
-    margin:0px 0px 0px 28px;
-    line-height:20px;
-    
+text-align:center;
+
+h1{
+    text-align:left;
+    padding-left:10px;
+    font-size: 17px;
+    margin: 0px;
+    font-weight: 800;
+    line-height: 35px;
 }
+h4{   
+    text-align:left;
+    font-size: 15px;
+    margin: 0px;
+    font-weight: 500;
+    line-height: 35px;
+
+}
+`
+export const CostTable=styled.div`
+display: block;     
+padding:10px;
+table{
+    margin-bottom:5px;
+    font-size:16px;
+    font-weight:500;
+    text-align:center;
+    width:100%;
+border-collapse: collapse;
+}
+thead{
+    font-size:15px;
+    color: #434343;
+    background:lightgrey;
+}
+th{
+        border-bottom: 1px solid lightgrey;
+        padding:4px;
+width:100px;
+    border-right: 1px solid lightgrey;
+}
+
+td:nth-child(1),a{    
+    font-size:14.5px;
+    color: grey;
+    width:60px;
+    font-weight:400;
+}
+td {
+
+
+    padding:7px;
+
+    border-bottom: 1px solid lightgrey;
+  }
 `
 
 export const StoreInfoTitle = styled.div`
+text-align: center;
+
 h1{
     padding-top:20px;
     font-size: 20px;
@@ -68,6 +167,27 @@ a{color:red;}
 `
 
 
+export const ReserveButton = styled.div`
+background: linear-gradient(to left ,#22A8A5, #62BAB8);
+
+filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.30));
+    position: fixed;
+    
+    bottom:0px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:white;
+    line-height: 55px;
+    width: 300px;
+    font-weight:700;
+    height: 55px;
+    font-size: 18.5px;
+    text-align:center;
+    display: inline-block;
+    border-radius: 30px; 
+`
+
+
 export const LineBorder=styled.div`
 border-top: 1px solid lightgrey;   
 height:5px;
@@ -76,49 +196,33 @@ border-bottom: 1px solid lightgrey;
 
 
 `
-
-export const ReserveDetailContainer = styled.div`
-padding:30px 25px 3px 35px;
-text-align:left;
-h1{
-    line-height:12px;
-    font-size: 18px;
-    font-weight: 700;
-    margin:0px;
-}
+export const ServiceIconWrapper=styled.div`
+white-space:nowrap;
+ overflow:auto;
+ padding:7px;
 `
-export const ReserveDetailTitle=styled.div`
+export const ServieIcon=styled.div`
 display:inline-block;
+width:60px;
+height:60px;
+border-radius:100%;
+background: #e5e5e5;
+margin:5px;
 
-width: ${props => props.width};
-text-align:${props => props.pos || 'left'};
-
-padding: 20px 0px; 0px; 0px;
+line-height:56px;
 h1{
-    font-size: 15.5px;
-    font-weight: 500;
-    margin:0px;
-    line-height:37px;
-}
-h2{
-    font-size: 18px;
-    margin: 0px;
+    vertical-align:middle;
+    padding:0px;
+    display:inline-block;
+    font-size: 14px;
+    line-height:18px;
     font-weight: 700;
-    line-height: 45px;
-
-}
-`
-
-export const ReserveCancelButton=styled.div`
-  
-    width:85%;
-    height: 40px;
-    line-height:40px;
-    font-size: 15px;
+    margin:0;
+    color: grey;
     text-align:center;
-    display: inline-block;
-    border-radius: 9px; 
-    border: 1px solid grey;
+}
+
+  
 `
 
 
@@ -128,7 +232,6 @@ export const Container = styled.div`
 
 
 export const StoreContainer = styled.div`
-    text-align: center;
     display: block;     
     padding: 0px;
     border-bottom: 1px solid lightgrey;   
@@ -139,4 +242,5 @@ export const StoreContainer = styled.div`
 
         vertical-align:top;
     }
+
 `
