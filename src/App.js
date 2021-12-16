@@ -8,7 +8,7 @@ import MyPage from './pages/MyPage';
 import SearchPage from './pages/SearchPage'
 import MyReserveListPage from './pages/MyReserveListPage';
 import ReserveDetailPage from './pages/ReserveDetailPage';
-
+import StoreDetailPage from './pages/StoreDetailPage';
 function App() {
 
   
@@ -23,6 +23,8 @@ function App() {
             <Route path="/search" component={SearchPage}/>
             <Route path="/myreserve" component={MyReserveListPage}/>
             <Route path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
+            <Route path="/store/:storeIdx" component={StoreDetailPage}/>
+
           </Switch>
       </div>
     </Router>
