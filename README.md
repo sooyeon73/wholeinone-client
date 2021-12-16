@@ -57,3 +57,12 @@ react-icons@4.3.1
 - ui 제작 시에 고려하지 못했던 예약 내역 페이지 ui 새로 작성하여 구현 (피그마에도 추가완료)
 - 예약 상태와 이용 완료 상태로 구분
 - 예약 내역 페이지에서 reservationIdx 값을 예약 상세 페이지로 넘겨 각 예약 페이지 구별
+
+## -211217
+#### 매장 상세 페이지 
+![image](https://user-images.githubusercontent.com/73420533/146386518-e6bfc6ca-07d2-473b-82dc-8476c0a9bcdb.png)
+![image](https://user-images.githubusercontent.com/73420533/146386577-bd93d9c6-c2c9-458b-b637-866d4b8ca2a9.png)
+- ui만 제작
+- 가격 table 임시로 제작
+- 시설 정보 아이콘 임시로 제작
+- match params storeIdx로 연결
