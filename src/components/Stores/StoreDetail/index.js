@@ -5,8 +5,8 @@ import dummy from "./dummy.json";
 const StoreDetail = ({match}) =>{
     const data = dummy.data;
 
-    console.log(match.params.reservationIdx);
-    //match.params.reservationIdx으로 상세 정보 불러옴
+    console.log(match.params.storeIdx);
+    //match.params.storeIdx로 상세 정보 불러옴
 
     return(
    <S.Container>
