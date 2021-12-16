@@ -1,0 +1,23 @@
+{
+    "data": 
+      {
+        "storeIdx" : 1,
+        "storeName" : "올버디스크린골프",
+        "storeType" : "프렌즈스크린T",
+        "storeInfo" : "매장소개",
+        "storePhoneNumber" : "020000000",
+        "storeGrade": 4.5,
+        "storeLocation" : 60,
+        "storeLatitude" : 3,
+        "storeLongitude" : 1,
+        "storeImage" :  "https://via.placeholder.com/300",
+        "storeTime" : "영업시간",
+        "batCount" : 20,
+        "lefthandStatus" : 1,
+        "parkingStatus" : 1,
+        "groupseatStatus" : 1,
+        "floorscreenStatus" : 1,
+        "storageStatus" : 1,
+        "lessonStatus" : 1
+      }
+    }
