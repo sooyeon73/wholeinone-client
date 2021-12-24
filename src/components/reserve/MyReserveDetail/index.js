@@ -1,8 +1,33 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from "axios";
 import * as S from './style';
 import dummy from './dummy.json'
 const MyReserveDetail = ( {match} ) =>{
     const data = dummy.data;
+
+    
+    const [dataa, setDataa] = useState([]);
+    const [loading, setLoading ]=useState(false);
+    const [error, setError] = useState(null);
+
+
+    //    //현재 결과 확인 잘안됨 
+    useEffect(()=>{
+        const fetchUsers = async () =>{
+            try {
+                setError(null);
+                setLoading(true);
+                
+                const response = await axios.get("reservation/2");
+                setDataa(response.data.result);
+            } catch (e){
+                setError(e);
+            }
+            setLoading(false);
+        };
+        fetchUsers();
+    },[]);
+  
 
     console.log(match.params.reservationIdx);
     //match.params.reservationIdx으로 상세 정보 불러옴
