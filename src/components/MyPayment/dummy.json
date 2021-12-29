@@ -1,0 +1,18 @@
+{
+    "data": [
+      {
+        "cardIdx" : 1,
+        "cardNumber" : "1111-xxxx-xxxx-4444",
+        "cardType" : "외한",
+        "isMain" : true,
+        "isPersonal" : true
+      },
+      {
+        "cardIdx" : 2,
+        "cardNumber" : "1111-xxxx-xxxx-4444",
+        "cardType" : "국민",
+        "isMain" : false,
+        "isPersonal" : true
+      }
+    ]
+    }

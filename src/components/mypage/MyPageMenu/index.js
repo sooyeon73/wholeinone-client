@@ -73,8 +73,8 @@ const MyPageMenu = () =>{
         <S.MenuBar>
         <Link to={{pathname:`/visited`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
         <li>최근 본 매장</li></Link>
-        <li>결제 수단</li>
-        <li>내가 쓴 리뷰</li>
+        <Link to={{pathname:`/payment`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+<li>결제 수단</li></Link>
         <li>로그아웃</li>
         </S.MenuBar>
         <S.AdContainer>
