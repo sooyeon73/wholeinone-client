@@ -10,6 +10,7 @@ import MyReserveListPage from './pages/MyReserveListPage';
 import ReserveDetailPage from './pages/ReserveDetailPage';
 import StoreDetailPage from './pages/StoreDetailPage';
 import VisitedPage from './pages/VisitedPage';
+import MyPaymentPage from './pages/MyPaymentPage';
 function App() {
 
   
@@ -24,8 +25,10 @@ function App() {
             <Route path="/visited" component={VisitedPage} />
             <Route path="/search" component={SearchPage}/>
             <Route path="/myreserve" component={MyReserveListPage}/>
+            <Route path="/payment" component={MyPaymentPage}/>
+
             <Route path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
-            <Route path="/store/:storeIdx" component={StoreDetailPage}/>
+            <Route path="/stores/:storeIdx" component={StoreDetailPage}/>
 
           </Switch>
       </div>
