@@ -66,6 +66,7 @@ react-icons@4.3.1
 - 가격 table 임시로 제작
 - 시설 정보 아이콘 임시로 제작
 - match params storeIdx로 연결
+<<<<<<< HEAD
 
 ## -211230
 #### api 연결
@@ -114,3 +115,5 @@ GET방문한 매장(찜한 매장) 목록 조회 API
 - 포인트 / 쿠폰 
 - 예약 내역 -> 예약 취소 api
 - 결제 모듈 설정
+=======
+>>>>>>> 399bbceadd5fb8faf8226cd39f9ed63ec3f47efb
