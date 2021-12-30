@@ -66,3 +66,57 @@ react-icons@4.3.1
 - 가격 table 임시로 제작
 - 시설 정보 아이콘 임시로 제작
 - match params storeIdx로 연결
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+## -211230
+#### api 연결
+
+- 마이페이지 / 예약 내역 / 예약 상세 내역 / 최근 본 매장 (찜매장) / 매장 상세 페이지 api 연결
+- axios, useEffect를 이용, 데이터 연결 완료 (로딩, 에러에 대한 추가 처리 필요)
+
+- StoreContainer 공동 컴포넌트에서 인자로 api 주소를 넘겨 각 페이지에서 달리 데이터를 불러올 수 있도록 사용 방식 변경
+
+- MyReserve - infinite scroll : IntersectionObserver 를 이용해 마지막 요소에 ref 를 추가하여 페이지의 마지막에 도달했는지 확인 -> 마지막에 도달 시 page 를 1 증가하고 데이터를 다시 불러와 현재 데이터에 추가
+
+
+#### 결제 수단 ui 구현
+![image](https://user-images.githubusercontent.com/73420533/147684934-ee7e9685-838b-4bed-ace5-63cad5968128.png)
+- 라디오 박스 체크 변경에 따라 해당 데이터의 isMain 값이 바뀌도록
+
+
+#### 논의 결정할 사항
+- 최근 본 매장 / 찜 매장 페이지 최종 확인
+- 매장 리스트에 가격 혹은 평점 표시
+
+
+#### api 데이터 보충이 필요한 사항
+##### GET 골프장 조회 (storeIdx로 조회) api
+- 평점 storeGrade
+- 타석수 batCount
+- 매장 전화번호
+- 가격 테이블
+- 보관 storageStatus 왼손타 lefthandStatus 주차시설 parkingStatus 단체가능여부 groupseatStatus 바닥스크린 floorscreenStatus 프로교습 lessonStatus
+
+##### GET 예약 상세 내용 조회 API
+
+결제 정보 데이터 
+- 예약 금액 reservePrice
+- 할인 금액 discountPrice
+- 총 결제 금액 payPrice
+
+GET방문한 매장(찜한 매장) 목록 조회 API
+- stroeType 문자열로 
+
+#### 다음 구현 일정
+로그인 페이지 
+
+#### 추가 고려할 사항
+- 마이페이지 - 회원 정보 수정
+- 포인트 / 쿠폰 
+- 예약 내역 -> 예약 취소 api
+- 결제 모듈 설정
+=======
+>>>>>>> 399bbceadd5fb8faf8226cd39f9ed63ec3f47efb
+>>>>>>> 402e8b5cbce75653627872c221fdbe1d5020e71c

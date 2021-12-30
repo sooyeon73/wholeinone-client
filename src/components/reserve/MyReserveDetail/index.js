@@ -1,11 +1,34 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from "axios";
 import * as S from './style';
-import dummy from './dummy.json'
 const MyReserveDetail = ( {match} ) =>{
-    const data = dummy.data;
 
-    console.log(match.params.reservationIdx);
-    //match.params.reservationIdx으로 상세 정보 불러옴
+    
+    const idx = match.params.reservationIdx;
+    const [data, setData] = useState([]);
+    const [loading, setLoading ]=useState(false);
+    const [error, setError] = useState(null);
+
+
+    useEffect(()=>{
+        const fetchUsers = async () =>{
+            try {
+                setError(null);
+                setLoading(true);
+                
+                const response = await axios.get(`/reservation/${idx}`);
+                console.log(response.data.result);
+
+                setData(response.data.result);
+            } catch (e){
+                setError(e);
+            }
+            setLoading(false);
+        };
+        fetchUsers();
+    },[]);
+  
+
 
     return(
    <S.Container>
@@ -26,7 +49,7 @@ const MyReserveDetail = ( {match} ) =>{
             <h1>이용 시간</h1>
         </S.ReserveDetailTitle>
         <S.ReserveDetailTitle>
-            <h1>{data.reservationTime}</h1>
+            <h1>{data.reservationTIme}</h1>
             <h1>{data.storeName}</h1>
             <h1>{data.selectedHall} 홀 </h1>
             <h1>{data.personCount} 명</h1>
@@ -44,9 +67,9 @@ const MyReserveDetail = ( {match} ) =>{
         </S.ReserveDetailTitle>
         <S.ReserveDetailTitle width="190px" pos="right">
             <h1>카드 결제</h1>
-            <h1>{data.reservePrice.toLocaleString('ko-KR')} 원</h1>
-            <h1>(-) {data.discountPrice.toLocaleString('ko-KR')} 원</h1>
-            <h2>{data.payPrice.toLocaleString('ko-KR')} 원</h2>
+            <h1> reservePrice 원</h1>
+            <h1>(-) discountPrice 원</h1>
+            <h2> payPrice 원</h2>
         </S.ReserveDetailTitle>
         </S.ReserveDetailContainer>
         <S.ReserveCancelButton>예약 취소하기</S.ReserveCancelButton>
