@@ -52,12 +52,6 @@ h2{
 
 }
 `
-export const ReserveButton = styled.div`
-color: linear-gradient(45deg,#22A8A5, #62BAB8);
-width:200px;
-height:20px;
-
-`
 
 export const LineBorder=styled.div`
 border-top: 1px solid lightgrey;   

@@ -1,4 +1,12 @@
 .btn_time{
+    display: block;
+    position:absolute;
+    margin:auto;
+    top:80px;
+    right: 64px;
+    align-content: center;
+    text-align: center;
+    line-height: 100%;
     width: 54px;
     height:54px;
     background-color: white;
@@ -6,7 +14,8 @@
     float: right;
     border-radius: 50%;
     margin-right: 1rem;
-    box-shadow: 0px 0px 5px rgba(128,127,128,0.5)
+    z-index: 10;
+    box-shadow: 0px 0px 5px rgba(128,127,128,0.5);
 }
 
 .time_icon{
@@ -18,12 +27,21 @@
 }
 
 .btn_filter{
+    display: block;
+    position:absolute;
+    margin:auto;
+    top:80px;
+    right: 0px;
+    align-content: center;
+    text-align: center;
+    line-height: 100%;
     width: 54px;
     height:54px;
     background-color: white;
     text-align: right;
     float: right;
     border-radius: 50%;
+    z-index: 10;
     margin-right: 1rem;
     box-shadow: 0px 0px 5px rgba(128,127,128,0.5)
 }
@@ -52,7 +70,8 @@
     background-color: white;
     border-radius: 24px;
     margin-bottom: 30px;
-    box-shadow: 0px 0px 5px rgba(128,127,128,0.5)
+    box-shadow: 0px 0px 5px rgba(128,127,128,0.5);
+    z-index: 10;
 }
 
 .list_drawer_icon{
@@ -83,7 +102,7 @@
     top:100%;
     transition: 350ms;
     border-radius: 20px;
-    z-index: 1;
+    z-index: 100;
 }
  
 .filter_menu.active {
@@ -121,7 +140,7 @@
     position: fixed;
     top: 0;
     opacity: 0;
-    z-index: -1;
+    z-index: -1000;
 }
 
 .nav-mask1.active {
@@ -138,7 +157,7 @@
     position: fixed;
     top: 0;
     opacity: 0;
-    z-index: -1;
+    z-index: -1000;
 }
 
 .nav-mask2.active {
@@ -157,7 +176,7 @@
     text-align: left;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
     border: 2px solid #CACACA;
     border-left: none;
     border-top: none;
@@ -283,7 +302,7 @@ input[type="checkbox"] + label {
     border-radius: 35px;
     background-color: #fff;
     border:solid 2px #CACACA;
-    height: 25px;
+    height: 30px;
     display: inline-block;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
@@ -295,7 +314,7 @@ input[type="checkbox"] + label {
     margin-left: 10px;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 5px;
+    padding-top: 2px;
     vertical-align: middle;
     font-weight: bold;
 }
@@ -330,6 +349,99 @@ input[type="checkbox"]:checked + label {
 }
 
 .time_filter_select_time{
-    height: 300px;
-    margin-top: 1rem;
+    margin-top: 1rem;    
+}
+
+.time_filter_time_text{
+    font-size: 22px;
+    font-weight: bold;
+    justify-content: center;
+    margin-left: 1rem;
+    vertical-align: middle;
+}
+
+.time_filter_apply_btn{
+    display: table;
+    float: right;
+    margin-right: 1rem;
+    background-color: #22A8A5;
+    border-radius: 64px;
+    width: 199px;
+    height: 63px;
+    transform: translate(0, 50%);
+    box-shadow: 0px 0px 5px 5px rgba(128,128,128,0.3);
+}
+
+.time_filter_apply_area{
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    height: 128px;
+    background-color: white;
+    bottom: 0px;
+    box-shadow: 0px 0px 5px 5px rgba(128,128,128,0.2);
+}
+
+.btn_center{
+    display: table-cell;
+    vertical-align: middle;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.time_filter_reset_btn{
+    position: absolute;
+    display: table;
+    float: left;
+    margin-left: 1rem;
+    background-color: #CACACA;
+    width: 105px;
+    height: 63px;
+    border-radius: 64px;
+    text-align: center;
+    transform: translate(0, 50%);
+    box-shadow: 0px 0px 5px 5px rgba(128,128,128,0.3);
+}
+
+.lists_menu_buttons{
+    margin-left: 0rem;
+    display: inline-block;
+    text-align: left;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"] + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 35px;
+    background-color: #fff;
+    border:solid 2px #CACACA;
+    height: 30px;
+    display: inline-block;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #CACACA;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    vertical-align: middle;
+    font-weight: bold;
+}
+  
+input[type="radio"]:checked + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color: #22A8A5; color: white; border-color:#22A8A5;
 }

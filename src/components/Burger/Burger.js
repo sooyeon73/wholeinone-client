@@ -1,18 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { BurgerData } from './BurgerData';
 import './style.css';
 import { IconContext } from 'react-icons';
 import * as S from "./style";
-import dummy from "./dummy.json";
+import axios from "axios";
+import jquery from 'jquery';
+import $ from 'jquery';
 
 function Burger({open}) {
   const [sidebar, setSidebar] = useState(false);
 
-  const showSidebar = () => setSidebar(!sidebar);
+  const [data, setData] = useState([]);
+  const [loading, setLoading ]=useState(false);
+  const [error, setError] = useState(null);
 
-  const profile=dummy.data;
+  const fetchReserves = useCallback(async () =>{
+    try {
+      setError(null);
+          setLoading(true);    
+          const response = await axios.get(`users/mypage`);
+          setData((prev)=>[response.data.result]);
+      } catch (e){
+          setError(e);
+      }
+      setLoading(false);
+    }
+  ,[]);
+
+useEffect(() => {
+  fetchReserves();
+}, []);
+
+  if(loading) console.log("loading");
+  if(error) console.log("error");
+  if(!data) return null;
+  const showSidebar = () => setSidebar(!sidebar);
 
   return (
     <S.Container>
@@ -27,11 +51,11 @@ function Burger({open}) {
           <ul className='nav-menu-items' isExpanded={false}>
             <li className='navbar-toggle'>
             </li>
-            {profile.map(d=>(
+            {data && data.map(d=>(
               <S.ImageWrapper>
-                <img src={d.profileImage}/>
+                <img src={d.userImage}/>
                 <S.TextWrapper>
-                  <h1>{d.profileName}</h1>
+                  <h1>{d.nickName}</h1>
                 </S.TextWrapper>
               </S.ImageWrapper>  
             ))}
