@@ -24,10 +24,13 @@ export const TextWrapper = styled.div`
     h3{
         position: absolute;
         bottom: 5px;
-        right:18px;
+        right:25px;
         font-weight: 700;
         font-size: 18px;
+        line-height:30px;
         margin:0px;
+        a{color:red;}
+
     }
 
     h4{
@@ -42,8 +45,8 @@ export const TextWrapper = styled.div`
         margin-bottom:5px;
         margin-right:5px;
     }
-    
     h5{
+
         color: white;
         width:95px;
         font-size: 14px;

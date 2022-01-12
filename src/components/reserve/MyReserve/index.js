@@ -18,7 +18,8 @@ const MyReserve = () =>{
             setError(null);
             setLoading(true);    
             const response = await axios.get(`reservation?page=${page}`);
-            setData((prev)=>[...prev,...response.data.result]);
+            console.log(response);
+            if(response.data.code==1000){setData((prev)=>[...prev,...response.data.result]);}
         } catch (e){
             setError(e);
         }

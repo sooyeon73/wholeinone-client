@@ -11,6 +11,8 @@ import ReserveDetailPage from './pages/ReserveDetailPage';
 import StoreDetailPage from './pages/StoreDetailPage';
 import VisitedPage from './pages/VisitedPage';
 import MyPaymentPage from './pages/MyPaymentPage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 function App() {
 
   
@@ -20,6 +22,9 @@ function App() {
         <GlobalStyle />
          <Switch>
             <Route exact path="/" component={Main} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={SignUpPage} />
+
             <Route path="/mypage" component={MyPage} />
             <Route path="/favorites" component={FavoritesPage} />
             <Route path="/visited" component={VisitedPage} />

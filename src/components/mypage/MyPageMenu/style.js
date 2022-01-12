@@ -28,7 +28,7 @@ export const Menu = styled.div`
 
     table{
     background-color: #F3F3F3;
-    width:300px;
+    width:295px;
     border-collapse: collapse;
     margin: auto;    
     box-shadow: 0 0 0 1px #A0A0A0;
@@ -50,7 +50,7 @@ export const Menu = styled.div`
         display: inline;
         margin: 0px;
         padding: 0px;
-        font-size:17px;
+        font-size:16.5px;
         line-height:27px;
     }
     h5{
