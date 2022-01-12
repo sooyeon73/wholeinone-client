@@ -40,7 +40,7 @@ const StoreContainer = ({props}) =>{
    <S.Container>
         {data? data.map(d=>(
         <S.StoreContainer>
-            <Link to={`/store/${d.storeIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
+            <Link to={`/stores/${d.storeIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
            <img src={d.storeImage} alt="storeimg"/>
             <S.TextWrapper>
             {d.reserveStatus === true ?  <h4>당일 예약</h4>: null}

@@ -5,7 +5,7 @@
         "storeName" : "storeName1",
         "storeImage" : "https://via.placeholder.com/150",
         "storeType" : "storeType",
-        "storeCost" : 99999,
+        "reviewStar" : 5.0,
         "reserveStatus" : true,
         "couponStatus" : true
       },
@@ -14,7 +14,7 @@
         "storeName" : "storeName2",
         "storeImage" : "https://via.placeholder.com/150",
         "storeType" : "storeType",
-        "storeCost" : 99999,
+        "reviewStar" : 4.5,
         "reserveStatus" : false,
         "couponStatus" : false
       },
@@ -23,7 +23,7 @@
         "storeName" : "storeName3",
         "storeImage" : "https://via.placeholder.com/150",
         "storeType" : "storeType",
-        "storeCost" : 99999,
+        "reviewStar" : 3.8,
         "reserveStatus" : false,
         "couponStatus" : true
       },
@@ -32,7 +32,7 @@
         "storeName" : "storeName4",
         "storeImage" : "https://via.placeholder.com/150",
         "storeType" : "storeType",
-        "storeCost" : 99999,
+        "reviewStar" : 4.3,
         "reserveStatus" : true,
         "couponStatus" : true
       },
@@ -41,7 +41,7 @@
         "storeName" : "storeName5",
         "storeImage" : "https://via.placeholder.com/150",
         "storeType" : "storeType",
-        "storeCost" : 99999,
+        "reviewStar" : 5.0,
         "reserveStatus" : true,
         "couponStatus" : false
       }
