@@ -11,6 +11,7 @@ import ReserveDetailPage from './pages/ReserveDetailPage';
 import StoreDetailPage from './pages/StoreDetailPage';
 import VisitedPage from './pages/VisitedPage';
 import MyPaymentPage from './pages/MyPaymentPage';
+import ReservationPage from './pages/ReservationPage';
 function App() {
 
   
@@ -26,6 +27,7 @@ function App() {
             <Route path="/search" component={SearchPage}/>
             <Route path="/myreserve" component={MyReserveListPage}/>
             <Route path="/payment" component={MyPaymentPage}/>
+            <Route path="/reservation" component={ReservationPage}/>
 
             <Route path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
             <Route path="/stores/:storeIdx" component={StoreDetailPage}/>

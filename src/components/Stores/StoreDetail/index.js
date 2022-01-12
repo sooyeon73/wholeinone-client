@@ -116,7 +116,7 @@ const StoreDetail = ({match}) =>{
             </S.StoreInfo>
            
         </S.StoreContainer>
-        <S.ReserveButton>간편 예약</S.ReserveButton>
+        <a href='/reservation'><S.ReserveButton>간편 예약</S.ReserveButton></a>
 
     </S.Container>
     );
