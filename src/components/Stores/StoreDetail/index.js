@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import * as S from "./style";
 import dummy from "./dummy.json";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const StoreDetail = ({match}) =>{
     //const data = dummy.data;
@@ -30,7 +32,8 @@ const StoreDetail = ({match}) =>{
         };
         fetchData();
     },[]);
-  
+
+    const history=useHistory();
 
     return(
    <S.Container>
@@ -116,8 +119,10 @@ const StoreDetail = ({match}) =>{
             </S.StoreInfo>
            
         </S.StoreContainer>
-        <a href='/reservation'><S.ReserveButton>간편 예약</S.ReserveButton></a>
-
+        <S.ReserveButton onClick={()=>{history.push({
+                pathname: '/reservation',
+                state: {data: data}
+            })}}>간편 예약</S.ReserveButton>
     </S.Container>
     );
 }

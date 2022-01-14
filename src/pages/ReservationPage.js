@@ -7,7 +7,7 @@ const ReservationPage = ({history, match}) => {
         return(
         <BasicTemplate>
             <Header history={history} title="예약하기"/>
-            <Reservation match={match}/>
+            <Reservation match={match} props="reservation"/>
         </BasicTemplate>
         );
 }
