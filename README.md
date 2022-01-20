@@ -85,12 +85,6 @@ react-icons@4.3.1
 ![image](https://user-images.githubusercontent.com/73420533/147684934-ee7e9685-838b-4bed-ace5-63cad5968128.png)
 - 라디오 박스 체크 변경에 따라 해당 데이터의 isMain 값이 바뀌도록
 
-
-#### 논의 결정할 사항
-- 최근 본 매장 / 찜 매장 페이지 최종 확인
-- 매장 리스트에 가격 혹은 평점 표시
-
-
 #### api 데이터 보충이 필요한 사항
 ##### GET 골프장 조회 (storeIdx로 조회) api
 - 평점 storeGrade
@@ -106,17 +100,30 @@ react-icons@4.3.1
 - 할인 금액 discountPrice
 - 총 결제 금액 payPrice
 
-GET방문한 매장(찜한 매장) 목록 조회 API
-- stroeType 문자열로 
-
-#### 다음 구현 일정
-로그인 페이지 
-
 #### 추가 고려할 사항
 - 마이페이지 - 회원 정보 수정
 - 포인트 / 쿠폰 
 - 예약 내역 -> 예약 취소 api
 - 결제 모듈 설정
-=======
->>>>>>> 399bbceadd5fb8faf8226cd39f9ed63ec3f47efb
->>>>>>> 402e8b5cbce75653627872c221fdbe1d5020e71c
+
+
+## -220113
+#### 로그인 회원가입
+##### 로그인 페이지 
+![01](https://user-images.githubusercontent.com/73420533/149214583-00879faf-2157-458a-9f49-6a63e5e6832d.jpg)
+- 입력 창의 onChange 메소드는 hook으로 정의하여 사용함
+- 올바르지 않은 시도 시 위와 같이 오류 메세지 출력
+
+##### 올바르게 로그인 성공 시
+![02](https://user-images.githubusercontent.com/73420533/149214614-09ecb78e-89c6-44f5-93bf-55d11c148cad.jpg)
+- jwt 토큰 방식 이용
+- 헤더에 accessToken 담아 보내도록 설정
+
+##### 회원가입 페이지
+![03](https://user-images.githubusercontent.com/73420533/149214986-c5803c46-45c5-4929-acb8-6483570f9525.jpg)
+![03-2](https://user-images.githubusercontent.com/73420533/149215023-9cf91027-e565-4a5f-9c0d-034fffc7fecb.jpg)
+- 올바르지 않은 시도 시 위와 같이 오류 메세지 출력
+
+##### 올바르게 회원가입 성공 시
+![04](https://user-images.githubusercontent.com/73420533/149215079-1ebb82cc-d383-479d-b045-bedc9061fb49.jpg)
+- 회원 정보가 추가된 것을 확인
