@@ -30,7 +30,7 @@ border-bottom: 1px solid lightgrey;
 
 export const SelectReservationinfo1 = styled.div`
     display: block;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid lightgrey;
     h3{
