@@ -1,8 +1,7 @@
 import React, {useState,useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import * as S from "./style";
 import axios from "axios"
-//import user from "./userData.json";
 import ad from "./adData.json";
 
 const MyPageMenu = () =>{
@@ -10,7 +9,9 @@ const MyPageMenu = () =>{
     const [data, setData] = useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
+    
 
+    
     useEffect(()=>{
         const fetchUsers = async () =>{
             try {
@@ -20,7 +21,11 @@ const MyPageMenu = () =>{
                 
                 const response = await axios.get("users/mypage");
                 setData(response.data.result);
+
+            
+
             } catch (e){
+
                 setError(e);
             }
             setLoading(false);
@@ -34,6 +39,7 @@ const MyPageMenu = () =>{
     
     const adData = ad.data;
     return(
+    
    <S.Container>
         <S.UserWrapper>{
             data.userImage ? 
@@ -82,7 +88,8 @@ const MyPageMenu = () =>{
         </S.AdContainer>
 
     </S.Container>
-    );
+    
+  );
 }
 
 export default MyPageMenu;

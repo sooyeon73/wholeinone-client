@@ -20,6 +20,7 @@ const MyReserve = () =>{
             const response = await axios.get(`reservation?page=${page}`);
             console.log(response);
             if(response.data.code==1000){setData((prev)=>[...prev,...response.data.result]);}
+
         } catch (e){
             setError(e);
         }
