@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
-import {Redirect} from "react-router-dom";
 import * as S from './style';
 import dummy from "./dummy.json"
 const MyPayment = (  ) =>{
@@ -8,8 +7,6 @@ const MyPayment = (  ) =>{
     
 
     const [select, setSelect] = useState(1);
-    const [ifLogin, setIfLogin]= useState(false);
-    axios.defaults.headers.common['Authorization'] ? setIfLogin(true):setIfLogin(false);
 
   const handleSelect = event => {
     const value = event.target.value;
@@ -23,7 +20,6 @@ const MyPayment = (  ) =>{
     const data = dummy.data;
 
     return(
-      ifLogin ?
    <S.Container>
        {data.map(d=>(
            <S.Card key={d.cardIdx}>
@@ -49,8 +45,7 @@ const MyPayment = (  ) =>{
         
         <S.ReserveCancelButton>카드 등록하기</S.ReserveCancelButton>
     </S.Container>
-    :
-    <Redirect to="/login"/>
+ 
     );
 }
 
