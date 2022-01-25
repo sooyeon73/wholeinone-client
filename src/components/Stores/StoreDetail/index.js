@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useHistory} from "react-router";
+import {useHistory, useLocation} from "react-router";
 import * as S from "./style";
 import dummy from "./dummy.json";
 import axios from "axios";
@@ -15,13 +15,23 @@ const StoreDetail = ({match}) =>{
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
 
+    const location = useLocation();
 
     useEffect(()=>{
         const fetchData = async () =>{
             try {
                 setError(null);
                 setLoading(true);
-                const response = await axios.get(`/stores/${idx}`);
+                const response=null;
+                if(idx==undefined){
+                    console.log("undifine!"+ data.idx);
+                    const data=location.state.data;
+                    console.log(data);
+                }
+                else{
+                    console.log("undifine!"+ data.idx);
+                    response = await axios.get(`/stores/${idx}`);
+                }
                 console.log(response.data);
 
                 setData(response.data.result);
