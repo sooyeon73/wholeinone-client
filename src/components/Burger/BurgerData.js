@@ -5,8 +5,8 @@ export const BurgerData = [
     cName: 'nav-text'
   },
   {
-    title: '나의 라운딩',
-    path: '/',
+    title: '로그인',
+    path: '/login',
     cName: 'nav-text'
   },
   {

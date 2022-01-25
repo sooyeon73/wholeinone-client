@@ -17,16 +17,10 @@ const StoreContainer = ({props}) =>{
                 setError(null);
                 setData(null);
                 setLoading(true);
-
-                //찜매장 api 아직 -> 예외 dummy 처리
-                if(props==="favorites")
-                    setData(dummy.data);
-
-                else
-                {
+                
                 const response = await axios.get(`${props}`);
                 setData(response.data.result);
-                }
+                
             } catch (e){
                 setError(e);
             }
@@ -47,7 +41,7 @@ const StoreContainer = ({props}) =>{
             {d.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
             <h1>{d.storeName}</h1>
             <h2>{d.storeType}</h2>
-            <h3>★ {d.reviewStar} 점</h3>
+            <h3><a>★</a> {d.reviewStar} 점</h3>
             </S.TextWrapper>
             </Link>
         </S.StoreContainer>

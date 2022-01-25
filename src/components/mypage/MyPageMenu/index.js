@@ -51,8 +51,8 @@ const MyPageMenu = () =>{
             </Link>
             </th>
             <th>
-            <Link to={{pathname:`/favorites`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
-                <h4>찜 매장</h4><br/>
+            <Link to={{pathname:`/visited`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                <h4>최근 본 매장</h4><br/>
                 <h5>{data.cntLikeStore} 개</h5>
             </Link>
             </th>
@@ -71,15 +71,16 @@ const MyPageMenu = () =>{
         </S.Menu>
 
         <S.MenuBar>
-        <Link to={{pathname:`/visited`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
-        <li>최근 본 매장</li></Link>
         <Link to={{pathname:`/payment`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
-<li>결제 수단</li></Link>
+    <li>결제 수단</li></Link>
+    <li>공지사항</li>
+
         <li>로그아웃</li>
         </S.MenuBar>
         <S.AdContainer>
             <img src={adData.adImage} alt="adimg"/>
         </S.AdContainer>
+
     </S.Container>
     );
 }
