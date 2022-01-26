@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 import * as S from './style';
 const MyReserveDetail = ( {match} ) =>{
 
@@ -17,7 +16,6 @@ const MyReserveDetail = ( {match} ) =>{
                 setLoading(true);
                 
                 const response = await axios.get(`/reservation/${idx}`);
-
                 setData(response.data.result);
 
             } catch (e){
@@ -67,9 +65,9 @@ const MyReserveDetail = ( {match} ) =>{
         </S.ReserveDetailTitle>
         <S.ReserveDetailTitle width="190px" pos="right">
             <h1>카드 결제</h1>
-            <h1> reservePrice 원</h1>
-            <h1>(-) discountPrice 원</h1>
-            <h2> payPrice 원</h2>
+            <h1> {data.reservePrice} 원</h1>
+            <h1>(-) {data.discountPrice} 원</h1>
+            <h2> {data.payPrice} 원</h2>
         </S.ReserveDetailTitle>
         </S.ReserveDetailContainer>
         <S.ReserveCancelButton>예약 취소하기</S.ReserveCancelButton>

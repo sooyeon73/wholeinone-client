@@ -163,6 +163,16 @@ h2{
     text-align:center;
 
 }
+h3{
+    font-size: 18px;
+    font-weight: 500;
+    margin:0px 10px 0px 0px;
+    line-height:27px;
+    color: black;
+
+    display:inline;
+    text-align:center;
+}
 a{color:red;}
 `
 
