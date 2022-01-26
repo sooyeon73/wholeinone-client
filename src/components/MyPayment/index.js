@@ -139,6 +139,7 @@ if(!data) return null;
         onClick={onClickPayment}
         >카드 등록하기</S.ReserveCancelButton>
     </S.Container>
+ 
     );
 }
 

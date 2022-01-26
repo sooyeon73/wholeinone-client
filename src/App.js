@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import axios from "axios";
+import PrivateRoute from './route/PrivateRoute';
 import './App.css';
 import { GlobalStyle } from "./components/common/GlobalStyle";
 import Main from './pages/Main';
@@ -15,7 +17,6 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 function App() {
 
-  
   return (
     <Router>
       <div className="App">
@@ -25,14 +26,14 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignUpPage} />
 
-            <Route path="/mypage" component={MyPage} />
-            <Route path="/favorites" component={FavoritesPage} />
+            <PrivateRoute path="/mypage" component={MyPage} />
+            <PrivateRoute path="/favorites" component={FavoritesPage} />
             <Route path="/visited" component={VisitedPage} />
             <Route path="/search" component={SearchPage}/>
-            <Route path="/myreserve" component={MyReserveListPage}/>
-            <Route path="/payment" component={MyPaymentPage}/>
+            <PrivateRoute path="/myreserve" component={MyReserveListPage}/>
+            <PrivateRoute path="/payment" component={MyPaymentPage}/>
 
-            <Route path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
+            <PrivateRoute path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
             <Route path="/stores/:storeIdx" component={StoreDetailPage}/>
 
           </Switch>

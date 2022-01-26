@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 import * as S from './style';
 const MyReserveDetail = ( {match} ) =>{
 
@@ -9,7 +10,6 @@ const MyReserveDetail = ( {match} ) =>{
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
 
-
     useEffect(()=>{
         const fetchUsers = async () =>{
             try {
@@ -17,9 +17,9 @@ const MyReserveDetail = ( {match} ) =>{
                 setLoading(true);
                 
                 const response = await axios.get(`/reservation/${idx}`);
-                console.log(response.data.result);
 
                 setData(response.data.result);
+
             } catch (e){
                 setError(e);
             }
