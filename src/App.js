@@ -34,7 +34,7 @@ function App() {
             <PrivateRoute path="/payment" component={MyPaymentPage}/>
 
             <PrivateRoute path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
-            <PrivateRoute path="/stores/:storeIdx" component={StoreDetailPage}/>
+            <Route path="/stores/:storeIdx" component={StoreDetailPage}/>
 
           </Switch>
       </div>
