@@ -1,0 +1,34 @@
+{
+    "data": 
+      {
+        "userName" : "김영희",
+        "phoneNum" : "01011112222",
+        "reservationTime" : "2021.09.23 오전 10:30",
+        "useTime" : 60,
+        "selectedHall" : 3,
+        "personCount" : 1,
+        "storeName" : "올버디스크린골프",
+        "payPrice" :17000,
+        "userPoint" : 3000,
+        "userCoupon" :2,
+        "userCoupons" : [
+            {
+                "couponIdx" :1,
+                "couponName" : "3000원 할인 쿠폰",
+                "amount":3000,
+                "isUsable" : true
+            },
+            {
+                "couponIdx" :2,
+
+                "couponName" : "2000원 할인 쿠폰",
+                "amount":2000,
+
+                "isUsable" : false
+            }
+        ]
+      }
+}
+      
+
+        
