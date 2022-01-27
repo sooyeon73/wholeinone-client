@@ -22,6 +22,8 @@ function Burger({open}) {
           setLoading(true);    
           const response = await axios.get(`users/mypage`);
           setData((prev)=>[response.data.result]);
+
+          
       } catch (e){
           setError(e);
       }
@@ -39,6 +41,7 @@ useEffect(() => {
   const showSidebar = () => setSidebar(!sidebar);
 
   return (
+    
     <S.Container>
       <IconContext.Provider value={{ color: '#000' }}>
         <div className='navbar'>
@@ -51,14 +54,27 @@ useEffect(() => {
           <ul className='nav-menu-items' isExpanded={false}>
             <li className='navbar-toggle'>
             </li>
-            {data && data.map(d=>(
-              <S.ImageWrapper>
-                <img src={d.userImage}/>
-                <S.TextWrapper>
-                  <h1>{d.nickName}</h1>
-                </S.TextWrapper>
-              </S.ImageWrapper>  
-            ))}
+
+            {                axios.defaults.headers.common['Authorization'] ?
+
+            (
+              data.map(d=>(
+                <S.ImageWrapper>
+                  <img src={d.userImage}/>
+                  <S.TextWrapper>
+                    <h1>{d.nickName}</h1>
+                  </S.TextWrapper>
+                </S.ImageWrapper>  
+              ))
+            ):
+            (<S.ImageWrapper>
+              <img  src={"https://via.placeholder.com/65"}/>
+              <S.TextWrapper>
+              <h1>            <Link to={{pathname:`/login`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+로그인하기</Link> </h1>
+              </S.TextWrapper>
+            </S.ImageWrapper>  )
+           }
             {BurgerData.map((item, index) => {
               return (
                 <li key={index} className={item.cName} onClick={showSidebar}>
