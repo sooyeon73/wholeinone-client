@@ -1,8 +1,7 @@
 import React, {useEffect,useState} from "react";
 import * as S from "./style";
-import {Link} from "react-router-dom";
+import {Link , Redirect} from "react-router-dom";
 import axios from "axios"
-import dummy from "./dummy.json"
 
 const StoreContainer = ({props}) =>{
    
@@ -20,7 +19,7 @@ const StoreContainer = ({props}) =>{
                 
                 const response = await axios.get(`${props}`);
                 setData(response.data.result);
-                
+
             } catch (e){
                 setError(e);
             }
@@ -31,6 +30,7 @@ const StoreContainer = ({props}) =>{
     
 
     return(
+        
    <S.Container>
         {data? data.map(d=>(
         <S.StoreContainer>
@@ -47,7 +47,8 @@ const StoreContainer = ({props}) =>{
         </S.StoreContainer>
 )):null}
     </S.Container>
-    );
+  
+);
 }
 
 export default StoreContainer;

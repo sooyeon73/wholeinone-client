@@ -52,7 +52,7 @@ const StoreDetail = ({match}) =>{
             <S.StoreInfoTitle>
             <h1>{data.storeName}</h1>
          
-            <h2><a>★</a> {data.storeGrade} {data.storeType}</h2>
+            <h2><a>★</a> <h3>{data.reviewStar}</h3> {data.storeBrand}</h2>
             <S.IconContainer>
             <S.CallIcon/> <h3>전화</h3>
             </S.IconContainer>
@@ -114,12 +114,12 @@ const StoreDetail = ({match}) =>{
             
             <h4><S.ServiceIcon />시설 정보</h4>
             <S.ServiceIconWrapper>
-            {data.storageStatus === 1 ? <S.ServieIcon><h1>장비<br/>보관</h1></S.ServieIcon>:null}
-            {data.lefthandStatus === 1 ? <S.ServieIcon><h1>왼손<br/>타석</h1></S.ServieIcon>:null}
-            {data.parkingStatus === 1 ? <S.ServieIcon><h1>주차<br/>시설</h1></S.ServieIcon>:null}
-            {data.groupseatStatus === 1 ? <S.ServieIcon><h1>단체<br/>가능</h1></S.ServieIcon>:null}
-            {data.floorscreenStatus === 1 ? <S.ServieIcon><h1>바닥<br/>스크린</h1></S.ServieIcon>:null}
-            {data.lessonStatus === 1 ? <S.ServieIcon><h1>프로<br/>교습</h1></S.ServieIcon>:null}
+            {data.storageStatus == 1 ? <S.ServieIcon><h1>장비<br/>보관</h1></S.ServieIcon>:null}
+            {data.lefthandStatus == 1 ? <S.ServieIcon><h1>왼손<br/>타석</h1></S.ServieIcon>:null}
+            {data.parkingStatus == 1 ? <S.ServieIcon><h1>주차<br/>시설</h1></S.ServieIcon>:null}
+            {data.groupseatStatus == 1 ? <S.ServieIcon><h1>단체<br/>가능</h1></S.ServieIcon>:null}
+            {data.floorscreenStatus == 1 ? <S.ServieIcon><h1>바닥<br/>스크린</h1></S.ServieIcon>:null}
+            {data.lessonStatus == 1 ? <S.ServieIcon><h1>프로<br/>교습</h1></S.ServieIcon>:null}
             </S.ServiceIconWrapper>
 <br />
 <br />

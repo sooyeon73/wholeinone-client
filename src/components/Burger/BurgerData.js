@@ -4,11 +4,7 @@ export const BurgerData = [
     path: '/myreserve',
     cName: 'nav-text'
   },
-  {
-    title: '로그인',
-    path: '/login',
-    cName: 'nav-text'
-  },
+ 
   {
     title: '마이페이지',
     path: '/mypage',
