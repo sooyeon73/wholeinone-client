@@ -13,6 +13,7 @@ import ReserveDetailPage from './pages/ReserveDetailPage';
 import StoreDetailPage from './pages/StoreDetailPage';
 import VisitedPage from './pages/VisitedPage';
 import MyPaymentPage from './pages/MyPaymentPage';
+import ReservationPage from './pages/ReservationPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import PayPage from './pages/PayPage';
@@ -31,8 +32,10 @@ function App() {
             <PrivateRoute path="/favorites" component={FavoritesPage} />
             <Route path="/visited" component={VisitedPage} />
             <Route path="/search" component={SearchPage}/>
+            
             <PrivateRoute path="/myreserve" component={MyReserveListPage}/>
             <PrivateRoute path="/payment" component={MyPaymentPage}/>
+            <Route path="/reservation" component={ReservationPage}/>
 
             <PrivateRoute path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
             <Route path="/stores/:storeIdx" component={StoreDetailPage}/>
