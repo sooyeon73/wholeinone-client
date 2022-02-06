@@ -77,7 +77,7 @@ useEffect(() => {
            }
             {BurgerData.map((item, index) => {
               return (
-                <li key={index} className={item.cName} onClick={showSidebar}>
+                <li key={item.id} className={item.cName} onClick={showSidebar}>
                   <Link to={item.path}>
                     {item.icon}
                     <span>{item.title}</span>
