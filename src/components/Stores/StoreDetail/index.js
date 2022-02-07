@@ -23,28 +23,9 @@ const StoreDetail = ({match}) =>{
             try {
                 setError(null);
                 setLoading(true);
-                const response=null;
-                console.log("TRY!");
-                console.log("IDX: "+idx);
-                if(idx==0){ // 검색에서 넘어왔을 경우 idx=0으로 고정해서 데이터만 넘깁니다!
-                    console.log("IDX==0");
-                    //console.log("undifine1! "+ data.idx);
-                    const data=location.state.data;
-                    console.log(data);
-                    //console.log(data.storeImage);
-                    setData(data);
-                }
-                else{
-                    console.log("IDX!=0");
-                    console.log(data);
-                    console.log("undifine2!  "+ data.idx);
-                    response = await axios.get(`/stores/${idx}`);
-                    setData(response.data.result);
-                }
-                //setVal(response.val.result);
-                //console.log(val);
-                //setData(response.data.result);
-                //console.log("response.data: "+response.data);
+                var response=null;
+                response = await axios.get(`/stores/${idx}`);
+                setData(response.data.result);
             } catch (e){
                 console.log(e);
                 setError(e);

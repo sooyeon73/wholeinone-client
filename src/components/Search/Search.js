@@ -131,7 +131,7 @@ useEffect(() => {
                                 <img src={val.storeImage}/>
                             </S.ImageWrapper>
                             <div className="loc_t2" onClick={()=>{history.push({
-                                    pathname: `/stores/0`,
+                                    pathname: `/stores/${val.storeIdx}`,
                                     state: {data: val}})}}>
                                 <div key={key} className="loc4"> {val.storeName}</div>
                                 <div key={key} className="loc5"> {val.storeBrand}</div>
