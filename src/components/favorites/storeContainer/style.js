@@ -21,14 +21,25 @@ export const TextWrapper = styled.div`
         margin: 0px;
         font-weight: 400;
     }
-    h3{
-        position: absolute;
-        bottom: 5px;
-        right:25px;
+    span{
+        display:inline;
+        
+       
         font-weight: 700;
         font-size: 18px;
         line-height:30px;
         margin:0px;
+
+    }
+    h3{
+        display:inline-block;
+        width:80px;
+        height:15px;
+        font-weight: 500;
+        font-size:18px;
+        position: absolute;
+        bottom: 0px;
+        right:0px;
         a{color:red;}
 
     }

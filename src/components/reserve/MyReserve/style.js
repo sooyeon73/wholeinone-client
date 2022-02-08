@@ -25,7 +25,7 @@ export const CheckedIcon = styled(RiCheckboxCircleFill)`
 export const DetailLinkIcon = styled(FiChevronRight)`
     width: 30px;
     height: 30px;
-    padding: 15px;
+    padding: 13px;
     position:absolute;
     right:10px;
  
@@ -93,11 +93,32 @@ export const ReserveContainer = styled.div`
     text-align: left;
     display: block;     
     padding:25px 25px 25px 25px;
-    border-bottom: 1px solid lightgrey;   
+    border-bottom: 1px solid lightgrey;
     `
 
 export const Container = styled.div`
     width:100%;
     position:relative; // 오른쪽 icon 위치 설정을 위해
 
+`
+export const ButtonContainer = styled.div`
+width:100%;
+text-align:center;
+`
+
+export const LastIndex = styled.div`
+height:30px;
+
+`
+export const ReviewButton=styled.div`
+  
+    width:152px;
+    height: 35px;
+    margin:10px 5px 0px 5px;
+    line-height:35px;
+    font-size: 14px;
+    text-align:center;
+    display: inline-block;
+    border-radius: 6px; 
+    border: 1px solid gray;
 `

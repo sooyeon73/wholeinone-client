@@ -120,13 +120,25 @@ thead{
     font-size:15px;
     color: #434343;
     background:lightgrey;
+   
 }
+
 th{
-        border-bottom: 1px solid lightgrey;
-        padding:4px;
-width:100px;
-    border-right: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+
+    padding:4px;
+border-right: 1px solid lightgrey;
+
 }
+
+th:nth-child(1){
+}
+
+
+th:nth-child(2){
+    width:100px;
+}
+
 
 td:nth-child(1),a{    
     font-size:14.5px;
@@ -134,12 +146,13 @@ td:nth-child(1),a{
     width:60px;
     font-weight:400;
 }
-td {
+td{
 
 
     padding:7px;
 
-    border-bottom: 1px solid lightgrey;
+    border-bottom: 1px solid lightgray;
+
   }
 `
 
@@ -210,6 +223,7 @@ export const ServiceIconWrapper=styled.div`
 white-space:nowrap;
  overflow:auto;
  padding:7px;
+ text-align:left;
 `
 export const ServieIcon=styled.div`
 display:inline-block;
@@ -218,6 +232,8 @@ height:60px;
 border-radius:100%;
 background: #e5e5e5;
 margin:5px;
+text-align:center;
+
 
 line-height:56px;
 h1{

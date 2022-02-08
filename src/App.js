@@ -17,6 +17,7 @@ import ReservationPage from './pages/ReservationPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import PayPage from './pages/PayPage';
+import ReviewPage from './pages/ReviewPage';
 function App() {
 
   return (
@@ -35,11 +36,12 @@ function App() {
             
             <PrivateRoute path="/myreserve" component={MyReserveListPage}/>
             <PrivateRoute path="/payment" component={MyPaymentPage}/>
-            <Route path="/reservation" component={ReservationPage}/>
+            <PrivateRoute path="/reservation" component={ReservationPage}/>
 
             <PrivateRoute path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
             <Route path="/stores/:storeIdx" component={StoreDetailPage}/>
-            <Route path="/pay" component={PayPage}/>
+            <PrivateRoute path="/pay" component={PayPage}/>
+            <PrivateRoute path="/review/:reservationIdx" component={ReviewPage}/>
 
 
           </Switch>
