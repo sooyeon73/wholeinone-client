@@ -54,6 +54,19 @@ const PayPageMenu = ( ) =>{
         setPayMethodSelect(value);
     }
     useEffect(()=>{    
+                    
+        axios.post('/users/refresh').then(response => {
+            console.log(response);
+            const  accessToken  = response.data.result.jwt;
+            console.log(accessToken);
+            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            axios.get(`/payment/get_main`).then(response => {
+                console.log(response.data.result);
+                setCard(response.data.result);
+            });
+        });
+        
         const jquery = document.createElement("script");
         jquery.src="https://code.jquery.com/jquery-1.12.4.min.js";
         const iamport = document.createElement("script");
