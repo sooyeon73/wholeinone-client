@@ -99,7 +99,10 @@ const callback=(response)=>{
     if (success){
         console.log("카드 등록 설공");
         console.log(response);
-        axios.post(`/payment/register_card?billingKey=${customer_uid}`).then(response => {
+        const param ={
+            billingKey : customer_uid
+        }
+        axios.post(`/payment/register_card`,param).then(response => {
             console.log(response)
             const newData = data.concat(response.data.result);
             setData(newData);
@@ -109,6 +112,14 @@ const callback=(response)=>{
         console.log("카드 등록 실패");
         console.log(error_msg);
     }
+}
+
+const onClickDelete = (userPaymentIdx) =>{
+    console.log(`${userPaymentIdx}`)
+    axios.delete(`/payment/user_payment/${userPaymentIdx}`).then(response=>{
+        if (response.data.code==1000)
+            setData(data.filter(d => d.userPaymentIdx != userPaymentIdx))
+    })
 }
     // const data = dummy.data;
 
@@ -131,7 +142,8 @@ if(!data) return null;
  
          <br/><h1>{d.cardNumber}</h1>
         </S.CardInfoContainer>
-        <S.DeleteButton>삭제</S.DeleteButton>
+        <S.DeleteButton
+        onClick={()=>{onClickDelete(d.userPaymentIdx);}}>삭제</S.DeleteButton>
         </S.Card>
        ))}
         

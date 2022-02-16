@@ -2,11 +2,14 @@
     "data": 
       {
         "userName" : "김영희",
+        "userEmail" : "youngheekim@naver.com",
         "phoneNum" : "01011112222",
         "reservationTime" : "2021.09.23 오전 10:30",
         "useTime" : 60,
         "selectedHall" : 3,
         "personCount" : 1,
+        "storeIdx" : 1,
+        "reservationIdx" : 1,
         "storeName" : "올버디스크린골프",
         "payPrice" :17000,
         "userPoint" : 3000,

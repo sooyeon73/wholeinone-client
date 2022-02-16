@@ -175,3 +175,47 @@ export const PaymentContainer = styled.div`
     }
 `
 
+
+
+export const IsMain = styled.div`
+padding:5px;
+margin-left:7px;
+width:47px;
+height:10px;
+display:inline-block;
+border:1px solid lightgrey;
+border-radius: 20px; 
+text-align:center;
+    line-height:12px;
+    font-size: 12px;
+    color:grey;
+    font-weight: 600;
+
+`
+export const Card=styled.div`
+position:relative;
+border: 1px solid lightgrey;   
+padding: 15px;
+`
+export const CardInfoContainer=styled.div`
+display:inline-block;
+h1{
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 500;
+    margin:10px 5px 5px 45px;
+}
+h2{
+    display: inline;
+    font-size: 18px;
+    margin: 5px;
+    font-weight: 700;
+}
+h3{
+    display: inline;
+    font-size: 14.5px;
+    margin: 5px;
+    color:grey;
+    font-weight: 600;
+}
+`
