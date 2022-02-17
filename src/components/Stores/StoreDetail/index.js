@@ -12,6 +12,7 @@ const StoreDetail = ({match}) =>{
     const [cost, setCost] =useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
+    //const [val, setVal] = useState([]);
 
     const location = useLocation();
 
@@ -30,6 +31,7 @@ const StoreDetail = ({match}) =>{
                 setCost(cost.data.result);
 
             } catch (e){
+                console.log(e);
                 setError(e);
             }
             setLoading(false);
