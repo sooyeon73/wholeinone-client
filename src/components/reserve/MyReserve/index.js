@@ -3,7 +3,7 @@ import axios from "axios";
 import * as S from './style';
 import { Link } from "react-router-dom";
 
-const MyReserve = () =>{
+const MyReserve = ({location}) =>{
     
     const [data, setData] = useState([]);
     const [loading, setLoading ]=useState(false);
@@ -13,6 +13,8 @@ const MyReserve = () =>{
     const [page, setPage]=useState(1);
     const [ifDone, setIfDone]=useState(false);
 
+
+    console.log("location : ",location)
     const fetchReserves = useCallback(async () =>{
         try {
             setError(null);

@@ -1,17 +1,15 @@
 import React, {useState,useEffect} from "react";
 import { Link, Redirect } from "react-router-dom";
-import * as S from "./style";
+import * as S from "./style.js";
 import axios from "axios"
 import ad from "./adData.json";
 
-const MyPageMenu = () =>{
+const MyPageMenu = ({location, history}) =>{
 
     const [data, setData] = useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
-    
-
-    
+    console.log(location)
     useEffect(()=>{
         const fetchUsers = async () =>{
             try {
@@ -45,7 +43,12 @@ const MyPageMenu = () =>{
         axios.post('/users/logout').then(response => {
             console.log(response);
             alert("로그아웃 되었습니다.")
-            window.location.href=`/`;
+            history.push({
+                pathname : "/",
+                state: {
+                    authenticated : false
+                }
+            })
         });
     }
     
@@ -63,7 +66,7 @@ const MyPageMenu = () =>{
         <table>
         <tr>
             <th>
-            <Link to={{pathname:`/myreserve`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+            <Link to={{pathname:`/myreserve`, state : {authenticated : location.state.authenticated}}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <h4>예약 내역</h4><br/>
                 <h5>{data.cntReservation} 건</h5>
             </Link>

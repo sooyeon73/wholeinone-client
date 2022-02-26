@@ -2,11 +2,11 @@ import React from "react";
 import BasicTemplate from "../components/common/BasicTemplate";
 import MyPageMenu from "../components/mypage/MyPageMenu";
 import Header from "../components/mypage/header";
-const MyPage = ( {history} ) => {
+const MyPage = ( {location,history} ) => {
 return(
 <BasicTemplate>
     <Header history={history} title="마이페이지"/>
-    <MyPageMenu />
+    <MyPageMenu history={history} location={location}/>
 </BasicTemplate>
 );
 }

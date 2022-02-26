@@ -7,13 +7,22 @@ import useInput from "../../hooks/useInput";
 axios.defaults.withCredentials = true;
 
 
-const LoginMenu = ({history}) =>{
+const LoginMenu = ({location,history}) =>{
     const goBack= ()=>{
-        history.goBack();
+        // history.goBack();
+        history.push({
+            pathname : location.state.from.pathname,
+            state: {
+                authenticated : true
+            }
+        })
     }
+    // console.log("history : ",history)
+    console.log("location : ",location)
 
     const [id, onChangeId, setId] =useInput("");
     const [pw, onChangePw, setPw] =useInput("");
+    // const [authentication, authenticated] = useState(false);
 
     const [err0, setErr0] = useState("");
 
@@ -33,8 +42,6 @@ const LoginMenu = ({history}) =>{
             console.log(accessToken);
             // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;    
-           
-                
         const code = response.data.code;
         if(code==2000 || code==3000 || code==3010){
             setErr0("로그인에 실패했습니다.");
@@ -43,6 +50,7 @@ const LoginMenu = ({history}) =>{
             setErr0("비밀번호가 틀렸습니다. 비밀번호를 다시 입력해주세요.");
         }
         else{
+            // setAuthenticated(true);
             goBack();
         }
         
