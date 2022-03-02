@@ -1,17 +1,15 @@
 import React, {useState, useEffect} from "react";
 import {useHistory, useLocation} from "react-router";
 import * as S from "./style";
-import dummy from "./dummy.json";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 const StoreDetail = ({match}) =>{
-    //const data = dummy.data;
     const idx = match.params.storeIdx;
     //match.params.storeIdx로 상세 정보 불러옴
-
     
     const [data, setData] = useState([]);
+    const [cost, setCost] =useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
     //const [val, setVal] = useState([]);
@@ -23,9 +21,15 @@ const StoreDetail = ({match}) =>{
             try {
                 setError(null);
                 setLoading(true);
-                var response=null;
-                response = await axios.get(`/stores/${idx}`);
+
+                 const response = await axios.get(`/stores/${idx}`);
+                 const cost = await axios.get(`/price/${idx}/week_price`);
+
+                console.log(response.data);
+                console.log(cost.data);
                 setData(response.data.result);
+                setCost(cost.data.result);
+
             } catch (e){
                 console.log(e);
                 setError(e);
@@ -45,9 +49,11 @@ const StoreDetail = ({match}) =>{
             <h1>{data.storeName}</h1>
          
             <h2><a>★</a> <h3>{data.reviewStar}</h3> {data.storeBrand}</h2>
+            <a  href={`tel:${data.storePhoneNumber}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
             <S.IconContainer>
             <S.CallIcon/> <h3>전화</h3>
             </S.IconContainer>
+            </a>
             <S.IconContainer>
             <S.ShareIcon/> <h3>공유</h3>
             </S.IconContainer>
@@ -64,47 +70,58 @@ const StoreDetail = ({match}) =>{
             <table>
                 <thead>
                 <tr>
-                <th>시간</th> <th colspan='2'>가격</th>
+                <th> </th>  <th>시간</th> <th colSpan='2'>가격</th>
                  </tr>
                 </thead>
                 <tbody>
+                    
+                <th rowSpan={cost.filter(c=>c.isHoliday==false).length+1}>평일</th>
+{cost.map(c=>
+c.isHoliday==false ?
+<tr>
 
-                <tr>
-                <th rowspan='2'>오전</th>
-                <td><a>18홀</a></td>
-                <td>30,000 원</td>
-                 </tr>
-                 <tr>
-                 <td>9홀</td>
-                 <td>가격2</td>
-                 </tr>
-                 
-                 <tr>
-                <th rowspan='2'>오후</th>
-                <td><a>18홀</a></td>
-                <td>가격1</td>
-                 </tr>
-                 <tr>
-                 <td>9홀</td>
-                 <td>가격2</td>
-                 </tr>
-                 
+{c.hole==cost[0].hole?
+    
+    <th rowSpan='2'>{c.startTime}~<br/>{c.endTime}</th>
+:null}
+<td><a>{c.hole}홀</a></td>
+<td>{c.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
+ </tr>
+ :
+null
+)}
 
-                 <tr>
-                <th rowspan='2'>심야</th>
-                <td><a>18홀</a></td>
-                <td>가격1</td>
-                 </tr>
-                 <tr>
-                 <td>9홀</td>
-                 <td>가격2</td>
-                 </tr>
-                 
+<th rowSpan='7'>주말</th>
+{cost.map(c=>
+c.isHoliday==true ?
+<tr>
+
+{c.hole==cost[cost.filter(c=>c.isHoliday==false).length].hole?
+    
+    <th rowSpan='2'>{c.startTime}~<br/>{c.endTime}</th>
+:null}
+<td><a>{c.hole}홀</a></td>
+<td>{c.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
+ </tr>
+ :
+null
+)}
+          
                  </tbody>
                 </table>
                 </S.CostTable>
             
             <h4><S.ServiceIcon />시설 정보</h4>
+            {data.lefthandStatus ==0 &&
+            data.parkingStatus ==0 &&
+            data.groupseatStatus == 0&&
+            data.floorscreenStatus ==0 &&
+            data.lessonStatus ==0 
+            ?
+            <S.ServiceIconWrapper>
+            <S.ServieIcon><h1>기본<br/>시설</h1></S.ServieIcon>
+            </S.ServiceIconWrapper>
+            :
             <S.ServiceIconWrapper>
             {data.storageStatus == 1 ? <S.ServieIcon><h1>장비<br/>보관</h1></S.ServieIcon>:null}
             {data.lefthandStatus == 1 ? <S.ServieIcon><h1>왼손<br/>타석</h1></S.ServieIcon>:null}
@@ -113,6 +130,7 @@ const StoreDetail = ({match}) =>{
             {data.floorscreenStatus == 1 ? <S.ServieIcon><h1>바닥<br/>스크린</h1></S.ServieIcon>:null}
             {data.lessonStatus == 1 ? <S.ServieIcon><h1>프로<br/>교습</h1></S.ServieIcon>:null}
             </S.ServiceIconWrapper>
+}
 <br />
 <br />
 <br />
