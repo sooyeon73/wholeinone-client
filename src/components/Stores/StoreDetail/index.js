@@ -122,7 +122,7 @@ const StoreDetail = ({match}) =>{
            
         </S.StoreContainer>
         <S.ReserveButton onClick={()=>{history.push({
-                pathname: '/reservation',
+                pathname: `/storeReservation/${idx}`,
                 state: {data: data}
             })}}>간편 예약</S.ReserveButton>
     </S.Container>

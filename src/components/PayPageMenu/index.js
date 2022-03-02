@@ -65,7 +65,6 @@ const PayPageMenu = ({location, history}) =>{
         const fetchData = async () => {
             try{
                 setError(null);
-                setData(null);
                 setLoading(true);
                     axios.post('/users/refresh').then(response => {
                                 console.log(response);
@@ -138,13 +137,15 @@ const PayPageMenu = ({location, history}) =>{
         console.info(param)
         axios.post(`/pay/request_offlinePayment`,param).then(response => {
             console.log(response)
-            if (response.data.result.status=="결제 성공"){
-                alert("결제에 성공했습니다.");
-                history.push(`/stores/${rzvData.storeIdx}`);
-            }else{
-                alert("결제에 실패했습니다.");
+            if (response.data.code == 1000){
+                if (response.data.result.status=="예약 성공"){
+                    alert("예약에 성공했습니다.");
+                    history.push(`/stores/${rzvData.storeIdx}`);
+                }
+                else{
+                    alert("결제에 실패했습니다.");
             }
-        });
+}        });
     }
 
     const billingKeyPay = () =>{
@@ -168,11 +169,14 @@ const PayPageMenu = ({location, history}) =>{
         }
         axios.post(`/pay/request_billingKeyPayment`,param).then(response => {
             console.log(response)
-            if (response.data.result.status=="결제 성공"){
-                alert("결제에 성공했습니다.");
-                history.push(`/stores/${rzvData.storeIdx}`);
-            }else{
-                alert("결제에 실패했습니다.");
+            if (response.data.code == 1000){
+                if (response.data.result.status=="결제 성공"){
+                    alert("예약에 성공했습니다.");
+                    history.push(`/stores/${rzvData.storeIdx}`);
+                }
+                else{
+                    alert("결제에 실패했습니다.");
+                }
             }
         });
     }
@@ -224,11 +228,14 @@ const PayPageMenu = ({location, history}) =>{
             console.info(param)
             axios.post(`/pay/request_payment`,param).then(response => {
                 console.log(response)
-                if (response.data.result.status=="결제 성공"){
-                    alert("결제에 성공했습니다.");
-                    history.push(`/stores/${rzvData.storeIdx}`);
-                }else{
-                    alert("결제에 실패했습니다.");
+                if (response.data.code == 1000){
+                    if (response.data.result.status=="결제 성공"){
+                        alert("예약에 성공했습니다.");
+                        history.push(`/stores/${rzvData.storeIdx}`);
+                    }
+                    else{
+                        alert("결제에 실패했습니다.");
+                    }
                 }
             });
         }

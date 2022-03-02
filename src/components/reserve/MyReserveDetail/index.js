@@ -22,7 +22,7 @@ const MyReserveDetail = ( {match} ) =>{
                 setError(null);
                 setLoading(true);
                 
-                const response = await axios.get(`reservation/${idx}`);
+                const response = await axios.get(`/reservation/${idx}`);
                 setData(response.data.result);
                 if (response.data.result.payMethod == "billingkeyPay"){
                     setPaymethod("카드 간편 결제");
