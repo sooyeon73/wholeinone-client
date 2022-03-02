@@ -35,7 +35,7 @@ function App() {
             
             <PrivateRoute path="/myreserve" component={MyReserveListPage}/>
             <PrivateRoute path="/payment" component={MyPaymentPage}/>
-            <Route path="/reservation" component={ReservationPage}/>
+            <Route path="/storeReservation/:storeIdx" component={ReservationPage}/>
 
             <PrivateRoute path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
             <Route path="/stores/:storeIdx" component={StoreDetailPage}/>

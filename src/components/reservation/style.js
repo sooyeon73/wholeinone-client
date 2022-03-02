@@ -8,6 +8,11 @@ import {GiGolfTee} from "react-icons/gi";
 
 export const Container = styled.div`
     width:100%;
+    height:640px;
+    overflow-y:auto;
+    &::-webkit-scrollbar{
+        display:none;
+    }
 `
 
 export const StoreinfoContainer = styled.div`
@@ -32,13 +37,26 @@ export const SelectReservationinfo1 = styled.div`
     display: block;
     margin-bottom: 1rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid lightgrey;
     h3{
         text-align: left;
         margin-left: 2rem;
     }
 `
-
+export const SelectRoomInfo= styled.div`
+    display: block;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    h3{
+        text-align: left;
+        margin-left: 2rem;
+    }
+    
+    h4 {
+        text-align: left;
+        margin-left: 2rem;
+        margin-bottom: 5px;
+    }
+`
 export const HallButton = styled.button`
     
     background-color: hotpink;
@@ -57,11 +75,26 @@ export const DatePickerContainer = styled.div`
     display: block;
     margin-left: 1rem;
     margin-right: 1rem;
+    margin-bottom: 1rem;
 `
-export const TimePickerContainer = styled.div`
-    display: block;
+export const PickerContainer = styled.div`
+    -ms-overflow-style: none;
+    display: flex;
     margin-left: 1rem;
     margin-right: 1rem;
+    height: 65px;
+    width: 343px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    &::-webkit-scrollbar{ 
+        height:10px;
+    }
+    &::-webkit-scrollbar-thumb{ 
+        background-color: #22A8A5;
+    }
+    &::-webkit-scrollbar-track{ 
+        background-color: #d3eced;
+    }
 `
 
 export const SelectReservationinfo2 = styled.div`
