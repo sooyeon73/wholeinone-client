@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback,useRef } from "react";
 import axios from "axios";
 import * as S from './style';
 import { Link } from "react-router-dom";
+import ReservationStatus from './ReservationStatus.js'
 
 const MyReserve = () =>{
     
@@ -12,12 +13,11 @@ const MyReserve = () =>{
     const [lastElement, setLastElement] = useState(null);
     const [page, setPage]=useState(1);
 
-
     const fetchReserves = useCallback(async () =>{
         try {
             setError(null);
             setLoading(true);    
-            const response = await axios.get(`reservation?page=${page}`);
+            const response = await axios.get(`/reservation?page=${page}`);
             console.log(response);
             if(response.data.code==1000){setData((prev)=>[...prev,...response.data.result]);}
 
@@ -70,14 +70,13 @@ useEffect(() => {
     if(error) console.log("error");
     if(!data) return null;
 
-
     return(
    <S.Container>
         {data.map(d=>(
             <Link to={`/reservedetail/${d.reservationIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
         <S.ReserveContainer key={d.reservationIdx}>
             <S.ReserveStatusTitle>
-           {d.alreadyUsed === false ? <h1>예약 완료</h1> : <h2>이용 완료</h2>}
+           <ReservationStatus refundStatus={d.refundStatus} alreadyUsed={d.alreadyUsed}/>
            </S.ReserveStatusTitle>
             <S.TextWrapper>
             <h1>{d.storeName}</h1>
