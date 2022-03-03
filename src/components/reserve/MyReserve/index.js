@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback,useRef } from "react";
 import axios from "axios";
 import * as S from './style';
-import { Link } from "react-router-dom";
+import { Link , useHistory} from "react-router-dom";
 
 const MyReserve = () =>{
     
@@ -14,7 +14,7 @@ const MyReserve = () =>{
     const [ifDone, setIfDone]=useState(false);
 
 
-    
+    const history = useHistory();
     
       
 
@@ -28,7 +28,7 @@ useEffect(() => {
             const response = await axios.get(`reservation?page=${page}`);
          
         //    setData((prev)=>[...prev],...response.data.result.map((d)=>d={...d,"review":0}));
-
+console.log(response.data);
             //로드 성공시
             if(response.data.code==1000){
 
@@ -57,6 +57,7 @@ useEffect(() => {
         } catch (e){
             setError(e);
             console.log(e);
+            history.push('/login');
         }
         setLoading(false);   
     };

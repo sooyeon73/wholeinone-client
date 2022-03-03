@@ -24,6 +24,8 @@ const history=useHistory();
             } catch (e){
 
                 setError(e);
+                history.push('/login');
+
             }
             setLoading(false);
         };
@@ -48,6 +50,7 @@ const history=useHistory();
             console.log(response);
             alert("로그아웃 되었습니다.")
             history.push('/');
+            window.location.reload();
             });
     }
     

@@ -1,8 +1,9 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 import * as S from './style';
+import { useHistory } from "react-router-dom";
 const MyReserveDetail = ( {match} ) =>{
-
+    const history = useHistory();
     
     const idx = match.params.reservationIdx;
     const [data, setData] = useState([]);
@@ -20,6 +21,8 @@ const MyReserveDetail = ( {match} ) =>{
 
             } catch (e){
                 setError(e);
+                history.push('/login');
+
             }
             setLoading(false);
         };
