@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect,useHistory } from "react-router-dom";
 import * as S from "./style";
 import axios from "axios"
 import ad from "./adData.json";
@@ -10,7 +10,7 @@ const MyPageMenu = () =>{
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
     
-
+const history=useHistory();
     
     useEffect(()=>{
         const fetchUsers = async () =>{
@@ -21,21 +21,35 @@ const MyPageMenu = () =>{
                 
                 const response = await axios.get("users/mypage");
                 setData(response.data.result);
-
-            
-
             } catch (e){
 
                 setError(e);
             }
             setLoading(false);
         };
-        fetchUsers();
+        axios.post('/users/refresh').then(response => {
+            console.log(response);
+            if(response.data.isSuccess){
+
+            const  accessToken  = response.data.result.jwt;
+            console.log(accessToken);
+            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            }fetchUsers();    
+        });
     },[]);
   
     if(loading) console.log("loading");
     if(error) console.log("error");
     if(!data) return null;
+
+    const logout = () =>{
+        axios.post('/users/logout').then(response => {
+            console.log(response);
+            alert("로그아웃 되었습니다.")
+            history.push('/');
+            });
+    }
     
     const adData = ad.data;
     return(
@@ -81,7 +95,7 @@ const MyPageMenu = () =>{
     <li>결제 수단</li></Link>
     <li>공지사항</li>
 
-        <li>로그아웃</li>
+        <li onClick={logout}>로그아웃</li>
         </S.MenuBar>
         <S.AdContainer>
             <img src={adData.adImage} alt="adimg"/>

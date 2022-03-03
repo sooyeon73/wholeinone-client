@@ -23,7 +23,16 @@ const MyReserveDetail = ( {match} ) =>{
             }
             setLoading(false);
         };
-        fetchUsers();
+        
+    axios.post('/users/refresh').then(response => {
+        console.log(response);
+        if(response.data.isSuccess){
+        const  accessToken  = response.data.result.jwt;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        }   
+      fetchUsers();
+    });
+        
     },[]);
   
 

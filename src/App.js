@@ -18,9 +18,11 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import PayPage from './pages/PayPage';
 import ReviewPage from './pages/ReviewPage';
+import onSilentRefresh from './components/LoginMenu/index';
+
 function App() {
 
-  return (
+return (
     <Router>
       <div className="App">
         <GlobalStyle />
@@ -29,7 +31,8 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignUpPage} />
 
-            <PrivateRoute path="/mypage" component={MyPage} />
+           <PrivateRoute path="/mypage" component={MyPage} />
+        
             <PrivateRoute path="/favorites" component={FavoritesPage} />
             <Route path="/visited" component={VisitedPage} />
             <Route path="/search" component={SearchPage}/>
