@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import * as FaIcons from 'react-icons/fa';
 import * as BiIcons from 'react-icons/bi';
 import { IconContext } from 'react-icons';
@@ -265,8 +266,8 @@ const marks = [
     {value: 1,label: '1km',},
     {value: 2,label: '2km',},
     {value: 3,label: '4km',},
-    {value: 4,label: '6km',},
-    {value: 5,label: '8km',},
+    {value: 4,label: '8km',},
+    {value: 5,label: '16km',},
 ];
 
 function valueLabelFormat(value) {
@@ -275,21 +276,20 @@ function valueLabelFormat(value) {
     let unitIndex = 0;
     let scaledValue = value;
   
-    while (scaledValue > 0 && unitIndex < 1) {
+    while (scaledValue >= 1 && unitIndex < units.length - 1) {
       unitIndex += 1;
-      if(scaledValue>=3){scaledValue+=1;}
-      if(scaledValue>=5){scaledValue+=1;}
-      if(scaledValue>=7){scaledValue+=1;}
     }
   
-    if(unitIndex==0){
-        return `${units[unitIndex]}`;
+    if(unitIndex == 0){
+      return `${units[unitIndex]}`;
     }
     else return `${scaledValue} ${units[unitIndex]}`;
 }
 
 function calculateValue(value) {
-    return value;
+  if(value>1) return 2 ** value / 2;
+  else if(value==1) return value;
+  else return value;
 }
 
 function valuetext(value) {
@@ -330,11 +330,12 @@ function Mainbuttons(props, props_option, props_lists) {
     const [lists, setlists] = useState(false);
     const showlists = () => setlists(!lists);
 
-    const [value, setValue] = React.useState(10);
+    const [disvalue, setdisValue] = React.useState(8);
 
-    const handleChange = (event, newValue) => {
+    const handledisChange = (event, newValue) => {
         if (typeof newValue === 'number') {
-            setValue(newValue);
+            setdisValue(newValue);
+            console.log("거리: "+newValue);
         }
     };
 
@@ -381,8 +382,49 @@ function Mainbuttons(props, props_option, props_lists) {
         }
     };
 
+    const history = useHistory();
     const [myDate, setmyDate] = useState(new Date());
+    const [bChecked, setChecked] = useState(false);
 
+    const faciarr = [0,0,0,0,0,0];
+
+    const [brandChecked, setbrandChecked] = useState(false);
+    const [brandvalue, setbrandValue] = useState(1);
+
+    const [faciChecked, setfaciChecked] = useState(false);
+    const [distanceChecked, setdistanceChecked] = useState(false);
+
+    const handlebrandChange = e => {
+      let isChecked = e.target.checked;
+      console.log("브랜드 체크? : " + isChecked);
+      setbrandChecked(isChecked);
+      // do whatever you want with isChecked value
+    }
+
+    const handlefaciChange = e => {
+      let isChecked = e.target.checked;
+      console.log("시설 체크? : " + isChecked);
+      setfaciChecked(isChecked);
+      // do whatever you want with isChecked value
+    }
+
+    const handledistanceChange = e => {
+      let isChecked = e.target.checked;
+      console.log("거리 체크? : " + isChecked);
+      setdistanceChecked(isChecked);
+      // do whatever you want with isChecked value
+    }
+
+    const faciarray = idx => {
+      console.log(idx);
+      if(faciarr[idx]){
+        faciarr[idx] = 0;
+      } else{
+        faciarr[idx] = 1;
+      }
+      console.log(faciarr);
+    }
+    
     return (
         <>
             <S.Container>
@@ -455,19 +497,19 @@ function Mainbuttons(props, props_option, props_lists) {
                             >
                             <div className='filter_menu_subtitle'>
                                 <div className='filter_brand_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
+                                    <input type="checkbox" id="brand_checkboxall" name="brandall" onChange={e=>handlebrandChange(e)} /><label classname="brandall" for="brand_checkboxall"> √</label>
                                 </div>  
                                 <h3>브랜드</h3>
                             </div>
                             <div className='filter_menu_buttons'>
-                                <input type="checkbox" id="brand_checkbox1" name="brand"/><label classname="boxlabel" for="brand_checkbox1">골프존</label>
-                                <input type="checkbox" id="brand_checkbox2" name="brand"/><label for="brand_checkbox2">골프존파크</label>
-                                <input type="checkbox" id="brand_checkbox3" name="brand"/><label for="brand_checkbox3">레드골프</label>
-                                <input type="checkbox" id="brand_checkbox4" name="brand"/><label for="brand_checkbox4">시티존</label>
-                                <input type="checkbox" id="brand_checkbox5" name="brand"/><label for="brand_checkbox5">오케이온</label>
-                                <input type="checkbox" id="brand_checkbox8" name="brand"/><label for="brand_checkbox8">SG골프</label>
-                                <input type="checkbox" id="brand_checkbox6" name="brand"/><label for="brand_checkbox6">프렌즈스크린T</label>
-                                <input type="checkbox" id="brand_checkbox7" name="brand"/><label for="brand_checkbox7">프렌즈스크린G</label>
+                                <input type="radio" id="brand_checkbox1" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(1)}/><label for="brand_checkbox1">골프존</label>
+                                <input type="radio" id="brand_checkbox2" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(2)}/><label for="brand_checkbox2">골프존파크</label>
+                                <input type="radio" id="brand_checkbox3" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(3)}/><label for="brand_checkbox3">레드골프</label>
+                                <input type="radio" id="brand_checkbox4" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(4)}/><label for="brand_checkbox4">시티존</label>
+                                <input type="radio" id="brand_checkbox5" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(5)}/><label for="brand_checkbox5">오케이온</label>
+                                <input type="radio" id="brand_checkbox6" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(6)}/><label for="brand_checkbox6">SG골프</label>
+                                <input type="radio" id="brand_checkbox7" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(7)}/><label for="brand_checkbox7">프렌즈스크린T</label>
+                                <input type="radio" id="brand_checkbox8" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(8)}/><label for="brand_checkbox8">프렌즈스크린G</label>
                             </div>
                             </StyledBox_option>
                             <StyledBox_option
@@ -483,20 +525,18 @@ function Mainbuttons(props, props_option, props_lists) {
                                 }}
                             >
                             <div className='filter_menu_subtitle'>
-                                <div className='filter_facility_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
+                                <div className='filter_brand_off'>
+                                  <input type="checkbox" id="faci_checkboxall" name="faciall" onChange={e=>handlefaciChange(e)}/><label classname="faciall" for="faci_checkboxall"> √</label>
                                 </div> 
                                 <h3>시설</h3>   
                             </div>
                             <div className='filter_menu_buttons'>
-                                <input type="checkbox" name="option" id="facility_checkbox1"/><label for="facility_checkbox1">왼손타석</label>
-                                <input type="checkbox" name="option" id="facility_checkbox2"/><label for="facility_checkbox2">주차시설</label>
-                                {/*<input type="checkbox" name="option" id="facility_checkbox3"/><label for="facility_checkbox3">새벽영업</label>*/}
-                                <input type="checkbox" name="option" id="facility_checkbox4"/><label for="facility_checkbox4">단체석</label>
-                                <input type="checkbox" name="option" id="facility_checkbox5"/><label for="facility_checkbox5">바닥스크린</label>
-                                {/*<input type="checkbox" name="option" id="facility_checkbox6"/><label for="facility_checkbox6">무빙/듀얼</label>*/}
-                                <input type="checkbox" name="option" id="facility_checkbox7"/><label for="facility_checkbox7">프로교습</label>
-                                <input type="checkbox" name="option" id="facility_checkbox8"/><label for="facility_checkbox8">장비보관</label>
+                                <input type="checkbox" name="option" id="facility_checkbox1" disabled={!faciChecked} onChange = {e => faciarray(1)}/><label for="facility_checkbox1">왼손타석</label>
+                                <input type="checkbox" name="option" id="facility_checkbox2" disabled={!faciChecked} onChange = {e => faciarray(2)}/><label for="facility_checkbox2">주차시설</label>
+                                <input type="checkbox" name="option" id="facility_checkbox3" disabled={!faciChecked} onChange = {e => faciarray(3)}/><label for="facility_checkbox3">단체석</label>
+                                <input type="checkbox" name="option" id="facility_checkbox4" disabled={!faciChecked} onChange = {e => faciarray(4)}/><label for="facility_checkbox4">바닥스크린</label>
+                                <input type="checkbox" name="option" id="facility_checkbox5" disabled={!faciChecked} onChange = {e => faciarray(5)}/><label for="facility_checkbox5">프로교습</label>
+                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)}/><label for="facility_checkbox6">장비보관</label>
                             </div>
 
 
@@ -514,28 +554,30 @@ function Mainbuttons(props, props_option, props_lists) {
                                 }}
                             >
                             <div className='filter_menu_subtitle'>
-                                <div className='filter_distance_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
+                                <div className='filter_brand_off'>
+                                  <input type="checkbox" id="distance_checkboxall" name="distanceall" onChange={e=>handledistanceChange(e)} /><label classname="distanceall" for="distance_checkboxall"> √</label>
                                 </div>
                                 <h3>거리</h3>
                             </div>
                             <div className='filter_distance_slider'>
                                 <Box sx={{ width: 250 }}>
                                         <CustomSlider
-                                            value={value}
+                                            value={disvalue}
                                             aria-label="distance"
                                             defaultValue={0}
-                                            getAriaValueText={valuetext}
+                                            //getAriaValueText={valuetext}
                                             scale={calculateValue}
                                             valueLabelDisplay="auto"
                                             getAriaValueText={valueLabelFormat}
                                             valueLabelFormat={valueLabelFormat}
-                                            onChange={handleChange}
+                                            onChange={handledisChange}
                                             step={1}
                                             marks={marks}
                                             min={0}
                                             max={5}
                                             aria-labelledby="non-linear-slider"
+                                            disabled={!distanceChecked}
+                                            
                                         />
                                 </Box>
                             </div>
@@ -546,67 +588,31 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <div className='time_filter_reset_btn'>
                                     <span className='btn_center'>재설정</span>
                                 </div>
-                                <div className='time_filter_apply_btn'>
-                                    <span className='btn_center'>필터 적용</span>
+                                <div className='time_filter_apply_btn' onClick={
+                                      toggleDrawer_option_filter(false)
+                                    //console.log("Filter click -> Object filter to Main")
+                                    }>
+                                    <span className='btn_center' onClick={()=>{
+                                      history.push({
+                                        // 필터 내용 전송 -> 메인 화면
+                                        // 전송 data: 필터 obj
+                                      pathname: `/`,
+                                      state: {
+                                        brandcheck: brandChecked,
+                                        brandvalue: brandvalue,
+
+                                        facicheck: faciChecked,
+                                        facivalue: faciarr,
+
+                                        discheck: distanceChecked,
+                                        disvalue: disvalue
+                                            }})
+                                    }}>필터 적용</span>
                                 </div>
                             </div>
                         </SwipeableDrawer>
                     </Root_option>
-                    <nav className={filter ? 'filter_menu active' : 'filter_menu'}>
-                        <div className='filter_menu_drawer'>
-                            <div className='filter_brand_onoff'>
 
-                            </div>
-                            <div className='filter_menu_subtitle'>
-                                <div className='filter_facility_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
-                                </div> 
-                                <h3>시설</h3>   
-                            </div>
-                            <div className='filter_facility_onoff'>
-
-                            </div>
-
-                            <div className='filter_menu_subtitle'>
-                                <div className='filter_distance_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
-                                </div>
-                                <h3>거리</h3>
-                            </div>
-                            <div className='filter_distance_slider'>
-                                <Box sx={{ width: 250 }}>
-                                    {/*<ThemeProvider theme={muiTheme}>*/}
-                                        <CustomSlider
-                                            value={value}
-                                            aria-label="distance"
-                                            defaultValue={0}
-                                            getAriaValueText={valuetext}
-                                            scale={calculateValue}
-                                            valueLabelDisplay="auto"
-                                            getAriaValueText={valueLabelFormat}
-                                            valueLabelFormat={valueLabelFormat}
-                                            onChange={handleChange}
-                                            step={1}
-                                            marks={marks}
-                                            min={0}
-                                            max={5}
-                                            aria-labelledby="non-linear-slider"
-                                        />
-                                    {/*</ThemeProvider>*/}
-                                </Box>
-                            </div>
-
-
-                            <div className='filter_apply_area'>
-                                <div className='filter_reset_btn'>
-                                    <span className='btn_center'>재설정</span>
-                                </div>
-                                <div className='filter_apply_btn'>
-                                    <span className='btn_center'>필터 적용</span>
-                                </div>
-                            </div>
-                        </div>
-                    </nav>
 
                     <Root>
                         <CssBaseline />
@@ -664,6 +670,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <div className='time_filter_select_day'>
                                     <DatePicker id='datepicker'
                                         getSelectedDay={selectedDay}
+                                        defaultValue={selectedDay}
                                         endDate={0}
                                         labelFormat={"y.M."}
                                         color={"#22A8A5"}
@@ -694,6 +701,9 @@ function Mainbuttons(props, props_option, props_lists) {
                                                 style={{ marginTop: "0px", width:"100%", borderRadius:"12px", border:"2px solid #22A8A5"}}
                                                 format={"HH:mm"}
                                                 inputVariant="filled"
+                                                defaultValue={(value)=>{
+                                                  selectedTime(value)
+                                                }}
                                                 TextFieldComponent={CssTextField}
                                                 size="medium"
                                                 value={myDate}
@@ -711,7 +721,15 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <div className='time_filter_reset_btn'>
                                     <span className='btn_center'>재설정</span>
                                 </div>
-                                <div className='time_filter_apply_btn'>
+                                <div className='time_filter_apply_btn' onClick={()=>{history.push({
+                                      // 시간 내용 전송 -> 메인 화면
+                                      // 전송 data: 시간 객체 data의 obj
+                                    pathname: `/`,
+                                    //state: {}
+                                  })
+                                    
+                                    console.log("Time_filter_click ==> Date obj to Main")
+                                    }}>
                                     <span className='btn_center'>필터 적용</span>
                                 </div>
                             </div>
