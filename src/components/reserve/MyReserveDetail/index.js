@@ -40,9 +40,9 @@ const MyReserveDetail = ( {match} ) =>{
             setLoading(false);
         };
         axios.post('/users/refresh').then(response => {
-            console.log(response);
+            // console.log(response);
             const  accessToken  = response.data.result.jwt;
-            console.log(accessToken);
+            // console.log(accessToken);
             // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             fetchUsers();    
@@ -59,8 +59,11 @@ const MyReserveDetail = ( {match} ) =>{
             }
             axios.post('/pay/request_refund',data).then(
                 response=>{
-                    alert("환불을 요청했습니다")
-                    window.location.reload();
+                    // console.log(response.data)
+                    if(response.data.isSuccess){
+                        alert("환불을 요청했습니다")
+                        window.location.reload();
+                    }else alert("요청 실패")
                 }
             )
         }
@@ -110,10 +113,10 @@ const MyReserveDetail = ( {match} ) =>{
         </S.ReserveDetailTitle>
         </S.ReserveDetailContainer>
         {
-            data.alreadyUsed === false && data.paymentTime!=="미 결제"?<S.LineBorder/> : null
+            data.alreadyUsed === false? <S.LineBorder/> : null
         }
         {
-            data.alreadyUsed === false && data.paymentTime!=="미 결제" ?
+            data.alreadyUsed === false?
             <S.ReserveDetailContainer>
             <h1>예약 취소하기</h1>
             <S.InputBar
@@ -124,7 +127,7 @@ const MyReserveDetail = ( {match} ) =>{
             :null
         }
         {
-            data.alreadyUsed === false && data.paymentTime!=="미 결제"?
+            data.alreadyUsed === false?
             <S.ReserveCancelButton
             onClick={onClickCancel}>예약 취소/ 환불 요청하기</S.ReserveCancelButton> 
             : null

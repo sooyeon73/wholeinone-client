@@ -8,11 +8,21 @@ import {GiGolfTee} from "react-icons/gi";
 
 export const Container = styled.div`
     width:100%;
-    height:640px;
-    overflow-y:auto;
-    &::-webkit-scrollbar{
-        display:none;
-    }
+`
+
+export const InputBar = styled.textarea`
+margin-left: 1rem;
+margin-right: 1rem;
+padding: 7px;
+width: 330px;
+height:40px;
+border: solid lightgrey 0px;
+background-color:#eff0f1;
+font-size:17px;
+padding-left:10px;
+::placeholder{
+    font-size:14px;
+    line-height:20px;
 `
 
 export const StoreinfoContainer = styled.div`

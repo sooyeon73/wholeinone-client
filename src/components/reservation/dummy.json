@@ -32,32 +32,16 @@
             }
         ],
         "rezTimes" : [
-            {"time":"10:00"},
-            {"time":"10:30"},
-            {"time":"11:30"},
-            {"time":"12:00"},
-            {"time":"12:30"},
-            {"time":"13:00"},
-            {"time":"13:30"},
-            {"time":"14:00"},
-            {"time":"14:30"},
-            {"time":"15:30"},
-            {"time":"16:30"}
+            {"time":null}
         ],
         "rooms" : [
             {
                 "roomName" : "SG",
-                "roomNums" : [
-                    {"roomNum" : 1},
-                    {"roomNum" : 2}
-                ]
+                "roomIdx" : 1
             },
             {
                 "roomName" : "room2",
-                "roomNums" : [
-                    {"roomNum" : 1},
-                    {"roomNum" : 2}
-                ]
+                "roomIdx" : 2
             }
         ]
       }

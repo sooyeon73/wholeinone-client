@@ -6,12 +6,12 @@ margin:10px;
 width:270px;
 height:80px;
 // rows="3";
-border: solid lightgrey 0.5px;
-border-radius: 5px;
+border: solid lightgrey 0px;
+background-color:#eff0f1;
 font-size:17px;
 padding-left:10px;
 ::placeholder{
-    font-size:15px;
+    font-size:14px;
     line-height:20px;
 `
 

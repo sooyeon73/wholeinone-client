@@ -94,12 +94,12 @@ useEffect(() => {
             <h3>{d.personCount}명 &nbsp; |  &nbsp; {d.selectHall}홀 &nbsp; |  &nbsp; {d.useTime}분</h3>
             </S.TextWrapper>
             <S.DetailLinkIcon />
-        {d.alreadyUsed === false ? null : 
+        {d.alreadyUsed === true && d.refundStatus === "미환불"? 
         <S.ButtonContainer>
                         <Link to={`/review/${d.reservationIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
         <S.ReviewButton>평점 주기</S.ReviewButton>
         </Link>
-            <S.ReviewButton>재예약 하기</S.ReviewButton></S.ButtonContainer>} 
+            <S.ReviewButton>재예약 하기</S.ReviewButton></S.ButtonContainer>:null} 
             </S.ReserveContainer>
 
         </Link>
