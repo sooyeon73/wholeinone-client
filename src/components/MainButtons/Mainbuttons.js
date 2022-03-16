@@ -330,12 +330,13 @@ function Mainbuttons(props, props_option, props_lists) {
     const [lists, setlists] = useState(false);
     const showlists = () => setlists(!lists);
 
-    const [disvalue, setdisValue] = React.useState(8);
+    const [disvalue, setdisValue] = React.useState(4);
 
     const handledisChange = (event, newValue) => {
+      console.log("거리: "+newValue);
         if (typeof newValue === 'number') {
             setdisValue(newValue);
-            console.log("거리: "+newValue);
+            //console.log("거리: "+newValue + "  "+calculateValue(newValue));
         }
     };
 
@@ -605,7 +606,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                         facivalue: faciarr,
 
                                         discheck: distanceChecked,
-                                        disvalue: disvalue
+                                        disvalue: calculateValue(disvalue)
                                             }})
                                     }}>필터 적용</span>
                                 </div>

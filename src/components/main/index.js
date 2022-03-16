@@ -13,77 +13,66 @@ import { Text, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { TouchableOpacity } from 'react-native';
 import { useHistory, useLocation } from 'react-router-dom';
-//import { getButtonUnstyledUtilityClass } from '@mui/material';
-//import { map } from 'jquery';
-
-let lati=null;
-let long=null;
+import { getButtonUnstyledUtilityClass } from '@mui/material';
+import { map } from 'jquery';
 
 let nowlati=null;
 let nowlong=null;
 
-let nowbrandch=null;
+let nowbrandch=false;
 let nowbrandvu=null;
 
-let nowfacich=null;
+let nowfacich=false;
 let nowfacivu=null;
 
-let nowdisch=null;
+let nowdisch=false;
 let nowdisvu=null;
-
-const Rect = (props) => (
-  <Rectangle 
-    strokeOpacity={0}
-    strokeWeight={0}
-    fillOpacity={0.2}
-    fillColor={"#f00"}
-    {...props}
-  />
-)
 
 const GeoLocationAPI = ({}) => {
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLogitude] = useState(null);
-    
+
     const geoLocation = () => {
         Geolocation.getCurrentPosition(
             position => {
-                const latitude = JSON.stringify(position.coords.latitude);
-                const longitude = JSON.stringify(position.coords.longitude);
-                //console.log(latitude);
-                //console.log(longitude);
-                setLatitude(latitude);
-                setLogitude(longitude);
-                lati=latitude;
-                long=longitude;
+                const lati = JSON.stringify(position.coords.latitude);
+                const long = JSON.stringify(position.coords.longitude);
+                setLatitude(lati);
+                setLogitude(long);
+                nowlati=latitude;
+                nowlong=longitude;
             },
             error => { console.log(error.code, error.message); },
             {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
-
         )
     }
     return (
       <View>
         {geoLocation()}
-        {/*}
-          <Text> latitude: {latitude} </Text>
-          <Text> longitude: {longitude} </Text>
-          <TouchableOpacity onPress={() => geoLocation()}>
-              <Text> Get GeoLocation </Text>
-    </TouchableOpacity>*/}
       </View>
-
   )
 }
 
-function NaverMapComponent({history}) {
+ const NaverMapComponent = ({history}) => {
 
   let [data, setData] = useState([]);
   const [loading, setLoading ]=useState(false);
   const [error, setError] = useState(null);
 
   let location = useLocation();
-    
+
+  const geoLocation = () => {
+    Geolocation.getCurrentPosition(
+        position => {
+            const latitude = JSON.stringify(position.coords.latitude);
+            const longitude = JSON.stringify(position.coords.longitude);
+            nowlati=latitude;
+            nowlong=longitude;
+        },
+        error => { console.log(error.code, error.message); },
+        {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
+    )
+}
   try{
     let brandcheck = location.state.brandcheck;
     let brandvalue = location.state.brandvalue;
@@ -91,35 +80,22 @@ function NaverMapComponent({history}) {
     nowbrandch=brandcheck;
     nowbrandvu=brandvalue;
   
-    console.log("brandcheck: "+brandcheck);
-    console.log("brandvalue: "+brandvalue);
-  
     let facicheck = location.state.facicheck;
     let facivalue = location.state.facivalue;
   
     nowfacich=facicheck;
     nowfacivu=facivalue;
   
-    console.log("facicheck: "+facicheck);
-    console.log("facivalue: "+facivalue);
-  
     let discheck = location.state.discheck;
     let disvalue = location.state.disvalue;
   
     nowdisch=discheck;
     nowdisvu=disvalue;
-    
-    console.log("discheck: "+ discheck);
-    console.log("disvalue: "+ disvalue);
-
   } catch(e){
-    //console.log(e);
     nowbrandch=false;
     nowfacich=false;
     nowdisch=false;
   }
-
-
 
   console.log("  ");
 
@@ -145,26 +121,16 @@ function NaverMapComponent({history}) {
     fetch();
   };
   
-  let fetch = useCallback(async() =>{
+  useEffect(()=>{
+    console.log("location 변화 감지!");
+    fetch();
+  },[location]);
+
+  const fetch = useCallback(async() =>{
     try {
         setError(null);
         setLoading(true);
         setData([]);
-
-        console.log("now lati: "+nowlati);
-        console.log("now long: "+nowlong);
-        //brandcheck = location.state.brandcheck;
-        //brandvalue = location.state.brandvalue;
-        ////console.log("   brandcheck: "+brandcheck);
-        //facicheck = location.state.facicheck;
-        //facivalue = location.state.facivalue;
-        //console.log("   facicheck: "+facicheck);
-        //discheck = location.state.discheck;
-        //disvalue = location.state.disvalue;
-        //console.log("   discheck: "+ discheck);       
-        //let response;
-        
-        console.log("ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ");
         
         if(nowbrandch == true){ //브랜드 체크했을 경우
 
@@ -177,9 +143,9 @@ function NaverMapComponent({history}) {
               console.log("facivalue: "+nowfacivu);
               console.log("disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+nowbrandvu+`&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=`+nowdisvu+``);
-              console.log(response);
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
 
             } else if(nowdisch==false){ // 브랜드 시설은 체크했는데 거리는 체크 안했을 경우
@@ -189,9 +155,9 @@ function NaverMapComponent({history}) {
               console.log("facivalue: "+nowfacivu);
               console.log("disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+nowbrandvu+`&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=16`);
-              console.log(response);
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
 
             }
@@ -205,10 +171,9 @@ function NaverMapComponent({history}) {
               console.log("facivalue: "+nowfacivu);
               console.log("disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+nowbrandvu+`&lefthandStatus=0&parkingStatus=0&groupseatStatus=0&floorscreenStatus=0&storageStatus=0&lessonStatus=0&distance=`+nowdisvu+``);
-              console.log(response);
-
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
 
             } else if(nowdisch==false){ // 브랜드는 체크했는데 시설 거리는 체크 안했을 경우
@@ -218,9 +183,9 @@ function NaverMapComponent({history}) {
               console.log("facivalue: "+nowfacivu);
               console.log("disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+nowbrandvu+`&lefthandStatus=0&parkingStatus=0&groupseatStatus=0&floorscreenStatus=0&storageStatus=0&lessonStatus=0&distance=16`); 
-              console.log(response);
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
             }
           }
@@ -235,9 +200,9 @@ function NaverMapComponent({history}) {
               console.log("facivalue: "+nowfacivu);
               console.log("disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=`+nowdisvu+``);
-              console.log(response);
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
 
             } else if(nowdisch==false){ // 시설은 체크했는데 브랜드 거리는 체크 안했을 경우
@@ -247,9 +212,9 @@ function NaverMapComponent({history}) {
               console.log("facivalue: "+nowfacivu);
               console.log("disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=16`);
-              console.log(response);
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
 
             }
@@ -262,25 +227,24 @@ function NaverMapComponent({history}) {
               console.log("facivalue: "+nowfacivu);
               console.log("disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1&lefthandStatus=0&parkingStatus=0&groupseatStatus=0&floorscreenStatus=0&storageStatus=0&lessonStatus=0&distance=`+nowdisvu+``);
-              console.log(response);
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
             }
              else if(nowdisch==false){ // 아무것도 체크 안한 경우
 
               console.log("아무것도체크안함");
               const response = await axios.get(`stores/map?storeName=&userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1`);
-              
-              console.log(response);
+              //console.log(response);
               console.log(response.data);
-              console.log(response.data.result);
+              //console.log(response.data.result);
               setData(response.data.result);
-
             }
           }
         }
-        console.log(data);       
+        //console.log("DATA: "+data);
+        //console.log("체크밸류 종료");
     } catch (e){
         setError(e);
         console.log(e);
@@ -289,20 +253,15 @@ function NaverMapComponent({history}) {
       },[]);
   
   function draglistener(e){
-    //console.log("드래그드래그");
+    //console.log("네이버 map 드래그 리스너");
+    onChange();
+  }
+  function dragstartlistener(e){
+    //console.log("naver map dragstart listener");
+    
   }
   function handleBoundsChanged(e){
-    console.log("BoundsChanged event: 지도 경계가 변경될 때 발생");
-    bounds=naverMapRef.getCenter();
-    setBounds(naverMapRef.getCenter());
-    console.log("현재 지도의 중심 위도: "+bounds._lat); // 지도의 중심 위도
-    console.log("현재 지도의 중심 경도: "+bounds._lng); // 지도의 중심 경도
-    setCenter({lat: bounds._lat, lng: bounds._lng});
-    nowlati=center.lat;
-    nowlong=center.lng;
-    console.log("center.lat: "+center.lat);
-    console.log("center.lng: "+center.lng);
-    fetch();
+    //console.log("BoundsChanged event: 지도 경계가 변경될 때 발생");
   }
   function handleCenterChanged(e){
     //console.log("센터체인지");
@@ -310,30 +269,34 @@ function NaverMapComponent({history}) {
   function handleCenterPointChanged(e){
     //console.log("센터포인터체인지");
   }
-  function renderMarkerFunction(data) {
-    //console.log(data);
-    return(
-      <Marker
-        key={data.storeIdx}
-        position={new navermaps.LatLng(data.storeLatitude, data.storeLongitute)}
-        animation={1}
-        //onClick={() => {}}
-        />
-    );
-  };
+  function handleTilesLoaded(e){
+    //console.log("네이버 map 타일 로딩됨");
+  }
+  function handleIdle(e){
+    console.log("naver map Idle event!!");
+    bounds=naverMapRef.getCenter();
+    setBounds(naverMapRef.getCenter());
+    //console.log("현재 지도의 중심 위도: "+bounds._lat); // 지도의 중심 위도
+    //console.log("현재 지도의 중심 경도: "+bounds._lng); // 지도의 중심 경도
+    setCenter({lat: bounds._lat, lng: bounds._lng});
+    nowlati=bounds._lat;
+    nowlong=bounds._lng;
+    //console.log("center.lat: "+center.lat);
+    //console.log("center.lng: "+center.lng);
+    //console.log("now lati: "+nowlati);
+    //console.log("now long: "+nowlong);
+  }
   function drawMarkers(mk){
-    //console.log(mk.storeIdx);
-    //console.log(mk.storeLatitude);
-    //console.log(mk.storeLongitude);
+    let pos=new navermaps.LatLng(mk.storeLatitude, mk.storeLongitude)
     return(
       <Marker
         key={mk.storeIdx}
         position={new navermaps.LatLng(mk.storeLatitude, mk.storeLongitude)}
-        animation={1}
-        //onClick={() => {}}
+        animation={0}
+        onClick={() => {
+          naverMapRef.panTo(pos);
+        }}
         />
-
-        
     );
   }  
 
@@ -344,10 +307,12 @@ function NaverMapComponent({history}) {
     <NaverMap
       mapDivId={"react-naver-map"}
       onDragend={draglistener}
+      onDragstart={dragstartlistener}
       onBoundsChanged={handleBoundsChanged}
       onCenterChanged={handleCenterChanged}
       onCenterPointChanged={handleCenterPointChanged}
-      //center={{center}}
+      onTilesloaded={handleTilesLoaded}
+      onIdle={handleIdle}
       style={{
         width: '100%',
         height: '100vh',
@@ -355,28 +320,17 @@ function NaverMapComponent({history}) {
         top: '0px',
         zindex: '-999',
       }}
-      //bounds={this.state.bounds}
-      //defaultCenter={{ lat: 37.554722, lng: 126.970833 }}
-      defaultCenter={{ lat: lati, lng: long }}
+      defaultCenter={{ lat: nowlati, lng: nowlong }}
       defaultZoom={15}
       naverRef={ref => {naverMapRef = ref}}>
-
+      
       {data && data.map(drawMarkers)}
-{/*
-      <Marker
-        key={1}
-        position={new navermaps.LatLng(37.551229, 126.988205)}
-        //animation={2}
-        onClick={() => {alert('여기는 N서울타워입니다.');}}
-      />*/}
       </NaverMap>
     </div>
   );
 }
 
-const Main = ( {history} ) => {
-  //console.log(history);
-  
+const Main = ( {history} ) => { 
   return (
     <>
       <RenderAfterNavermapsLoaded
