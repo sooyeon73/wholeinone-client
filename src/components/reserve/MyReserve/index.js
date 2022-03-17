@@ -27,37 +27,18 @@ useEffect(() => {
             setLoading(true);    
             const response = await axios.get(`reservation?page=${page}`);
          
-        //    setData((prev)=>[...prev],...response.data.result.map((d)=>d={...d,"review":0}));
 console.log(response.data);
             //로드 성공시
             if(response.data.code==1000){
+            setData((prev)=>[...prev,...response.data.result]);
 
-                const d = response.data.result;                
-
-                for(let i =0; i<d.length;i++){
-                    const idx = d[i].reservationIdx;
-                    const res = await axios.get(`/review/${idx}`);
-                    //d[i].review=res.data.result.reviewScore;
-                    d[i]={...d[i],"review":res.data.result.reviewScore};
-                    }
-                    console.log(d);
-
-                 setData((prev)=>[...prev,...d]);
-            //     setData((prev)=>prev.sort((a,b)=>a.reservationIdx -b.reservationIdx));
-                    //sort해서 표기해도되는지
             }
-
             // 더이상 로드할 데이터가 없을시 
             else
              setIfDone(true);
-
-       
-
-
         } catch (e){
             setError(e);
             console.log(e);
-            history.push('/login');
         }
         setLoading(false);   
     };
@@ -135,9 +116,9 @@ console.log(response.data);
         null : 
         
         <S.ButtonContainer>
-         {d.review ?  
+         {d.score ?  
          
-         <S.ReviewButton>평점 ★ {d.review} </S.ReviewButton>
+         <S.ReviewButton>평점 ★ {d.score} </S.ReviewButton>
 
         :(
                         <Link to={`/review/${d.reservationIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>

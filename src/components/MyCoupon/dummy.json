@@ -1,0 +1,24 @@
+
+{
+    "data": [
+      {
+        "couponIdx" : 1,
+        "couponPercentage": 30,
+        "storeName" : "프렌즈 골프장",
+        "couponDeadline":"2022-03-02",
+        "couponName":"오픈 기념 쿠폰"
+        
+      },
+      {
+        "couponIdx" : 1,
+        "couponPercentage": 30,
+        "storeName" : "프렌즈 골프장",
+        "couponDeadline":"2022-03-02",
+        "couponName":"오픈 기념 쿠폰"
+        
+      }
+    ]
+}
+      
+
+        

@@ -27,7 +27,7 @@ const ReviewMenu = ( {match} ) =>{
              axios.patch(`/review/${idx}`, data).then(response => {
              console.log(response);
 
-             history.push('/myreserve');
+             history.replace('/myreserve');
             });
 
         } catch (e){

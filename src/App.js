@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useHistory, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import PrivateRoute from './route/PrivateRoute';
 import './App.css';
@@ -19,9 +19,11 @@ import SignUpPage from './pages/SignUpPage';
 import PayPage from './pages/PayPage';
 import ReviewPage from './pages/ReviewPage';
 import onSilentRefresh from './components/LoginMenu/index';
+import MyCouponPage from './pages/VisitedPage copy';
 
 function App() {
 
+  
 return (
     <Router>
       <div className="App">
@@ -32,7 +34,8 @@ return (
             <Route path="/signup" component={SignUpPage} />
 
            <PrivateRoute path="/mypage" component={MyPage} />
-        
+           <Route path="/mycoupon" component={MyCouponPage} />
+
             <PrivateRoute path="/favorites" component={FavoritesPage} />
             <Route path="/visited" component={VisitedPage} />
             <Route path="/search" component={SearchPage}/>
