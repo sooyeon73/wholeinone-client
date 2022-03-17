@@ -55,7 +55,7 @@ console.log(response);
                 // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
                 axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;    
                 setTimeout(onSilentRefresh, jwtValidity * 1000 - 60000);
-
+  // accessToken 만료하기 1분 전에 로그인 연장
   
                 const code = response.data.code;
                 if(code==2000 || code==3000 || code==3010){
@@ -66,7 +66,7 @@ console.log(response);
                 }
                 else{
                     goBack();
-                }        // accessToken 만료하기 1분 전에 로그인 연장
+                }      
 
 
       }

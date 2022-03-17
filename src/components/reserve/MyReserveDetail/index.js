@@ -21,8 +21,6 @@ const MyReserveDetail = ( {match} ) =>{
 
             } catch (e){
                 setError(e);
-                history.push('/login');
-
             }
             setLoading(false);
         };

@@ -23,8 +23,6 @@ const StoreContainer = ({props}) =>{
 
             } catch (e){
                 setError(e);
-                history.push('/login');
-
             }
             setLoading(false);
         };
