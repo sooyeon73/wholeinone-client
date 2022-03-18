@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback,useRef } from "react";
 import axios from "axios";
 import * as S from './style';
 import { Link , useHistory} from "react-router-dom";
+import ReservationStatus from './ReservationStatus.js'
 
 const MyReserve = () =>{
     
@@ -25,9 +26,9 @@ useEffect(() => {
         try {
             setError(null);
             setLoading(true);    
-            const response = await axios.get(`reservation?page=${page}`);
-         
-console.log(response.data);
+            const response = await axios.get(`/reservation?page=${page}`);
+            console.log(response);
+
             //로드 성공시
             if(response.data.code==1000){
             setData((prev)=>[...prev,...response.data.result]);
@@ -97,14 +98,13 @@ console.log(response.data);
     if(error) console.log("error");
     if(!data) return null;
 
-
     return(
    <S.Container>
         {data.map(d=>(
             <Link to={`/reservedetail/${d.reservationIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
         <S.ReserveContainer key={d.reservationIdx}>
             <S.ReserveStatusTitle>
-           {d.alreadyUsed === false ? <h1>예약 완료</h1> : <h2>이용 완료</h2>}
+           <ReservationStatus refundStatus={d.refundStatus} alreadyUsed={d.alreadyUsed}/>
            </S.ReserveStatusTitle>
             <S.TextWrapper>
             <h1>{d.storeName}</h1>
@@ -112,9 +112,8 @@ console.log(response.data);
             <h3>{d.personCount}명 &nbsp; |  &nbsp; {d.selectHall}홀 &nbsp; |  &nbsp; {d.useTime}분</h3>
             </S.TextWrapper>
             <S.DetailLinkIcon />
-        {d.alreadyUsed === false ? 
-        null : 
-        
+
+        {d.alreadyUsed === true && d.refundStatus === "미환불"? 
         <S.ButtonContainer>
          {d.score ?  
          
@@ -132,6 +131,7 @@ console.log(response.data);
             </Link>
 
             </S.ButtonContainer>} 
+</S.ButtonContainer>:null} 
             </S.ReserveContainer>
 
         </Link>

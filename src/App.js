@@ -42,7 +42,7 @@ return (
             
             <PrivateRoute path="/myreserve" component={MyReserveListPage}/>
             <PrivateRoute path="/payment" component={MyPaymentPage}/>
-            <PrivateRoute path="/reservation" component={ReservationPage}/>
+            <PrivateRoute path="/storeReservation/:storeIdx" component={ReservationPage}/>
 
             <PrivateRoute path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
             <Route path="/stores/:storeIdx" component={StoreDetailPage}/>

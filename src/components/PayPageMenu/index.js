@@ -3,13 +3,16 @@ import axios from "axios";
 import * as S from './style';
 import dummy from "./dummy.json";
 import useInput from "../../hooks/useInput";
+import { ReserveDetailContainer } from "../reserve/MyReserveDetail/style";
 
-const PayPageMenu = ( ) =>{
+const PayPageMenu = ({location, history}) =>{
 
     //간편예약 -> 예약하기 -> 결제하기 -> 결제 api 사이에 전달되는 값..??
     //정보가 예약하기 페이지에서 넘어오는지?
+    // console.log("location",location)
+    // const data = dummy.data;
+    const rzvData=location.state;
 
-    const data = dummy.data;
     const [couponPrice, setCouponPrice] =useState(0);
     const [pointPrice, setPointPrice]=useState(0);
     const [paySelect, setPaySelect]=useState("0");
@@ -17,6 +20,10 @@ const PayPageMenu = ( ) =>{
     const [couponIdxSelect, setCouponIdxSelect]=useState(null);
     const [payMethodSelect, setPayMethodSelect]=useState(null);
     const [card, setCard]=useState(null);
+
+    const [data, setData]=useState(dummy.data);
+    const [loading, setLoading ]=useState(false);
+    const [error, setError] = useState(null);
 
 
     const handleSelect = event => {
@@ -54,19 +61,56 @@ const PayPageMenu = ( ) =>{
         setPayMethodSelect(value);
     }
     useEffect(()=>{    
-                    
-        axios.post('/users/refresh').then(response => {
-            console.log(response);
-            const  accessToken  = response.data.result.jwt;
-            console.log(accessToken);
-            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-            axios.get(`/payment/get_main`).then(response => {
-                console.log(response.data.result);
-                setCard(response.data.result);
-            });
-        });
-        
+
+        const param ={
+            startTime : rzvData.reservationTime,
+            useTime : rzvData.useTime,
+            storeIdx : rzvData.storeIdx,
+            roomIdx : rzvData.roomNum
+        };
+        const fetchData = async () => {
+            try{
+                setError(null);
+                setLoading(true);
+                    axios.post('/users/refresh').then(response => {
+                                // console.log(response);
+                                const  accessToken  = response.data.result.jwt;
+                                // console.log(accessToken);
+                                // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+                                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+                                // console.log(param);
+                                axios.post('/reservation/check-duplicate-rez',param).then(response =>{
+                                    // console.log(response.data.result);
+                                    if(response.data.isSuccess == false){
+                                        alert('중복된 예약입니다');
+                                        setLoading(false);
+                                        history.push({
+                                            pathname:`/storeReservation/${rzvData.storeIdx}`,
+                                            state :{
+                                                data :{
+                                                    storeName: rzvData.storeName,
+                                                    storeLocation: rzvData.storeLocation
+                                            }}
+                                        });
+                                    }
+                                })
+                                axios.get(`/payment/get_main`).then(response => {
+                                    // console.log(response.data.result);
+                                    if (response.data.isSuccess)
+                                        setCard(response.data.result);
+                                });
+                                axios.get(`/pay/get_user_info`).then(response => {
+                                    // console.log(response.data.result);
+                                    if (response.data.isSuccess)
+                                        setData(response.data.result);
+                                });
+                            });
+            }catch (e){
+                setError(e);
+            }
+        };
+        fetchData();
         const jquery = document.createElement("script");
         jquery.src="https://code.jquery.com/jquery-1.12.4.min.js";
         const iamport = document.createElement("script");
@@ -79,28 +123,90 @@ const PayPageMenu = ( ) =>{
     },[]);
     const onClickPay = ()=>{
         // const billingKey="";
-        console.log(paySelect);
-        if (paySelect == "billingkeyPay"){
-            billingKeyPay();
+        try{
+            // console.log(paySelect);
+            if (paySelect == "billingkeyPay"){
+                billingKeyPay();
+            }
+            if (paySelect=="normal"){
+                normalPay(payMethodSelect);
+            }
+            if (paySelect == "offline"){
+                offlinePay();
+            }
+        }catch(e){
+            setError(e);
         }
-        if (paySelect=="normal"){
-            normalPay(payMethodSelect);
+    }
+
+    const offlinePay=()=>{
+        const param = {
+            reservationIdx:rzvData.reservationIdx,
+            storeIdx: rzvData.storeIdx,
+            couponIdx: couponIdxSelect,
+            payMethod : "offline",
+            amount : parseInt(rzvData.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice)),
+            point: parseInt(pointPrice),
+
+            reservationTime : rzvData.reservationTime,
+            useTime: rzvData.useTime,
+            roomIdx: rzvData.roomNum,
+            selectedHall:rzvData.selectedHall,
+            request: rzvData.request,
+            personCount:rzvData.personCount,
+            discountPrice:parseInt(couponPrice)+parseInt(pointPrice),
+            price:parseInt(rzvData.payPrice)
         }
-        
+        console.info(param)
+        axios.post(`/pay/request_offlinePayment`,param).then(response => {
+            // console.log(response)
+            if (response.data.code == 1000){
+                if (response.data.result.status=="결제 성공"){
+                    alert("예약에 성공했습니다.");
+                    history.push(`/stores/${rzvData.storeIdx}`);
+                }
+                else{
+                    alert("예약에 실패했습니다.");
+                }
+            }
+            else
+                alert("예약에 실패했습니다.");
+}        );
     }
 
     const billingKeyPay = () =>{
         const param = {
-            reservationIdx:data.reservationIdx, // 추후 api에서 가져오기 
+            // reservationIdx:data.reservationIdx, // 추후 api에서 가져오기 
             userPaymentIdx:card.userPaymentIdx,
             payMethod : "billingkeyPay",
-            storeIdx: data.storeIdx,//추후 api에서 가져오기
+            storeIdx: rzvData.storeIdx,//추후 api에서 가져오기
             couponIdx: couponIdxSelect,
-            amount : parseInt(data.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice)),
-            point: parseInt(pointPrice)
+            amount : parseInt(rzvData.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice)),
+            point: parseInt(pointPrice),
+
+            reservationTime : rzvData.reservationTime,
+            useTime: rzvData.useTime,
+            roomIdx: rzvData.roomNum,
+            selectedHall:rzvData.selectedHall,
+            request: rzvData.request,
+            personCount:rzvData.personCount,
+            discountPrice:parseInt(couponPrice)+parseInt(pointPrice),
+            price:parseInt(rzvData.payPrice)
         }
         axios.post(`/pay/request_billingKeyPayment`,param).then(response => {
-            console.log(response)
+            // console.log(response)
+            if (response.data.code == 1000){
+                if (response.data.result.status=="결제 성공"){
+                    alert("예약에 성공했습니다.");
+                    history.push(`/stores/${rzvData.storeIdx}`);
+                }
+                else{
+                    alert("결제에 실패했습니다.");
+                }
+            }
+            else{
+                alert("결제에 실패했습니다.");
+            }
         });
     }
 
@@ -112,8 +218,8 @@ const PayPageMenu = ( ) =>{
     const param = {
         pg:'kcp',
         pay_method: payMethod, //client에서 선택 card(신용카드), samsung(삼성페이), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제), payco(페이코 허브형)
-        amount:parseInt(data.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice)), // reservation page에서 get
-        name:data.storeName+"_예약", // 필수 값(상품명) 추후 api에서 가져오기
+        amount:parseInt(rzvData.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice)), // reservation page에서 get
+        name:rzvData.storeName+"_예약", // 필수 값(상품명) 추후 api에서 가져오기
         buyer_name:data.userName, // 구매자 이름 추후 api에서 가져오기
         buyer_email:data.userEmail, // 아이디 추후 api에서 가져오기
         buyer_tel:data.phoneNum, // 전화번호 추후 api에서 가져오기
@@ -126,27 +232,49 @@ const PayPageMenu = ( ) =>{
             success, error_msg, status, customer_uid, imp_uid, merchant_uid, paid_amount,pay_method 
         }=response;
         if (success){
-            console.log("결제 설공");
-            console.log(response);
+            // console.log("결제 설공");
+            // console.log(response);
             //
             const param = {
-                reservationIdx:data.reservationIdx, // 추후 api에서 가져오기
-                storeIdx: data.storeIdx, // 추후 api에서 가져오기
+                reservationIdx:rzvData.reservationIdx,
+                storeIdx: rzvData.storeIdx,
                 couponIdx: couponIdxSelect,
                 merchantUid:merchant_uid,
                 impUid:imp_uid,
                 payMethod : pay_method,
                 amount : paid_amount,
-                point: parseInt(pointPrice)
+                point: parseInt(pointPrice),
+
+                reservationTime : rzvData.reservationTime,
+                useTime: rzvData.useTime,
+                roomIdx: rzvData.roomNum,
+                selectedHall:rzvData.selectedHall,
+                request: rzvData.request,
+                personCount:rzvData.personCount,
+                discountPrice:parseInt(couponPrice)+parseInt(pointPrice),
+                price:parseInt(rzvData.payPrice)
             }
             console.info(param)
             axios.post(`/pay/request_payment`,param).then(response => {
-                console.log(response)
+                // console.log(response)
+                if (response.data.code == 1000){
+                    if (response.data.result.status=="결제 성공"){
+                        alert("예약에 성공했습니다.");
+                        history.push(`/stores/${rzvData.storeIdx}`);
+                    }
+                    else{
+                        alert("결제에 실패했습니다.");
+                    }
+                }
+                else{
+                    alert("결제에 실패했습니다.");
+                }
             });
         }
         else{
-            console.log("결제 실패");
-            console.log(error_msg);
+            alert("결제에 실패했습니다.");
+            // console.log("결제 실패");
+            // console.log(error_msg);
         }
     }
     return(
@@ -172,11 +300,11 @@ const PayPageMenu = ( ) =>{
             <h1>이용 시간</h1>
         </S.ReserveDetailTitle>
         <S.ReserveDetailTitle>
-            <h1>{data.reservationTime}</h1>
-            <h1>{data.storeName}</h1>
-            <h1>{data.selectedHall} 홀 </h1>
-            <h1>{data.personCount} 명</h1>
-            <h1>{data.useTime} 분</h1>
+            <h1>{rzvData.reservationTime}</h1>
+            <h1>{rzvData.storeName}</h1>
+            <h1>{rzvData.selectedHall} 홀 </h1>
+            <h1>{rzvData.personCount} 명</h1>
+            <h1>{rzvData.useTime} 분</h1>
         </S.ReserveDetailTitle>
         </S.ReserveDetailContainer>
 
@@ -185,14 +313,20 @@ const PayPageMenu = ( ) =>{
         <S.ReserveDetailContainer>
         <h1>결제 수단</h1>
         <S.ReserveDetailTitle width="100%">
-            <h1><S.RadioButton 
+            {/* <label><h1><S.RadioButton 
+                type="radio"
+                name="payment"
+                value="offline"
+                checked={paySelect=="offline"}
+                onChange={event=>handleSelect(event)}
+                />현장 결제</h1></label> */}
+            <label><h1><S.RadioButton 
            type="radio"
-           name="billingkeyPay"
+           name="payment"
            value="billingkeyPay"
            checked={paySelect=="billingkeyPay"}
            onChange={event=>handleSelect(event)}
-           />간편 결제</h1>
-        <h1>
+           />간편 결제</h1></label>
             {
                 card !== null
             ? 
@@ -205,11 +339,12 @@ const PayPageMenu = ( ) =>{
                 <br/><h1>{card.cardNumber}</h1>
                 </S.CardInfoContainer>
             </S.Card>
-            :null
+            :<h1 hidden={paySelect!=="billingkeyPay"}>
+                등록된 대표 카드가 없습니다.</h1>
         }
-        <S.RadioButton 
+       <h1><S.RadioButton 
            type="radio"
-           name="normal"
+           name="payment"
            value="normal"
            checked={paySelect=="normal"}
            onChange={event=>handleSelect(event)}
@@ -239,6 +374,7 @@ const PayPageMenu = ( ) =>{
             value="payco"
             >페이코 간편 결제</option> */}
       </S.DropDown>
+
         </S.ReserveDetailTitle>
         </S.ReserveDetailContainer>
         <S.LineBorder/>
@@ -297,24 +433,21 @@ const PayPageMenu = ( ) =>{
             <h2>총 결제 금액</h2>
         </S.ReserveDetailTitle>
         <S.ReserveDetailTitle width="190px" pos="right">
-            <h1> {data.payPrice} 원</h1>
+            <h1> {rzvData.payPrice} 원</h1>
             <h1>{parseInt(couponPrice)+parseInt(pointPrice)} 원</h1>
-            <h2> {parseInt(data.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice))}원</h2>
+            <h2> {parseInt(rzvData.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice))}원</h2>
         </S.ReserveDetailTitle>
         </S.ReserveDetailContainer>
-
-   
             <S.Footer>
                 <S.PaymentContainer>
                     <h3>총 결제금액</h3>
-                    <h2>{parseInt(data.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice))} 원</h2>
+                    <h2>{parseInt(rzvData.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice))} 원</h2>
                 </S.PaymentContainer>
 
                 <S.ReserveButton
                 onClick={onClickPay}
                 >결제하기</S.ReserveButton>
             </S.Footer>
-            
           <br/>         
           <br/>
           <br/>

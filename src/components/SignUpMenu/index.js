@@ -17,6 +17,9 @@ const SignUpMenu = ({history}) =>{
     const [pwc, onChangePwc, setPwc] =useInput("");
     const [nk, onChangeNk, setNk] =useInput("");
     const [nm, onChangeNm, setNm] =useInput("");
+    const [tel1, onChangeTel1, setTel1] =useInput("");
+    const [tel2, onChangeTel2, setTel2] =useInput("");
+    const [tel3, onChangeTel3, setTel3] =useInput("");
 
     const [err0, setErr0] = useState("");
     const [err1, setErr1] = useState("");
@@ -29,7 +32,8 @@ const SignUpMenu = ({history}) =>{
             "password" : pw,
             "confirmPassword" : pwc,
             "nickname" : nk,
-            "name" : nm
+            "name" : nm,
+            "tel" : `${tel1}-${tel2}-${tel3}`
         };
         try{
 
@@ -97,6 +101,23 @@ const SignUpMenu = ({history}) =>{
         placeholder="이름을 입력해주세요"
                 value={nm}
         onChange={onChangeNm}
+        required/>
+
+        <h1>전화 번호</h1>
+        <S.InputTel
+        placeholder="010"
+                value={tel1}
+        onChange={onChangeTel1}
+        required/>
+        <S.InputTel
+        placeholder="1234"
+                value={tel2}
+        onChange={onChangeTel2}
+        required/>
+        <S.InputTel
+        placeholder="5678"
+                value={tel3}
+        onChange={onChangeTel3}
         required/>
 
         </S.LoginMenu>

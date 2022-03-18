@@ -1,6 +1,20 @@
 import styled from "styled-components";
 import { RiCheckboxCircleLine ,RiCheckboxCircleFill } from "react-icons/ri";
 
+export const InputBar = styled.textarea`
+margin:10px;
+width:270px;
+height:80px;
+// rows="3";
+border: solid lightgrey 0px;
+background-color:#eff0f1;
+font-size:17px;
+padding-left:10px;
+::placeholder{
+    font-size:14px;
+    line-height:20px;
+`
+
 export const UnCheckedIcon = styled(RiCheckboxCircleLine)`
     width: 20px;
     height: 20px;

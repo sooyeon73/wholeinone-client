@@ -2,6 +2,11 @@ import React,{useState,useEffect} from "react";
 import axios from "axios";
 import * as S from './style';
 import { useHistory } from "react-router-dom";
+import ReservationStatus from "./ReservationStatus";
+import useInput from "../../../hooks/useInput";
+
+axios.defaults.withCredentials = true;
+
 const MyReserveDetail = ( {match} ) =>{
     const history = useHistory();
     
@@ -9,7 +14,9 @@ const MyReserveDetail = ( {match} ) =>{
     const [data, setData] = useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
-
+    const [reason, onChangeReason, setReason] =useInput("");
+    const [paymethod, setPaymethod] = useState("");
+    
     useEffect(()=>{
         const fetchUsers = async () =>{
             try {
@@ -18,13 +25,22 @@ const MyReserveDetail = ( {match} ) =>{
                 
                 const response = await axios.get(`/reservation/${idx}`);
                 setData(response.data.result);
+                if (response.data.result.payMethod == "billingkeyPay"){
+                    setPaymethod("카드 간편 결제");
+                }
+                else if (response.data.result.payMethod == "card"){
+                    setPaymethod("일반 카드 결제");
+                }
+                else if (response.data.result.payMethod == null){
+                    setPaymethod("현장 결제");
+                }
 
             } catch (e){
                 setError(e);
             }
             setLoading(false);
         };
-        
+
     axios.post('/users/refresh').then(response => {
         console.log(response);
         if(response.data.isSuccess){
@@ -36,15 +52,34 @@ const MyReserveDetail = ( {match} ) =>{
         
     },[]);
   
-
+    function onClickCancel(){
+        if(reason==""){
+            alert("취소 사유를 입력해주세요")
+        }else{
+            const param ={
+                reservationIdx: idx,
+                refundReason : reason
+            }
+            axios.post('/pay/request_refund',data).then(
+                response=>{
+                    // console.log(response.data)
+                    if(response.data.isSuccess){
+                        alert("환불을 요청했습니다")
+                        window.location.reload();
+                    }else alert("요청 실패")
+                }
+            )
+        }
+    };
 
     return(
    <S.Container>
        <S.ReserveStatusContainer>
         <S.ReserveStatusTitle>
-           {data.alreadyUsed == false ? <h1><S.UnCheckedIcon/>예약 완료</h1> : <h2><S.CheckedIcon/>이용 완료</h2>}
+           <ReservationStatus refundStatus={data.refundStatus} alreadyUsed={data.alreadyUsed}/>
            </S.ReserveStatusTitle>
-           <h3>예약일 {data.paymentTime}</h3>
+           <h3>예약일 {data.createdAt}</h3>
+           <h3>결제일 {data.paymentTime}</h3>
         </S.ReserveStatusContainer>
         <S.LineBorder/>
         <S.ReserveDetailContainer>
@@ -74,13 +109,32 @@ const MyReserveDetail = ( {match} ) =>{
             <h2>총 결제 금액</h2>
         </S.ReserveDetailTitle>
         <S.ReserveDetailTitle width="190px" pos="right">
-            <h1>카드 결제</h1>
+            <h1>{paymethod}</h1>
             <h1> {data.reservePrice} 원</h1>
             <h1>(-) {data.discountPrice} 원</h1>
             <h2> {data.payPrice} 원</h2>
         </S.ReserveDetailTitle>
         </S.ReserveDetailContainer>
-        <S.ReserveCancelButton>예약 취소하기</S.ReserveCancelButton>
+        {
+            data.alreadyUsed === false? <S.LineBorder/> : null
+        }
+        {
+            data.alreadyUsed === false?
+            <S.ReserveDetailContainer>
+            <h1>예약 취소하기</h1>
+            <S.InputBar
+            value={reason}
+            onChange={onChangeReason}
+            placeholder="취소 사유"/>
+            </S.ReserveDetailContainer>
+            :null
+        }
+        {
+            data.alreadyUsed === false?
+            <S.ReserveCancelButton
+            onClick={onClickCancel}>예약 취소/ 환불 요청하기</S.ReserveCancelButton> 
+            : null
+        }
     </S.Container>
     );
 }

@@ -12,7 +12,7 @@
 }
 
 
-.hall_buttons > input[type="radio"] + label {
+.hall_buttons input[type="radio"] + h1 {
     -webkit-transition: all 500ms ease;
     transition: all 500ms ease;
     font-size: 16px;
@@ -38,7 +38,7 @@
     font-weight: bold;
 }
   
-.hall_buttons > input[type="radio"]:checked + label {
+.hall_buttons > input[type="radio"]:checked + h1 {
     -webkit-transition: all 500ms ease;
     transition: all 500ms ease;
     background-color: #22A8A5; color: white; border-color:#22A8A5;

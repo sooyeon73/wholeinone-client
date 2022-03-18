@@ -1,0 +1,52 @@
+{
+    "data": 
+      {
+        "userName" : "-",
+        "userEmail" : "-",
+        "phoneNum" : "-",
+        "reservationTime" : "-",
+        "useTime" : 0,
+        "selectedHall" : 0,
+        "personCount" : 0,
+        "storeIdx" : 0,
+        "reservationIdx" : 0,
+        "storeName" : "-",
+        "storeLocation": "-",
+        "payPrice" :0,
+        "userPoint" : 0,
+        "userCoupon" :0,
+        "userCoupons" : [
+            {
+                "couponIdx" :1,
+                "couponName" : "-",
+                "amount":0,
+                "isUsable" : true
+            },
+            {
+                "couponIdx" :2,
+
+                "couponName" : "-",
+                "amount":0,
+
+                "isUsable" : false
+            }
+        ],
+        "rezTimes" : [
+            {"time":null}
+        ],
+        "rooms" : [
+            {
+                "roomName" : "SG",
+                "roomIdx" : 1
+            },
+            {
+                "roomName" : "room2",
+                "roomIdx" : 2
+            }
+        ]
+      }
+
+}
+      
+
+        

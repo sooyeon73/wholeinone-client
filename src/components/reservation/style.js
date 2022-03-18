@@ -10,6 +10,21 @@ export const Container = styled.div`
     width:100%;
 `
 
+export const InputBar = styled.textarea`
+margin-left: 1rem;
+margin-right: 1rem;
+padding: 7px;
+width: 330px;
+height:40px;
+border: solid lightgrey 0px;
+background-color:#eff0f1;
+font-size:17px;
+padding-left:10px;
+::placeholder{
+    font-size:14px;
+    line-height:20px;
+`
+
 export const StoreinfoContainer = styled.div`
     display: block;     
     padding: 0px;
@@ -32,13 +47,26 @@ export const SelectReservationinfo1 = styled.div`
     display: block;
     margin-bottom: 1rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid lightgrey;
     h3{
         text-align: left;
         margin-left: 2rem;
     }
 `
-
+export const SelectRoomInfo= styled.div`
+    display: block;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    h3{
+        text-align: left;
+        margin-left: 2rem;
+    }
+    
+    h4 {
+        text-align: left;
+        margin-left: 2rem;
+        margin-bottom: 5px;
+    }
+`
 export const HallButton = styled.button`
     
     background-color: hotpink;
@@ -57,11 +85,26 @@ export const DatePickerContainer = styled.div`
     display: block;
     margin-left: 1rem;
     margin-right: 1rem;
+    margin-bottom: 1rem;
 `
-export const TimePickerContainer = styled.div`
-    display: block;
+export const PickerContainer = styled.div`
+    -ms-overflow-style: none;
+    display: flex;
     margin-left: 1rem;
     margin-right: 1rem;
+    height: 65px;
+    width: 343px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    &::-webkit-scrollbar{ 
+        height:10px;
+    }
+    &::-webkit-scrollbar-thumb{ 
+        background-color: #22A8A5;
+    }
+    &::-webkit-scrollbar-track{ 
+        background-color: #d3eced;
+    }
 `
 
 export const SelectReservationinfo2 = styled.div`

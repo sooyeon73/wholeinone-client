@@ -16,6 +16,19 @@ padding-left:10px;
     line-height:20px;
 `
 
+export const InputTel = styled.input`
+margin: 7px;
+width: 62px;
+height: 40px;
+border: solid lightgrey 0px;
+background-color:#eff0f1;
+font-size:17px;
+padding-left:10px;
+::placeholder{
+    font-size:14px;
+    line-height:20px;
+`
+
 export const SubmitButton = styled.button`
 width:325px;
 height:45px;
