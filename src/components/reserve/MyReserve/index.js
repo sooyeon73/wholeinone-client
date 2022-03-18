@@ -130,8 +130,7 @@ useEffect(() => {
             <S.ReviewButton>재예약 하기</S.ReviewButton>
             </Link>
 
-            </S.ButtonContainer>} 
-</S.ButtonContainer>:null} 
+            </S.ButtonContainer>:null} 
             </S.ReserveContainer>
 
         </Link>
