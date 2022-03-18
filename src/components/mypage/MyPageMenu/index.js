@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect,useHistory } from "react-router-dom";
 import * as S from "./style";
 import axios from "axios"
 import ad from "./adData.json";
@@ -10,7 +10,7 @@ const MyPageMenu = () =>{
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
     
-
+const history=useHistory();
     
     useEffect(()=>{
         const fetchUsers = async () =>{
@@ -24,16 +24,20 @@ const MyPageMenu = () =>{
             } catch (e){
 
                 setError(e);
+                console.log(e);
+           //     history.push('/login');
+
             }
             setLoading(false);
         };
         axios.post('/users/refresh').then(response => {
             console.log(response);
+            if(response.data.isSuccess){
             const  accessToken  = response.data.result.jwt;
-            console.log(accessToken);
-            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-            fetchUsers();    
+            }
+            fetchUsers();
+
         });
     },[]);
   
@@ -45,8 +49,9 @@ const MyPageMenu = () =>{
         axios.post('/users/logout').then(response => {
             console.log(response);
             alert("로그아웃 되었습니다.")
-            window.location.href=`/`;
-        });
+            history.push('/');
+            window.location.reload();
+            });
     }
     
     const adData = ad.data;
@@ -81,8 +86,11 @@ const MyPageMenu = () =>{
                 <h5>{data.point} P</h5>
             </th>
             <th>
+            <Link to={{pathname:`/mycoupon`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+
                 <h4>쿠폰</h4><br/>
                 <h5>{data.cntCoupon} 개</h5>
+                </Link>
             </th>
         </tr>
         </table>

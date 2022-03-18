@@ -25,40 +25,56 @@ const LoginMenu = ({history}) =>{
             "id" : id,
             "password" : pw
         };
+
         try{
 
-        axios.post('/users/login', data).then(response => {
-            console.log(response);
-            const  accessToken  = response.data.result.jwt;
-            console.log(accessToken);
-            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;    
-           
-                
-        const code = response.data.code;
-        if(code==2000 || code==3000 || code==3010){
-            setErr0("로그인에 실패했습니다.");
-        }
-        else if (code==2030){
-            setErr0("비밀번호가 틀렸습니다. 비밀번호를 다시 입력해주세요.");
-        }
-        else{
-            goBack();
-        }
-        
-        }).catch(error => {
+        axios.post('/users/login', data).then(
+        onLoginSuccess)
+        .catch(error => {
             setErr0("로그인에 실패했습니다.");
             console.log(error);
         })
-        ;
     }catch(e){
         console.log(e);
+    }}
+
+    const onSilentRefresh = () => {
+const response =         axios.post('/users/refresh');
+console.log(response);
+            onLoginSuccess(response);
     }
-}
+    
+    const onLoginSuccess = response => {
+     
+        console.log(response);
+
+                const  accessToken  = response.data.result.jwt;
+                const jwtValidity = response.data.result.jwtValidity;
+
+                
+                // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;    
+                setTimeout(onSilentRefresh, jwtValidity * 1000 - 60000);
+  // accessToken 만료하기 1분 전에 로그인 연장
+  
+                const code = response.data.code;
+                if(code==2000 || code==3000 || code==3010){
+                    setErr0("로그인에 실패했습니다.");
+                }
+                else if (code==2030){
+                    setErr0("비밀번호가 틀렸습니다. 비밀번호를 다시 입력해주세요.");
+                }
+                else{
+                    goBack();
+                }      
+
+
+      }
+      
     
     return(
    <S.Container>
-       <S.Form onSubmit={onLogin}>
+       <S.Form onSubmit={onLogin} >
         <S.LoginMenu>
         <h1>
         <S.InputBar

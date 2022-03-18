@@ -12,8 +12,7 @@ const StoreDetail = ({match}) =>{
     const [cost, setCost] =useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
-    //const [val, setVal] = useState([]);
-
+    const [coupon,setCoupon]=useState([]);
     const location = useLocation();
 
     useEffect(()=>{
@@ -24,11 +23,13 @@ const StoreDetail = ({match}) =>{
 
                  const response = await axios.get(`/stores/${idx}`);
                  const cost = await axios.get(`/price/${idx}/week_price`);
-
-                console.log(response.data);
+                 const coup = await axios.get(`/stores/coupons?storeIdx=${idx}`);
+                
+                 console.log(response.data);
                 console.log(cost.data);
                 setData(response.data.result);
                 setCost(cost.data.result);
+                setCoupon(coup.data.result);
 
             } catch (e){
                 console.log(e);
@@ -36,7 +37,13 @@ const StoreDetail = ({match}) =>{
             }
             setLoading(false);
         };
-        fetchData();
+        axios.post('/users/refresh').then(response => {
+            console.log(response);
+            const  accessToken  = response.data.result.jwt;
+            console.log(accessToken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+            fetchData();
+        });
     },[]);
 
     const history=useHistory();
@@ -57,8 +64,25 @@ const StoreDetail = ({match}) =>{
             <S.IconContainer>
             <S.ShareIcon/> <h3>공유</h3>
             </S.IconContainer>
-            <S.LineBorder />
             </S.StoreInfoTitle>
+            <S.LineBorder />
+            {coupon.map((c=>
+                  <S.CouponContainer 
+                  value={c.couponIdx}
+                  onClick={e=>{   axios.post(`/users/coupon?couponIdx=${c.couponIdx}`).then(response => {
+                    console.log(response);
+                    alert("쿠폰을 다운받았습니다");
+                    
+                });
+                  }}
+                  >  
+                  <h1><a>{c.couponPercentage}%</a> {c.couponName} 받기 </h1> | 
+                   <S.DownIcon/>
+              </S.CouponContainer>
+  
+                ))}
+          
+  
             <S.StoreInfo>
             <h4><S.PlaceIcon />{data.storeLocation}</h4>
             <h4><S.TimeIcon />영업 시간 - {data.storeTime}</h4>

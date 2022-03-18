@@ -1,13 +1,14 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 import * as S from './style';
+import { useHistory } from "react-router-dom";
 import ReservationStatus from "./ReservationStatus";
 import useInput from "../../../hooks/useInput";
 
 axios.defaults.withCredentials = true;
 
 const MyReserveDetail = ( {match} ) =>{
-
+    const history = useHistory();
     
     const idx = match.params.reservationIdx;
     const [data, setData] = useState([]);
@@ -39,14 +40,16 @@ const MyReserveDetail = ( {match} ) =>{
             }
             setLoading(false);
         };
-        axios.post('/users/refresh').then(response => {
-            // console.log(response);
-            const  accessToken  = response.data.result.jwt;
-            // console.log(accessToken);
-            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-            fetchUsers();    
-        });
+
+    axios.post('/users/refresh').then(response => {
+        console.log(response);
+        if(response.data.isSuccess){
+        const  accessToken  = response.data.result.jwt;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        }   
+      fetchUsers();
+    });
+        
     },[]);
   
     function onClickCancel(){

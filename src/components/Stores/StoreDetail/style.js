@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { IoCall,IoGolf } from "react-icons/io5";
 import {BsShareFill} from "react-icons/bs";
 import {MdPlace} from "react-icons/md";
-import { BiTime} from "react-icons/bi";
+import { BiTime,BiDownload} from "react-icons/bi";
 import {AiFillCreditCard} from "react-icons/ai";
 import {GiGolfTee} from "react-icons/gi";
 
@@ -82,6 +82,16 @@ export const ShareIcon = styled(BsShareFill)`
     height: 25px;
     padding: 6px;
     vertical-align:top;  
+`
+
+export const DownIcon = styled(BiDownload)`
+width: 23px;
+height: 23px;
+padding: 0px 0px 5px 13px;
+vertical-align:middle;  
+color: #434343;
+
+
 `
 export const StoreInfo=styled.div`
 padding:10px;
@@ -250,7 +260,28 @@ h1{
 
   
 `
+export const CouponContainer = styled.div`
+    width: 340px;
+    display:inline-block;
+    border-radius:10px;
+    border: 1.5px solid lightgrey;
+    height: 50px;
+    margin: 10px 0px 5px 0px;
+    text-align:left;
+    h1{
+    font-size: 16px;
+    font-weight: 600;
+    margin:0px;
+    padding:0px 0px 0px 20px;
+    line-height:50px;
+    display:inline-block;
+    width:258px;
+    }
+    a{
+        color:#22A8A5;
+    }
 
+`
 
 export const Container = styled.div`
     width:100%;
@@ -260,6 +291,7 @@ export const Container = styled.div`
 export const StoreContainer = styled.div`
     display: block;     
     padding: 0px;
+
     border-bottom: 1px solid lightgrey;   
     img{
         height:240px;

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback,useRef } from "react";
 import axios from "axios";
 import * as S from './style';
-import { Link } from "react-router-dom";
+import { Link , useHistory} from "react-router-dom";
 import ReservationStatus from './ReservationStatus.js'
 
 const MyReserve = () =>{
@@ -14,7 +14,15 @@ const MyReserve = () =>{
     const [page, setPage]=useState(1);
     const [ifDone, setIfDone]=useState(false);
 
-    const fetchReserves = useCallback(async () =>{
+
+    const history = useHistory();
+    
+      
+
+
+useEffect(() => {
+   
+    const fetchReserves = async () =>{
         try {
             setError(null);
             setLoading(true);    
@@ -23,27 +31,33 @@ const MyReserve = () =>{
 
             //로드 성공시
             if(response.data.code==1000){
-                setData((prev)=>[...prev,...response.data.result]);
-            }
+            setData((prev)=>[...prev,...response.data.result]);
 
+            }
             // 더이상 로드할 데이터가 없을시 
             else
              setIfDone(true);
-
-
         } catch (e){
             setError(e);
+            console.log(e);
         }
-        setLoading(false);
-    }
-,[page]);
+        setLoading(false);   
+    };
 
-useEffect(() => {
-    if(ifDone==false)
-        fetchReserves();
-        
     console.log(page); //스크롤 페이징 확인
-}, [page]);
+
+    axios.post('/users/refresh').then(response => {
+        console.log(response);
+        if(response.data.isSuccess){
+        const  accessToken  = response.data.result.jwt;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        }   
+
+      if(ifDone==false)
+             fetchReserves();
+    });
+        
+}, [ ,page]);
 
 
 //무한스크롤 페이징
@@ -59,22 +73,26 @@ useEffect(() => {
         );
           
         useEffect(() => {
+          
+            
             const currentElement = lastElement;
             const currentObserver = observer.current;
     
             if (currentElement) {
                 currentObserver.observe(currentElement);
             }
+            
     
             return () => {
                 if (currentElement) {
                     currentObserver.unobserve(currentElement);
                 }
             };
+            
         }, [lastElement]);
-        
 
-          
+
+        
     
     if(loading) console.log("loading");
     if(error) console.log("error");
@@ -94,12 +112,26 @@ useEffect(() => {
             <h3>{d.personCount}명 &nbsp; |  &nbsp; {d.selectHall}홀 &nbsp; |  &nbsp; {d.useTime}분</h3>
             </S.TextWrapper>
             <S.DetailLinkIcon />
+
         {d.alreadyUsed === true && d.refundStatus === "미환불"? 
         <S.ButtonContainer>
+         {d.score ?  
+         
+         <S.ReviewButton>평점 ★ {d.score} </S.ReviewButton>
+
+        :(
                         <Link to={`/review/${d.reservationIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
         <S.ReviewButton>평점 주기</S.ReviewButton>
-        </Link>
-            <S.ReviewButton>재예약 하기</S.ReviewButton></S.ButtonContainer>:null} 
+        </Link>)}
+        
+
+        <Link to={`/stores/${d.storeIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
+
+            <S.ReviewButton>재예약 하기</S.ReviewButton>
+            </Link>
+
+            </S.ButtonContainer>} 
+</S.ButtonContainer>:null} 
             </S.ReserveContainer>
 
         </Link>
