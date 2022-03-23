@@ -22,33 +22,19 @@ const history=useHistory();
                 const response = await axios.get("users/mypage");
                 setData(response.data.result);
             } catch (e){
-
-                setError(e);
+               setError(e);
                 console.log(e);
-           //     history.push('/login');
-
             }
             setLoading(false);
         };
-        axios.post('/users/refresh').then(response => {
-            console.log(response);
-            if(response.data.isSuccess){
-            const  accessToken  = response.data.result.jwt;
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-            }
-            fetchUsers();
-
-        });
+        fetchUsers();
     },[]);
-  
-    if(loading) console.log("loading");
-    if(error) console.log("error");
     if(!data) return null;
 
     const logout = () =>{
         axios.post('/users/logout').then(response => {
             console.log(response);
-            alert("로그아웃 되었습니다.")
+            alert("로그아웃 되었습니다.");
             history.push('/');
             window.location.reload();
             });
