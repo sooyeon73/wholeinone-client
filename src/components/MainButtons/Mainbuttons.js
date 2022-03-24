@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import * as BiIcons from 'react-icons/bi';
 import { IconContext } from 'react-icons';
@@ -21,7 +21,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { grey } from '@mui/material/colors';
-import { TextField } from '@mui/material';
+import { getListSubheaderUtilityClass, TextField } from '@mui/material';
 
 import { withStyles } from '@mui/styles';
 
@@ -33,10 +33,13 @@ import MomentUtils from "@date-io/moment";
 import { Global } from '@emotion/react';
 import DatePicker from "react-horizontal-datepicker";
 
+import axios from "axios";
+
 import jquery from 'jquery';
 import $ from 'jquery';
+import { render } from '@testing-library/react';
 
-const data = dummy.data;
+//const data = dummy.data;
 
 const CURRENT_THEME = {
     background: "#1B262C",
@@ -296,11 +299,17 @@ function valuetext(value) {
     return `${value}°C`;
   }
 
+  let loccode=1;
+
 function Mainbuttons(props, props_option, props_lists) {
 
     const { window } = props;
     const { window_option } = props_option;
     const window_lists = props_lists;
+
+    const [data, setData] = useState([]);
+    const [loading, setLoading ]=useState(false);
+    const [error, setError] = useState(null);
 
     const [open, setOpen] = React.useState(false);
     const [open_option, setOpen_option] = React.useState(false);
@@ -310,12 +319,55 @@ function Mainbuttons(props, props_option, props_lists) {
       setOpen(newOpen);
     };
     const toggleDrawer_option_filter = (newOpen) => () => {
+      fetchBrands();
       setOpen_option(newOpen);
     };
     const toggleDrawer_lists = (newOpen) => () => {
       setOpen_lists(newOpen);
+      getlist();
     };
-  
+
+    const [list, setLists] = useState([]);
+    
+    let listdata = null;
+    const location = useLocation();
+    function getlist(){
+      listdata = location.state.listdata;
+      setLists(listdata);
+      //history.push()
+      //console.log("Mainbuttons의 listdata: ");
+      //console.log(listdata);
+      //console.log("LIST");
+      //console.log(list);
+      drawlists();
+    }
+
+    const drawlists = () =>{
+      try{
+        console.log(listdata);
+        listdata.map((item)=>{
+          //console.log(item);
+          return(
+            <S.StoreContainer>
+              <img src={item.storeImage} alt="storeimg"/>
+              <S.TextWrapper>
+                {item.reserveStatus === true ?  <h4>당일 예약</h4>: null}
+                {item.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+                <h1>{item.storeName}</h1>
+                <h2>{item.storeType}</h2>
+              </S.TextWrapper>
+              <br/>
+              <br/><br/><br/><br/><br/>
+            </S.StoreContainer>
+          );
+        });
+      }catch(e){
+        console.log(e);
+      }
+      //console.log(d[0]);
+
+    }
+
   
     const container = window !== undefined ? () => window().document.body : undefined;
     const container_option = window_option !== undefined ? () => window_option().document.body : undefined;
@@ -384,6 +436,7 @@ function Mainbuttons(props, props_option, props_lists) {
     };
 
     const history = useHistory();
+ 
     const [myDate, setmyDate] = useState(new Date());
     const [bChecked, setChecked] = useState(false);
 
@@ -394,6 +447,8 @@ function Mainbuttons(props, props_option, props_lists) {
 
     const [faciChecked, setfaciChecked] = useState(false);
     const [distanceChecked, setdistanceChecked] = useState(false);
+
+    const [ordervalue, setorderValue] = useState("distance");
 
     const handlebrandChange = e => {
       let isChecked = e.target.checked;
@@ -425,7 +480,25 @@ function Mainbuttons(props, props_option, props_lists) {
       }
       console.log(faciarr);
     }
-    
+
+    const fetchBrands = useCallback(async () =>{
+      console.log("fb");
+      try {
+          setError(null);
+          setLoading(true);    
+          //setData([]);
+          //console.log("브랜드 패치");
+          const response = await axios.get(`stores/brand`);
+          //console.log("브랜드 패치2");
+          setData(response.data.result);
+          //console.log(data);
+      } catch (e){
+          setError(e);
+          console.log(e);
+      }
+      //console.log(data);
+      setLoading(false);
+    });
     return (
         <>
             <S.Container>
@@ -438,7 +511,10 @@ function Mainbuttons(props, props_option, props_lists) {
                         <BiIcons.BiTimeFive className='time_icon'/>
                     </div>
 
-                    <div className='btn_bottom_list_view' onClick={toggleDrawer_lists(true)}>
+                    <div className='btn_bottom_list_view' onClick={
+                      toggleDrawer_lists(true)
+                      //listdata = location.state.listdata
+                    }>
                         <FaIcons.FaBars className='list_drawer_icon'/>
                         <span className='list_drawer_title'>목록 보기</span>
                     </div>
@@ -448,7 +524,7 @@ function Mainbuttons(props, props_option, props_lists) {
                             <Global
                                 styles={{
                                 '.MuiPaper-root': {
-                                    height: `calc(50% - ${drawerBleeding_option}px)`,
+                                    height: `calc(100% - ${drawerBleeding_option}px)`,
                                     overflow: 'visible',
                                     borderTopLeftRadius: 24,
                                     borderTopRightRadius: 24,
@@ -502,15 +578,15 @@ function Mainbuttons(props, props_option, props_lists) {
                                 </div>  
                                 <h3>브랜드</h3>
                             </div>
-                            <div className='filter_menu_buttons'>
-                                <input type="radio" id="brand_checkbox1" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(1)}/><label for="brand_checkbox1">골프존</label>
-                                <input type="radio" id="brand_checkbox2" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(2)}/><label for="brand_checkbox2">골프존파크</label>
-                                <input type="radio" id="brand_checkbox3" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(3)}/><label for="brand_checkbox3">레드골프</label>
-                                <input type="radio" id="brand_checkbox4" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(4)}/><label for="brand_checkbox4">시티존</label>
-                                <input type="radio" id="brand_checkbox5" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(5)}/><label for="brand_checkbox5">오케이온</label>
-                                <input type="radio" id="brand_checkbox6" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(6)}/><label for="brand_checkbox6">SG골프</label>
-                                <input type="radio" id="brand_checkbox7" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(7)}/><label for="brand_checkbox7">프렌즈스크린T</label>
-                                <input type="radio" id="brand_checkbox8" name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(8)}/><label for="brand_checkbox8">프렌즈스크린G</label>
+                            <div className='filter_menu_buttons' height="800px">
+                                {data && data.map(d=>{
+                                  let brandid = "brand_checkbox"+d.brandIdx;
+                                  return(
+                                    <>
+                                    <input type="radio" id={brandid} name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(d.brandIdx)}/><label for={brandid}>{d.brandName}</label>
+                                    </>    
+                                  )
+                                })}
                             </div>
                             </StyledBox_option>
                             <StyledBox_option
@@ -566,7 +642,6 @@ function Mainbuttons(props, props_option, props_lists) {
                                             value={disvalue}
                                             aria-label="distance"
                                             defaultValue={0}
-                                            //getAriaValueText={valuetext}
                                             scale={calculateValue}
                                             valueLabelDisplay="auto"
                                             getAriaValueText={valueLabelFormat}
@@ -606,7 +681,9 @@ function Mainbuttons(props, props_option, props_lists) {
                                         facivalue: faciarr,
 
                                         discheck: distanceChecked,
-                                        disvalue: calculateValue(disvalue)
+                                        disvalue: calculateValue(disvalue),
+
+                                        loccode: 0
                                             }})
                                     }}>필터 적용</span>
                                 </div>
@@ -692,8 +769,8 @@ function Mainbuttons(props, props_option, props_lists) {
                             >
                                 <div className='time_filter_select_time'>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <Stack>
-                                        </Stack>
+                                      <Stack>
+                                      </Stack>
                                     </LocalizationProvider>
                                     <ThemeProvider theme={materialTheme}>
                                         <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -792,9 +869,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                 }}
                             >
                             <div className='lists_menu_buttons'>
-                                <input type="radio" id="lists_distance" name="asc_desc"/><label for="lists_distance">가까운순</label>
-                                <input type="radio" id="lists_lowercost" name="asc_desc"/><label for="lists_lowercost">낮은가격순</label>
-                                <input type="radio" id="lists_popular" name="asc_desc"/><label for="lists_popular">인기순</label>
+                                <input type="radio" id="lists_distance" name="asc_desc" checked={ordervalue==="distance"} onChange={e=>setorderValue("distance")}/><label for="lists_distance">가까운순</label>
+                                <input type="radio" id="lists_lowercost" name="asc_desc" checked={ordervalue==="ratings"} onChange={e=>setorderValue("ratings")}/><label for="lists_lowercost">별점순</label>
                             </div>
                             </StyledBox_lists>
                             <StyledBox_lists
@@ -807,18 +883,36 @@ function Mainbuttons(props, props_option, props_lists) {
                               overflow: 'auto',
                             }}
                             >
-                              {data.map(d=>(
-                              <S.StoreContainer>
-                                <img src={d.storeImage} alt="storeimg"/>
-                                <S.TextWrapper>
-                                  {d.reserveStatus === true ?  <h4>당일 예약</h4>: null}
-                                  {d.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
-                                  <h1>{d.storeName}</h1>
-                                  <h2>{d.storeType}</h2>
-                                  <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>
+                              
+                              {console.log("메인버튼 그리는곳")}
+                              {list && list.sort(function(a,b){
+                                if(ordervalue=="distance"){
+                                  return a.distanceFromUser < b.distanceFromUser ? -1: a.distanceFromUser > b.distanceFromUser ? 1:0;
+                                }else if(ordervalue=="ratings"){    
+                                  return a.reviewStar > b.reviewStar ? -1: a.reviewStar < b.reviewStar ? 1:0;
+                                }
+                              }) && list.map(d=>{
+                                //console.log(d);
+                                return(
+                                  <S.StoreContainer onClick={()=>{history.push({
+                                    pathname: `/stores/${d.storeIdx}`,
+                                    state: {data: d}})}}>
+                                  <img src={d.storeImage} alt="storeimg"/>
+                                  <S.TextWrapper>
+                                    {d.reserveStatus === true ?  <h4>당일 예약</h4>: null}
+                                    {d.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+                                    <h1>{d.storeName}</h1>
+                                    <h2>{d.storeBrand}</h2>
+                                    <h2>★{d.reviewStar}</h2>
+                                    <h2>{d.distanceFromUser}km</h2>
+                                    {/*
+                                    <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>
+                                    */}
                                   </S.TextWrapper>
-                                  </S.StoreContainer>
-                                  ))}
+                                </S.StoreContainer> 
+                                );
+                              })}
+
                                   </StyledBox_lists>
                                   </SwipeableDrawer>
                     </Root_lists>
