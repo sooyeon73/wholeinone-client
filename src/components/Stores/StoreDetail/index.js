@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {useHistory, useLocation} from "react-router";
 import * as S from "./style";
 import axios from "axios";
+import ImageSlide from "../ImageSlide";
 import { Link } from "react-router-dom";
 
 const StoreDetail = ({match}) =>{
@@ -13,6 +14,7 @@ const StoreDetail = ({match}) =>{
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
     const [coupon,setCoupon]=useState([]);
+    const [images, setImages]=useState([]);
     const location = useLocation();
 
     useEffect(()=>{
@@ -24,12 +26,13 @@ const StoreDetail = ({match}) =>{
                  const response = await axios.get(`/stores/${idx}`);
                  const cost = await axios.get(`/price/${idx}/week_price`);
                  const coup = await axios.get(`/stores/coupons?storeIdx=${idx}`);
-                
-                 console.log(response.data);
+                 const img = await axios.get(`/stores/images/${idx}`);
                 console.log(cost.data);
                 setData(response.data.result);
                 setCost(cost.data.result);
                 setCoupon(coup.data.result);
+                console.log(img.data.result);
+                setImages(img.data.result);
 
             } catch (e){
                 console.log(e);
@@ -37,13 +40,8 @@ const StoreDetail = ({match}) =>{
             }
             setLoading(false);
         };
-        axios.post('/users/refresh').then(response => {
-            console.log(response);
-            const  accessToken  = response.data.result.jwt;
-            console.log(accessToken);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             fetchData();
-        });
+    
     },[]);
 
     const history=useHistory();
@@ -51,7 +49,7 @@ const StoreDetail = ({match}) =>{
     return(
    <S.Container>
         <S.StoreContainer>
-           <img src={data.storeImage} alt="storeimg"/>
+            <ImageSlide images={images} main={data.storeImage} />
             <S.StoreInfoTitle>
             <h1>{data.storeName}</h1>
          
