@@ -327,10 +327,16 @@ function Mainbuttons(props, props_option, props_lists) {
       getlist();
     };
 
+    
     const [list, setLists] = useState([]);
+    const [marker, setMarker] = useState([]);
     
     let listdata = null;
+    let markerdata = null;
+    
+    const history = useHistory();
     const location = useLocation();
+    const savelocation = location;
     function getlist(){
       listdata = location.state.listdata;
       setLists(listdata);
@@ -341,6 +347,7 @@ function Mainbuttons(props, props_option, props_lists) {
       //console.log(list);
       drawlists();
     }
+
 
     const drawlists = () =>{
       try{
@@ -434,8 +441,6 @@ function Mainbuttons(props, props_option, props_lists) {
           document.getElementById("tee-up_time").innerHTML=time;
         }
     };
-
-    const history = useHistory();
  
     const [myDate, setmyDate] = useState(new Date());
     const [bChecked, setChecked] = useState(false);
@@ -499,6 +504,7 @@ function Mainbuttons(props, props_option, props_lists) {
       //console.log(data);
       setLoading(false);
     });
+
     return (
         <>
             <S.Container>
@@ -920,6 +926,7 @@ function Mainbuttons(props, props_option, props_lists) {
                 <div className={timefilter? 'nav-mask1 active' : 'nav-mask1'} onClick={showTimefilter}></div>
                 <div className={filter? 'nav-mask2 active' : 'nav-mask2'} onClick={showfilter}></div>
                 <div className={lists? 'nav-mask2 active' : 'nav-mask2'} onClick={showlists}></div>
+                {/*<div classname={marker? 'markerdiv active' : 'markerdiv'} onClick={}></div>*/}
             </S.Container>
         </>
     );
