@@ -34,6 +34,9 @@ let loccode=0;
 let mainbuttonloc=null;
 let listdata=null;
 
+let mkmk=null;
+let mkdisplay=false;
+
 const GeoLocationAPI = ({}) => {
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLogitude] = useState(null);
@@ -301,6 +304,7 @@ const GeoLocationAPI = ({}) => {
               history.replace({
                 pathname: "/",
                 state:{
+                  //marker: mk,
                   listdata: listdata,
 
                   brandcheck : nowbrandch,
@@ -327,6 +331,10 @@ const GeoLocationAPI = ({}) => {
     setLoading(false);
       },[]);
   
+  function clicklistener(e){
+    console.log("클릭 리스너");
+    mkdisplay=false;
+  }
   function draglistener(e){
     console.log("네이버 map 드래그 리스너");
     loccode=0;
@@ -362,11 +370,13 @@ const GeoLocationAPI = ({}) => {
     loccode=0;
   }
   function makediv(mk){
-    console.log("만들자");
     return(
-      <S.Briefinfo>
-        <h1>asdf</h1>
-      </S.Briefinfo>
+        <S.Briefinfo className='markerclickdiv'>
+          <h1>asdf</h1>
+          <h1>asdf</h1>
+          <h1>{mk.storeName}</h1>
+          {console.log(mk.storeName)}
+        </S.Briefinfo>
     )
   }
   function drawMarkers(mk){
@@ -376,9 +386,27 @@ const GeoLocationAPI = ({}) => {
         key={mk.storeIdx}
         position={new navermaps.LatLng(mk.storeLatitude, mk.storeLongitude)}
         animation={0}
-        onClick={() => {
-          makediv(mk);
+        onClick={()=>{
           naverMapRef.panTo(pos);
+          mkmk=mk;
+          mkdisplay=true;
+          //makediv(mk);
+          history.replace({
+            pathname: "/",
+            state:{
+              marker: mk,
+              listdata: listdata,
+
+              brandcheck : nowbrandch,
+              brandvalue : nowbrandvu,
+            
+              facicheck : nowfacich,
+              facivalue : nowfacivu,
+            
+              discheck : nowdisch,
+              disvalue : nowdisvu,
+            }
+          })
         }}
         />
     );
@@ -390,6 +418,7 @@ const GeoLocationAPI = ({}) => {
     }}>
     <NaverMap
       mapDivId={"react-naver-map"}
+      onClick={clicklistener}
       onDragend={draglistener}
       onDragstart={dragstartlistener}
       onBoundsChanged={handleBoundsChanged}
@@ -414,7 +443,8 @@ const GeoLocationAPI = ({}) => {
   );
 }
 
-const Main = ( {history} ) => { 
+const Main = () => { 
+  const history = useHistory();
   return (
     <>
       <RenderAfterNavermapsLoaded
@@ -428,6 +458,27 @@ const Main = ( {history} ) => {
       <Burger/>
       <GeoLocationAPI/>
       <Mainbuttons/>
+      <S.MarkClickConatiner>
+      {mkmk!=null && mkdisplay &&
+        <S.StoreContainer onClick={()=>{history.push({
+          pathname: `/stores/${mkmk.storeIdx}`,
+          state: {data: mkmk}})}}>
+            {console.log("ㅁㄴㅇㄹ")}
+        <img src={mkmk.storeImage} alt="storeimg"/>
+        <S.TextWrapper>
+          {mkmk.reserveStatus === true ?  <h4>당일 예약</h4>: null}
+          {mkmk.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+          <h1>{mkmk.storeName}</h1>
+          <h2>{mkmk.storeBrand}</h2>
+          <h2>★{mkmk.reviewStar}</h2>
+          <h2>{mkmk.distanceFromUser}km</h2>
+          {/*
+          <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>
+          */}
+        </S.TextWrapper>
+      </S.StoreContainer> 
+        }
+      </S.MarkClickConatiner>
     </S.Container>
     </>
   //Main  
