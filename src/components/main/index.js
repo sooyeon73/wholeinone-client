@@ -279,7 +279,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         아무것도체크안함");
               const response = await axios.get(`stores/map?storeName=&userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1`);
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -289,18 +289,18 @@ const GeoLocationAPI = ({}) => {
         //console.log("DATA: "+data);
         //console.log("체크밸류 종료");
         let tomainbtns = () =>{
-          console.log("tomainbtns!");
+          //console.log("tomainbtns!");
           //console.log(listdata);
           if(listdata==undefined){
-            console.log("리스트데이터 undefined");
+            //console.log("리스트데이터 undefined");
           }else{
-            console.log("리스트데이터 값 존재");
+            //console.log("리스트데이터 값 존재");
             //history.replace('/');
             //console.log(listdata);
             //console.log(loccode);
             if(!loccode){
               loccode=1;
-              console.log("MAP ---> Mainbtns");
+              //console.log("MAP ---> Mainbtns");
               history.replace({
                 pathname: "/",
                 state:{
@@ -359,13 +359,14 @@ const GeoLocationAPI = ({}) => {
     console.log("naver map Idle event!!");
     bounds=naverMapRef.getCenter();
     setBounds(naverMapRef.getCenter());
-    console.log("현재 지도의 중심 위도: "+bounds._lat); // 지도의 중심 위도
-    console.log("현재 지도의 중심 경도: "+bounds._lng); // 지도의 중심 경도
+    //console.log("현재 지도의 중심 위도: "+bounds._lat); // 지도의 중심 위도
+    //console.log("현재 지도의 중심 경도: "+bounds._lng); // 지도의 중심 경도
     setCenter({lat: bounds._lat, lng: bounds._lng});
     nowlati=bounds._lat;
     nowlong=bounds._lng;
-    console.log("now lati: "+nowlati);
-    console.log("now long: "+nowlong);
+    //console.log("now lati: "+nowlati);
+    //console.log("now long: "+nowlong);
+    //console.log(mkdisplay);
     onChange();
     loccode=0;
   }
@@ -445,25 +446,18 @@ const GeoLocationAPI = ({}) => {
 
 const Main = () => { 
   const history = useHistory();
-  return (
-    <>
-      <RenderAfterNavermapsLoaded
-          ncpClientId={'m3c5d30dn7'}
-          error={<p>Maps Load Error</p>}
-          loading={<p>Maps Loading...</p>}
-          >
-            <NaverMapComponent />
-      </RenderAfterNavermapsLoaded>
-    <S.Container>
-      <Burger/>
-      <GeoLocationAPI/>
-      <Mainbuttons/>
+  if(mkdisplay==false){
+    makeclickdiv();
+  }
+  //console.log("메인메인");
+  console.log(mkdisplay);
+  function makeclickdiv(){
+    return(
       <S.MarkClickConatiner>
       {mkmk!=null && mkdisplay &&
         <S.StoreContainer onClick={()=>{history.push({
           pathname: `/stores/${mkmk.storeIdx}`,
           state: {data: mkmk}})}}>
-            {console.log("ㅁㄴㅇㄹ")}
         <img src={mkmk.storeImage} alt="storeimg"/>
         <S.TextWrapper>
           {mkmk.reserveStatus === true ?  <h4>당일 예약</h4>: null}
@@ -479,6 +473,22 @@ const Main = () => {
       </S.StoreContainer> 
         }
       </S.MarkClickConatiner>
+    )
+  }
+  return (
+    <>
+      <RenderAfterNavermapsLoaded
+          ncpClientId={'m3c5d30dn7'}
+          error={<p>Maps Load Error</p>}
+          loading={<p>Maps Loading...</p>}
+          >
+            <NaverMapComponent />
+      </RenderAfterNavermapsLoaded>
+    <S.Container>
+      <Burger/>
+      <GeoLocationAPI/>
+      <Mainbuttons/>
+      {makeclickdiv()}
     </S.Container>
     </>
   //Main  

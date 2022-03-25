@@ -889,8 +889,6 @@ function Mainbuttons(props, props_option, props_lists) {
                               overflow: 'auto',
                             }}
                             >
-                              
-                              {console.log("메인버튼 그리는곳")}
                               {list && list.sort(function(a,b){
                                 if(ordervalue=="distance"){
                                   return a.distanceFromUser < b.distanceFromUser ? -1: a.distanceFromUser > b.distanceFromUser ? 1:0;
