@@ -268,14 +268,28 @@
     background-color: #CACACA;
 }
 
-.filter_brand_off{
+.filter_brand_off input[type="checkbox"] {
+    display:none;
+}
+
+
+.filter_brand_off input[type="checkbox"] + label{
     float: left;
     width: 28px;
     height: 28px;
     border-radius: 14px;
     margin-right: 1rem;
     margin-left: 0.5rem;
+    padding-left: 0.5rem;
+    padding-top: 0.1rem;
     background-color: #CACACA;
+    color: #FFFFFF;
+}
+
+.filter_brand_off input[type="checkbox"]:checked + label{
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color: #22A8A5; color: white; border-color:#22A8A5;
 }
 
 .check_icon{
@@ -290,11 +304,11 @@ label{
     vertical-align: middle;
 }
 
-input[type="checkbox"] {
+.filter_menu_buttons input[type="checkbox"] {
     display: none;
 }
 
-input[type="checkbox"] + label {
+.filter_menu_buttons input[type="checkbox"] + label {
     -webkit-transition: all 500ms ease;
     transition: all 500ms ease;
     font-size: 14px;
@@ -319,7 +333,89 @@ input[type="checkbox"] + label {
     font-weight: bold;
 }
   
-input[type="checkbox"]:checked + label {
+.filter_menu_buttons input[type="checkbox"]:checked + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color: #22A8A5; color: white; border-color:#22A8A5;
+}
+
+.filter_menu_buttons input[type="checkbox"]:disabled + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color: #CACACA; color: white; border-color:#CACACA;
+}
+
+.filter_menu_buttons input[type="radio"] {
+    display: none;
+}
+
+.filter_menu_buttons input[type="radio"] + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 35px;
+    background-color: #fff;
+    border:solid 2px #CACACA;
+    height: 30px;
+    display: inline-block;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #CACACA;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    vertical-align: middle;
+    font-weight: bold;
+}
+  
+.filter_menu_buttons input[type="radio"]:checked + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color: #22A8A5; color: white; border-color:#22A8A5;
+}
+
+.filter_menu_buttons input[type="radio"]:disabled + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color: #CACACA; color: white; border-color:#CACACA;
+}
+
+.lists_menu_buttons input[type="radio"] {
+    display: none;
+}
+
+.lists_menu_buttons input[type="radio"] + label {
+    -webkit-transition: all 500ms ease;
+    transition: all 500ms ease;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 35px;
+    background-color: #fff;
+    border:solid 2px #CACACA;
+    height: 30px;
+    display: inline-block;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #CACACA;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    vertical-align: middle;
+    font-weight: bold;
+}
+  
+.lists_menu_buttons input[type="radio"]:checked + label {
     -webkit-transition: all 500ms ease;
     transition: all 500ms ease;
     background-color: #22A8A5; color: white; border-color:#22A8A5;
