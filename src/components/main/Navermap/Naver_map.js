@@ -21,7 +21,8 @@ function Naver_maps({open}) {
             id="react-naver-maps-introduction"
             style={{ width: '100%', height: '100vh' }}
             center={{ lat: 37.497175, lng: 127.027926 }}
-          ></NaverMap>
+          >
+          </NaverMap>
         </RenderAfterNavermapsLoaded>
       </S.Container>
     );

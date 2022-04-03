@@ -65,29 +65,26 @@ console.log(data);
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' isExpanded={false}>
-            <li className='navbar-toggle'>
-            </li>
-
-            { data.length!=0 ?
-            (
+            <li className='navbar-toggle'></li>
+            {axios.defaults.headers.common['Authorization'] ? (
               data.map(d=>(
-                d?
                 <S.ImageWrapper>
                   <img src={d.userImage}/>
                   <S.TextWrapper>
                     <h1>{d.nickName}</h1>
                   </S.TextWrapper>
-                </S.ImageWrapper>  :null
-            ))):
-            (<S.ImageWrapper>
-              <img  src={"https://via.placeholder.com/65"}/>
-              <S.TextWrapper>
-              <h1>            <Link to={{pathname:`/login`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
-로그인하기</Link> </h1>
-              </S.TextWrapper>
-            </S.ImageWrapper>  )
-           }
-            {BurgerData.map((item, index) => {
+                </S.ImageWrapper>  
+              ))) : (
+                <S.ImageWrapper>
+                  <img  src={"https://via.placeholder.com/65"}/>
+                  <S.TextWrapper>
+                    <h1>
+                      <Link to={{pathname:`/login`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>로그인하기</Link>
+                    </h1>
+                  </S.TextWrapper>
+                </S.ImageWrapper> 
+            )}
+            {BurgerData.map((item) => {
               return (
                 <li key={item.id} className={item.cName} onClick={showSidebar}>
                   <Link to={item.path}>
