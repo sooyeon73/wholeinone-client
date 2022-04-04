@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import * as BiIcons from 'react-icons/bi';
 import { IconContext } from 'react-icons';
@@ -20,7 +21,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { grey } from '@mui/material/colors';
-import { TextField } from '@mui/material';
+import { getListSubheaderUtilityClass, TextField } from '@mui/material';
 
 import { withStyles } from '@mui/styles';
 
@@ -32,10 +33,13 @@ import MomentUtils from "@date-io/moment";
 import { Global } from '@emotion/react';
 import DatePicker from "react-horizontal-datepicker";
 
+import axios from "axios";
+
 import jquery from 'jquery';
 import $ from 'jquery';
+import { render } from '@testing-library/react';
 
-const data = dummy.data;
+//const data = dummy.data;
 
 const CURRENT_THEME = {
     background: "#1B262C",
@@ -265,8 +269,8 @@ const marks = [
     {value: 1,label: '1km',},
     {value: 2,label: '2km',},
     {value: 3,label: '4km',},
-    {value: 4,label: '6km',},
-    {value: 5,label: '8km',},
+    {value: 4,label: '8km',},
+    {value: 5,label: '16km',},
 ];
 
 function valueLabelFormat(value) {
@@ -275,32 +279,37 @@ function valueLabelFormat(value) {
     let unitIndex = 0;
     let scaledValue = value;
   
-    while (scaledValue > 0 && unitIndex < 1) {
+    while (scaledValue >= 1 && unitIndex < units.length - 1) {
       unitIndex += 1;
-      if(scaledValue>=3){scaledValue+=1;}
-      if(scaledValue>=5){scaledValue+=1;}
-      if(scaledValue>=7){scaledValue+=1;}
     }
   
-    if(unitIndex==0){
-        return `${units[unitIndex]}`;
+    if(unitIndex == 0){
+      return `${units[unitIndex]}`;
     }
     else return `${scaledValue} ${units[unitIndex]}`;
 }
 
 function calculateValue(value) {
-    return value;
+  if(value>1) return 2 ** value / 2;
+  else if(value==1) return value;
+  else return value;
 }
 
 function valuetext(value) {
     return `${value}°C`;
   }
 
+  let loccode=1;
+
 function Mainbuttons(props, props_option, props_lists) {
 
     const { window } = props;
     const { window_option } = props_option;
     const window_lists = props_lists;
+
+    const [data, setData] = useState([]);
+    const [loading, setLoading ]=useState(false);
+    const [error, setError] = useState(null);
 
     const [open, setOpen] = React.useState(false);
     const [open_option, setOpen_option] = React.useState(false);
@@ -310,12 +319,62 @@ function Mainbuttons(props, props_option, props_lists) {
       setOpen(newOpen);
     };
     const toggleDrawer_option_filter = (newOpen) => () => {
+      fetchBrands();
       setOpen_option(newOpen);
     };
     const toggleDrawer_lists = (newOpen) => () => {
       setOpen_lists(newOpen);
+      getlist();
     };
-  
+
+    
+    const [list, setLists] = useState([]);
+    const [marker, setMarker] = useState([]);
+    
+    let listdata = null;
+    let markerdata = null;
+    
+    const history = useHistory();
+    const location = useLocation();
+    const savelocation = location;
+    function getlist(){
+      listdata = location.state.listdata;
+      setLists(listdata);
+      //history.push()
+      //console.log("Mainbuttons의 listdata: ");
+      //console.log(listdata);
+      //console.log("LIST");
+      //console.log(list);
+      drawlists();
+    }
+
+
+    const drawlists = () =>{
+      try{
+        console.log(listdata);
+        listdata.map((item)=>{
+          //console.log(item);
+          return(
+            <S.StoreContainer>
+              <img src={item.storeImage} alt="storeimg"/>
+              <S.TextWrapper>
+                {item.reserveStatus === true ?  <h4>당일 예약</h4>: null}
+                {item.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+                <h1>{item.storeName}</h1>
+                <h2>{item.storeType}</h2>
+              </S.TextWrapper>
+              <br/>
+              <br/><br/><br/><br/><br/>
+            </S.StoreContainer>
+          );
+        });
+      }catch(e){
+        console.log(e);
+      }
+      //console.log(d[0]);
+
+    }
+
   
     const container = window !== undefined ? () => window().document.body : undefined;
     const container_option = window_option !== undefined ? () => window_option().document.body : undefined;
@@ -330,11 +389,13 @@ function Mainbuttons(props, props_option, props_lists) {
     const [lists, setlists] = useState(false);
     const showlists = () => setlists(!lists);
 
-    const [value, setValue] = React.useState(10);
+    const [disvalue, setdisValue] = React.useState(4);
 
-    const handleChange = (event, newValue) => {
+    const handledisChange = (event, newValue) => {
+      console.log("거리: "+newValue);
         if (typeof newValue === 'number') {
-            setValue(newValue);
+            setdisValue(newValue);
+            //console.log("거리: "+newValue + "  "+calculateValue(newValue));
         }
     };
 
@@ -380,8 +441,69 @@ function Mainbuttons(props, props_option, props_lists) {
           document.getElementById("tee-up_time").innerHTML=time;
         }
     };
-
+ 
     const [myDate, setmyDate] = useState(new Date());
+    const [bChecked, setChecked] = useState(false);
+
+    const faciarr = [0,0,0,0,0,0];
+
+    const [brandChecked, setbrandChecked] = useState(false);
+    const [brandvalue, setbrandValue] = useState(1);
+
+    const [faciChecked, setfaciChecked] = useState(false);
+    const [distanceChecked, setdistanceChecked] = useState(false);
+
+    const [ordervalue, setorderValue] = useState("distance");
+
+    const handlebrandChange = e => {
+      let isChecked = e.target.checked;
+      console.log("브랜드 체크? : " + isChecked);
+      setbrandChecked(isChecked);
+      // do whatever you want with isChecked value
+    }
+
+    const handlefaciChange = e => {
+      let isChecked = e.target.checked;
+      console.log("시설 체크? : " + isChecked);
+      setfaciChecked(isChecked);
+      // do whatever you want with isChecked value
+    }
+
+    const handledistanceChange = e => {
+      let isChecked = e.target.checked;
+      console.log("거리 체크? : " + isChecked);
+      setdistanceChecked(isChecked);
+      // do whatever you want with isChecked value
+    }
+
+    const faciarray = idx => {
+      console.log(idx);
+      if(faciarr[idx]){
+        faciarr[idx] = 0;
+      } else{
+        faciarr[idx] = 1;
+      }
+      console.log(faciarr);
+    }
+
+    const fetchBrands = useCallback(async () =>{
+      console.log("fb");
+      try {
+          setError(null);
+          setLoading(true);    
+          //setData([]);
+          //console.log("브랜드 패치");
+          const response = await axios.get(`stores/brand`);
+          //console.log("브랜드 패치2");
+          setData(response.data.result);
+          //console.log(data);
+      } catch (e){
+          setError(e);
+          console.log(e);
+      }
+      //console.log(data);
+      setLoading(false);
+    });
 
     return (
         <>
@@ -395,7 +517,10 @@ function Mainbuttons(props, props_option, props_lists) {
                         <BiIcons.BiTimeFive className='time_icon'/>
                     </div>
 
-                    <div className='btn_bottom_list_view' onClick={toggleDrawer_lists(true)}>
+                    <div className='btn_bottom_list_view' onClick={
+                      toggleDrawer_lists(true)
+                      //listdata = location.state.listdata
+                    }>
                         <FaIcons.FaBars className='list_drawer_icon'/>
                         <span className='list_drawer_title'>목록 보기</span>
                     </div>
@@ -405,7 +530,7 @@ function Mainbuttons(props, props_option, props_lists) {
                             <Global
                                 styles={{
                                 '.MuiPaper-root': {
-                                    height: `calc(50% - ${drawerBleeding_option}px)`,
+                                    height: `calc(100% - ${drawerBleeding_option}px)`,
                                     overflow: 'visible',
                                     borderTopLeftRadius: 24,
                                     borderTopRightRadius: 24,
@@ -455,19 +580,19 @@ function Mainbuttons(props, props_option, props_lists) {
                             >
                             <div className='filter_menu_subtitle'>
                                 <div className='filter_brand_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
+                                    <input type="checkbox" id="brand_checkboxall" name="brandall" onChange={e=>handlebrandChange(e)} /><label classname="brandall" for="brand_checkboxall"> √</label>
                                 </div>  
                                 <h3>브랜드</h3>
                             </div>
-                            <div className='filter_menu_buttons'>
-                                <input type="checkbox" id="brand_checkbox1" name="brand"/><label classname="boxlabel" for="brand_checkbox1">골프존</label>
-                                <input type="checkbox" id="brand_checkbox2" name="brand"/><label for="brand_checkbox2">골프존파크</label>
-                                <input type="checkbox" id="brand_checkbox3" name="brand"/><label for="brand_checkbox3">레드골프</label>
-                                <input type="checkbox" id="brand_checkbox4" name="brand"/><label for="brand_checkbox4">시티존</label>
-                                <input type="checkbox" id="brand_checkbox5" name="brand"/><label for="brand_checkbox5">오케이온</label>
-                                <input type="checkbox" id="brand_checkbox8" name="brand"/><label for="brand_checkbox8">SG골프</label>
-                                <input type="checkbox" id="brand_checkbox6" name="brand"/><label for="brand_checkbox6">프렌즈스크린T</label>
-                                <input type="checkbox" id="brand_checkbox7" name="brand"/><label for="brand_checkbox7">프렌즈스크린G</label>
+                            <div className='filter_menu_buttons' height="800px">
+                                {data && data.map(d=>{
+                                  let brandid = "brand_checkbox"+d.brandIdx;
+                                  return(
+                                    <>
+                                    <input type="radio" id={brandid} name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(d.brandIdx)}/><label for={brandid}>{d.brandName}</label>
+                                    </>    
+                                  )
+                                })}
                             </div>
                             </StyledBox_option>
                             <StyledBox_option
@@ -483,20 +608,18 @@ function Mainbuttons(props, props_option, props_lists) {
                                 }}
                             >
                             <div className='filter_menu_subtitle'>
-                                <div className='filter_facility_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
+                                <div className='filter_brand_off'>
+                                  <input type="checkbox" id="faci_checkboxall" name="faciall" onChange={e=>handlefaciChange(e)}/><label classname="faciall" for="faci_checkboxall"> √</label>
                                 </div> 
                                 <h3>시설</h3>   
                             </div>
                             <div className='filter_menu_buttons'>
-                                <input type="checkbox" name="option" id="facility_checkbox1"/><label for="facility_checkbox1">왼손타석</label>
-                                <input type="checkbox" name="option" id="facility_checkbox2"/><label for="facility_checkbox2">주차시설</label>
-                                {/*<input type="checkbox" name="option" id="facility_checkbox3"/><label for="facility_checkbox3">새벽영업</label>*/}
-                                <input type="checkbox" name="option" id="facility_checkbox4"/><label for="facility_checkbox4">단체석</label>
-                                <input type="checkbox" name="option" id="facility_checkbox5"/><label for="facility_checkbox5">바닥스크린</label>
-                                {/*<input type="checkbox" name="option" id="facility_checkbox6"/><label for="facility_checkbox6">무빙/듀얼</label>*/}
-                                <input type="checkbox" name="option" id="facility_checkbox7"/><label for="facility_checkbox7">프로교습</label>
-                                <input type="checkbox" name="option" id="facility_checkbox8"/><label for="facility_checkbox8">장비보관</label>
+                                <input type="checkbox" name="option" id="facility_checkbox1" disabled={!faciChecked} onChange = {e => faciarray(1)}/><label for="facility_checkbox1">왼손타석</label>
+                                <input type="checkbox" name="option" id="facility_checkbox2" disabled={!faciChecked} onChange = {e => faciarray(2)}/><label for="facility_checkbox2">주차시설</label>
+                                <input type="checkbox" name="option" id="facility_checkbox3" disabled={!faciChecked} onChange = {e => faciarray(3)}/><label for="facility_checkbox3">단체석</label>
+                                <input type="checkbox" name="option" id="facility_checkbox4" disabled={!faciChecked} onChange = {e => faciarray(4)}/><label for="facility_checkbox4">바닥스크린</label>
+                                <input type="checkbox" name="option" id="facility_checkbox5" disabled={!faciChecked} onChange = {e => faciarray(5)}/><label for="facility_checkbox5">프로교습</label>
+                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)}/><label for="facility_checkbox6">장비보관</label>
                             </div>
 
 
@@ -514,28 +637,29 @@ function Mainbuttons(props, props_option, props_lists) {
                                 }}
                             >
                             <div className='filter_menu_subtitle'>
-                                <div className='filter_distance_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
+                                <div className='filter_brand_off'>
+                                  <input type="checkbox" id="distance_checkboxall" name="distanceall" onChange={e=>handledistanceChange(e)} /><label classname="distanceall" for="distance_checkboxall"> √</label>
                                 </div>
                                 <h3>거리</h3>
                             </div>
                             <div className='filter_distance_slider'>
                                 <Box sx={{ width: 250 }}>
                                         <CustomSlider
-                                            value={value}
+                                            value={disvalue}
                                             aria-label="distance"
                                             defaultValue={0}
-                                            getAriaValueText={valuetext}
                                             scale={calculateValue}
                                             valueLabelDisplay="auto"
                                             getAriaValueText={valueLabelFormat}
                                             valueLabelFormat={valueLabelFormat}
-                                            onChange={handleChange}
+                                            onChange={handledisChange}
                                             step={1}
                                             marks={marks}
                                             min={0}
                                             max={5}
                                             aria-labelledby="non-linear-slider"
+                                            disabled={!distanceChecked}
+                                            
                                         />
                                 </Box>
                             </div>
@@ -546,67 +670,33 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <div className='time_filter_reset_btn'>
                                     <span className='btn_center'>재설정</span>
                                 </div>
-                                <div className='time_filter_apply_btn'>
-                                    <span className='btn_center'>필터 적용</span>
+                                <div className='time_filter_apply_btn' onClick={
+                                      toggleDrawer_option_filter(false)
+                                    //console.log("Filter click -> Object filter to Main")
+                                    }>
+                                    <span className='btn_center' onClick={()=>{
+                                      history.push({
+                                        // 필터 내용 전송 -> 메인 화면
+                                        // 전송 data: 필터 obj
+                                      pathname: `/`,
+                                      state: {
+                                        brandcheck: brandChecked,
+                                        brandvalue: brandvalue,
+
+                                        facicheck: faciChecked,
+                                        facivalue: faciarr,
+
+                                        discheck: distanceChecked,
+                                        disvalue: calculateValue(disvalue),
+
+                                        loccode: 0
+                                            }})
+                                    }}>필터 적용</span>
                                 </div>
                             </div>
                         </SwipeableDrawer>
                     </Root_option>
-                    <nav className={filter ? 'filter_menu active' : 'filter_menu'}>
-                        <div className='filter_menu_drawer'>
-                            <div className='filter_brand_onoff'>
 
-                            </div>
-                            <div className='filter_menu_subtitle'>
-                                <div className='filter_facility_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
-                                </div> 
-                                <h3>시설</h3>   
-                            </div>
-                            <div className='filter_facility_onoff'>
-
-                            </div>
-
-                            <div className='filter_menu_subtitle'>
-                                <div className='filter_distance_off'>
-                                    <BiIcons.BiCheck className='check_icon' color="#fff"/>
-                                </div>
-                                <h3>거리</h3>
-                            </div>
-                            <div className='filter_distance_slider'>
-                                <Box sx={{ width: 250 }}>
-                                    {/*<ThemeProvider theme={muiTheme}>*/}
-                                        <CustomSlider
-                                            value={value}
-                                            aria-label="distance"
-                                            defaultValue={0}
-                                            getAriaValueText={valuetext}
-                                            scale={calculateValue}
-                                            valueLabelDisplay="auto"
-                                            getAriaValueText={valueLabelFormat}
-                                            valueLabelFormat={valueLabelFormat}
-                                            onChange={handleChange}
-                                            step={1}
-                                            marks={marks}
-                                            min={0}
-                                            max={5}
-                                            aria-labelledby="non-linear-slider"
-                                        />
-                                    {/*</ThemeProvider>*/}
-                                </Box>
-                            </div>
-
-
-                            <div className='filter_apply_area'>
-                                <div className='filter_reset_btn'>
-                                    <span className='btn_center'>재설정</span>
-                                </div>
-                                <div className='filter_apply_btn'>
-                                    <span className='btn_center'>필터 적용</span>
-                                </div>
-                            </div>
-                        </div>
-                    </nav>
 
                     <Root>
                         <CssBaseline />
@@ -664,6 +754,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <div className='time_filter_select_day'>
                                     <DatePicker id='datepicker'
                                         getSelectedDay={selectedDay}
+                                        defaultValue={selectedDay}
                                         endDate={0}
                                         labelFormat={"y.M."}
                                         color={"#22A8A5"}
@@ -684,8 +775,8 @@ function Mainbuttons(props, props_option, props_lists) {
                             >
                                 <div className='time_filter_select_time'>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <Stack>
-                                        </Stack>
+                                      <Stack>
+                                      </Stack>
                                     </LocalizationProvider>
                                     <ThemeProvider theme={materialTheme}>
                                         <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -694,6 +785,9 @@ function Mainbuttons(props, props_option, props_lists) {
                                                 style={{ marginTop: "0px", width:"100%", borderRadius:"12px", border:"2px solid #22A8A5"}}
                                                 format={"HH:mm"}
                                                 inputVariant="filled"
+                                                defaultValue={(value)=>{
+                                                  selectedTime(value)
+                                                }}
                                                 TextFieldComponent={CssTextField}
                                                 size="medium"
                                                 value={myDate}
@@ -711,7 +805,15 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <div className='time_filter_reset_btn'>
                                     <span className='btn_center'>재설정</span>
                                 </div>
-                                <div className='time_filter_apply_btn'>
+                                <div className='time_filter_apply_btn' onClick={()=>{history.push({
+                                      // 시간 내용 전송 -> 메인 화면
+                                      // 전송 data: 시간 객체 data의 obj
+                                    pathname: `/`,
+                                    //state: {}
+                                  })
+                                    
+                                    console.log("Time_filter_click ==> Date obj to Main")
+                                    }}>
                                     <span className='btn_center'>필터 적용</span>
                                 </div>
                             </div>
@@ -773,9 +875,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                 }}
                             >
                             <div className='lists_menu_buttons'>
-                                <input type="radio" id="lists_distance" name="asc_desc"/><label for="lists_distance">가까운순</label>
-                                <input type="radio" id="lists_lowercost" name="asc_desc"/><label for="lists_lowercost">낮은가격순</label>
-                                <input type="radio" id="lists_popular" name="asc_desc"/><label for="lists_popular">인기순</label>
+                                <input type="radio" id="lists_distance" name="asc_desc" checked={ordervalue==="distance"} onChange={e=>setorderValue("distance")}/><label for="lists_distance">가까운순</label>
+                                <input type="radio" id="lists_lowercost" name="asc_desc" checked={ordervalue==="ratings"} onChange={e=>setorderValue("ratings")}/><label for="lists_lowercost">별점순</label>
                             </div>
                             </StyledBox_lists>
                             <StyledBox_lists
@@ -788,18 +889,34 @@ function Mainbuttons(props, props_option, props_lists) {
                               overflow: 'auto',
                             }}
                             >
-                              {data.map(d=>(
-                              <S.StoreContainer>
-                                <img src={d.storeImage} alt="storeimg"/>
-                                <S.TextWrapper>
-                                  {d.reserveStatus === true ?  <h4>당일 예약</h4>: null}
-                                  {d.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
-                                  <h1>{d.storeName}</h1>
-                                  <h2>{d.storeType}</h2>
-                                  <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>
+                              {list && list.sort(function(a,b){
+                                if(ordervalue=="distance"){
+                                  return a.distanceFromUser < b.distanceFromUser ? -1: a.distanceFromUser > b.distanceFromUser ? 1:0;
+                                }else if(ordervalue=="ratings"){    
+                                  return a.reviewStar > b.reviewStar ? -1: a.reviewStar < b.reviewStar ? 1:0;
+                                }
+                              }) && list.map(d=>{
+                                //console.log(d);
+                                return(
+                                  <S.StoreContainer onClick={()=>{history.push({
+                                    pathname: `/stores/${d.storeIdx}`,
+                                    state: {data: d}})}}>
+                                  <img src={d.storeImage} alt="storeimg"/>
+                                  <S.TextWrapper>
+                                    {d.reserveStatus === true ?  <h4>당일 예약</h4>: null}
+                                    {d.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+                                    <h1>{d.storeName}</h1>
+                                    <h2>{d.storeBrand}</h2>
+                                    <h2>★{d.reviewStar}</h2>
+                                    <h2>{d.distanceFromUser}km</h2>
+                                    {/*
+                                    <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>
+                                    */}
                                   </S.TextWrapper>
-                                  </S.StoreContainer>
-                                  ))}
+                                </S.StoreContainer> 
+                                );
+                              })}
+
                                   </StyledBox_lists>
                                   </SwipeableDrawer>
                     </Root_lists>
@@ -807,6 +924,7 @@ function Mainbuttons(props, props_option, props_lists) {
                 <div className={timefilter? 'nav-mask1 active' : 'nav-mask1'} onClick={showTimefilter}></div>
                 <div className={filter? 'nav-mask2 active' : 'nav-mask2'} onClick={showfilter}></div>
                 <div className={lists? 'nav-mask2 active' : 'nav-mask2'} onClick={showlists}></div>
+                {/*<div classname={marker? 'markerdiv active' : 'markerdiv'} onClick={}></div>*/}
             </S.Container>
         </>
     );

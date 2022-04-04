@@ -87,7 +87,7 @@ export const AdContainer = styled.div`
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.18));
     position: relative;
     left: 0; right: 0; 
-    margin-top:40px;
+    margin-top:100px;
     img{
         height:110px;
         width: 340px;

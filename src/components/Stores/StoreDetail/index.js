@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {useHistory, useLocation} from "react-router";
 import * as S from "./style";
 import axios from "axios";
+import ImageSlide from "../ImageSlide";
 import { Link } from "react-router-dom";
 
 const StoreDetail = ({match}) =>{
@@ -14,6 +15,7 @@ const StoreDetail = ({match}) =>{
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
     const [coupon,setCoupon]=useState([]);
+    const [images, setImages]=useState([]);
     const location = useLocation();
 
     useEffect(()=>{
@@ -27,12 +29,15 @@ const StoreDetail = ({match}) =>{
                  const coup = await axios.get(`/stores/coupons?storeIdx=${idx}`);
                  const specialCost = await axios.get(`/price/${idx}/period_price`)
                  console.log(response.data);
+                 const img = await axios.get(`/stores/images/${idx}`);
                 console.log(cost.data);
                 console.log(specialCost.data);
                 setData(response.data.result);
                 setCost(cost.data.result);
                 setCoupon(coup.data.result);
                 setSpecialCost(specialCost.data.result);
+                console.log(img.data.result);
+                setImages(img.data.result);
 
             } catch (e){
                 console.log(e);
@@ -40,7 +45,8 @@ const StoreDetail = ({match}) =>{
             }
             setLoading(false);
         };
-        fetchData();
+            fetchData();
+    
     },[]);
 
     const history=useHistory();
@@ -48,7 +54,7 @@ const StoreDetail = ({match}) =>{
     return(
    <S.Container>
         <S.StoreContainer>
-           <img src={data.storeImage} alt="storeimg"/>
+            <ImageSlide images={images} main={data.storeImage} />
             <S.StoreInfoTitle>
             <h1>{data.storeName}</h1>
          
@@ -143,7 +149,7 @@ null
                 <tbody>
 {specialCost.map((c,i)=>
 <tr>
-
+{/* 첫번째 행의 예외 케이스(행을 팽창X) */}
 { 0 == i
         && ((c.startDate != specialCost[i+1].startDate) 
         || (c.startTime!=specialCost[i+1].startTime))?  
@@ -154,18 +160,28 @@ null
         || (c.startTime!=specialCost[i+1].startTime))?  
     <th>{c.startTime}~<br/>{c.endTime}</th>
 :null}
+
+{/* 중간 행 (행을 팽창O) */}
 {i < specialCost.length-1 && c.startDate == specialCost[i+1].startDate &&c.startTime==specialCost[i+1].startTime?  
     <th rowSpan='2'>{c.startDate}~<br/>{c.endDate}</th>
 :null}
 {i < specialCost.length-1 && c.startDate == specialCost[i+1].startDate &&c.startTime==specialCost[i+1].startTime?  
     <th rowSpan='2'>{c.startTime}~<br/>{c.endTime}</th>
     :null}
+
+{/* 중간 행 (행을 팽창X) */}
+{ 0 < i && i < specialCost.length-1 
+        && ((c.startDate != specialCost[i-1].startDate && c.startDate != specialCost[i+1].startDate) 
+        || (c.startTime!=specialCost[i-1].startTime && c.startTime!=specialCost[i+1].startTime))?  
+    <th>{c.startDate}~<br/>{c.endDate}</th>
+:null}
 { 0 < i && i < specialCost.length-1 
         && ((c.startDate != specialCost[i-1].startDate && c.startDate != specialCost[i+1].startDate) 
         || (c.startTime!=specialCost[i-1].startTime && c.startTime!=specialCost[i+1].startTime))?  
     <th>{c.startTime}~<br/>{c.endTime}</th>
 :null}
 
+{/* 마지막 행의 예외 케이스(행을 팽창X) */}
 { i == specialCost.length-1
         && ((c.startDate != specialCost[i-1].startDate) 
         || (c.startTime!=specialCost[i-1].startTime))?  

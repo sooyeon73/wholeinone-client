@@ -46,16 +46,8 @@ useEffect(() => {
 
     console.log(page); //스크롤 페이징 확인
 
-    axios.post('/users/refresh').then(response => {
-        console.log(response);
-        if(response.data.isSuccess){
-        const  accessToken  = response.data.result.jwt;
-        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        }   
-
       if(ifDone==false)
-             fetchReserves();
-    });
+             fetchReserves();    
         
 }, [ ,page]);
 
@@ -71,18 +63,13 @@ useEffect(() => {
                     }
                 })
         );
-          
         useEffect(() => {
-          
-            
             const currentElement = lastElement;
             const currentObserver = observer.current;
     
             if (currentElement) {
                 currentObserver.observe(currentElement);
-            }
-            
-    
+            }    
             return () => {
                 if (currentElement) {
                     currentObserver.unobserve(currentElement);
@@ -90,12 +77,6 @@ useEffect(() => {
             };
             
         }, [lastElement]);
-
-
-        
-    
-    if(loading) console.log("loading");
-    if(error) console.log("error");
     if(!data) return null;
 
     return(

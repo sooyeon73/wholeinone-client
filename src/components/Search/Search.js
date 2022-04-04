@@ -120,7 +120,7 @@ useEffect(() => {
                     if(term==""){
                         return val
                     }//else if (val.name.toLowerCase().includes(this.term.toLowerCase())){
-                        return val
+                        //return val
                     //}
                 }).map((val,key)=>{
                     console.log("key: "+key);
