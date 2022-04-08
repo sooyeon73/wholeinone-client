@@ -56,7 +56,7 @@
     "utils-hooks": "^0.0.78",
     "web-vitals": "^1.0.1"
   },
-  "proxy": "http://seoul.naturemobility.com:18080/",
+  "proxy": "https://seoul.naturemobility.com:18080/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
