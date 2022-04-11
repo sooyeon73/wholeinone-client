@@ -181,13 +181,13 @@ const Reservation = ({location,history,match}) =>{
           alert("홀 수를 먼저 선택해주세요");
         }
         setNumber2(prevNumber=>prevNumber+interval);
-        if(timeData.length >= interval/30){
-          for (var i=0; i< interval/30 ;i++){
-            timeData.pop();
-          }
-          setTimeData(timeData);
+        // if(timeData.length >= interval/30){
+          axios.get(`/reservation/get-can-reservation-time?storeIdx=${idx}&reservationDate=${selectedDay}&roomIdx=${selectedRoom}&hall=${selectedHall}&playTime=${number2+interval}`)
+          .then(response=>{
+            setTimeData(response.data.result);
+          });
           getPriceParam.period=number2+interval;
-        }
+        // }
         axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
           if(response.data.isSuccess)
             setAmount(response.data.result);
@@ -211,12 +211,11 @@ const Reservation = ({location,history,match}) =>{
           alert("홀 수를 먼저 선택해주세요")
         }
         if (number2 - interval >= 0) setNumber2(prevNumber=>prevNumber-interval);
-        if(timeData.length >= interval/30 && number2-interval > 0){
-          for (var i=0; i< interval/30 ;i++){
-            if(timeData.length < timeList.length)
-              timeData.push(timeList[timeData.length]);
-          }
-          setTimeData(timeData);
+        if(number2-interval >= 0){
+          axios.get(`/reservation/get-can-reservation-time?storeIdx=${idx}&reservationDate=${selectedDay}&roomIdx=${selectedRoom}&hall=${selectedHall}&playTime=${number2-interval}`)
+          .then(response=>{
+            setTimeData(response.data.result);
+          });
           getPriceParam.period=number2-interval;
         }
         axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
@@ -272,8 +271,8 @@ const Reservation = ({location,history,match}) =>{
       getPriceParam.time=value;
       setNumber2(0);
       
-      if (value == 9) setTimeData(timeList);
-      else if (value == 18) setTimeData(timeList.slice(1, timeList.length-1));
+      // if (value == 9) setTimeData(timeList);
+      // else if (value == 18) setTimeData(timeList.slice(1, timeList.length-1));
       axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
         // console.log(response.data.result);
         if (response.data.isSuccess){
@@ -508,7 +507,7 @@ const onChangeRoomType = event => {
                   </S.DatePickerContainer>
                   <S.PickerContainer>
                     {
-                      timeData!==null?
+                      Array.isArray(timeData) && timeData!==null && timeData !== undefined?
                       timeData.map(t=>{
                         return (
                           <label
