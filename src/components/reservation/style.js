@@ -5,6 +5,7 @@ import {MdPlace} from "react-icons/md";
 import { BiTime} from "react-icons/bi";
 import {AiFillCreditCard} from "react-icons/ai";
 import {GiGolfTee} from "react-icons/gi";
+import { RiCheckboxCircleLine ,RiCheckboxCircleFill } from "react-icons/ri";
 
 export const Container = styled.div`
     width:100%;
@@ -205,4 +206,57 @@ export const PaymentContainer = styled.div`
     h3{
         color: gray;
     }
+`
+export const RoomLabel = styled.label`
+    padding: 0px;
+    content-align:left;
+    h1{
+        display: inline-block;
+        margin-left: 0.5rem;
+        text-align:left;
+        font-size: 16px;
+    }
+    input[type="radio"]{
+        /* Add if not using autoprefixer */
+        -webkit-appearance: none;
+        /* Remove most all native input styles */
+        appearance: none;
+        /* For iOS < 15 */
+        background-color: var(--form-background);
+        /* Not removed via appearance */
+        margin: 0;
+      
+        font: inherit;
+        color: #22A8A5;
+        width: 1em;
+        height: 1em;
+        border: 0.15em solid currentColor;
+        // background-color: #22A8A5;
+        border-radius: 50%;
+        transform: translateY(0.15em);
+      
+        display: inline-block;
+        place-content: center;
+    }
+     
+      input[type="radio"]:checked {
+        background-color: #22A8A5;
+        transform: scale(0.7);
+        
+        outline: max(2px, 0.15em) solid currentColor;
+        outline-offset: max(2px, 0.15em);
+      }
+`
+
+export const SelcetRoomType = styled.div`
+    text-align:left;
+    margin-left:2rem;
+`
+export const RoomPickerContainer = styled.div`
+    -ms-overflow-style: none;
+    display: block;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 330px;
+    flex-wrap: nowrap;
 `

@@ -36,12 +36,34 @@
         ],
         "rooms" : [
             {
-                "roomName" : "SG",
+                "roomName" : "SG1",
+                "roomType" : "SG",
                 "roomIdx" : 1
             },
             {
-                "roomName" : "room2",
+                "roomName" : "SG2",
+                "roomType" : "SG",
                 "roomIdx" : 2
+            },
+            {
+                "roomName" : "SG2",
+                "roomType" : "SG",
+                "roomIdx" : 3
+            },
+            {
+                "roomName" : "room1",
+                "roomType" : "room",
+                "roomIdx" : 4
+            },
+            {
+                "roomName" : "room2",
+                "roomType" : "room",
+                "roomIdx" : 5
+            },
+            {
+                "roomName" : "room3",
+                "roomType" : "room",
+                "roomIdx" : 6
             }
         ]
       }

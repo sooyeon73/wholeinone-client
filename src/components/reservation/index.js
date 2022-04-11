@@ -1,6 +1,8 @@
 import React, {useState, useEffect, Component} from "react";
+import ReactDOM from 'react-dom';
 import axios from "axios";
 import * as S from "./style";
+import * as ReserveS from "../reserve/MyReserveDetail/style"
 import './style.css';
 import useInput from "../../hooks/useInput";
 import DatePicker from "react-horizontal-datepicker";
@@ -228,12 +230,16 @@ const Reservation = ({location,history,match}) =>{
     const [selectedTime, setSelectedTime] = useState("");
     const [selectedHall,setHall]=useState(9);
     const [selectedRoom,setRoom]=useState(0);
+    const [selectedRoomType,setSelectedRoomType]=useState("");
     const [payAmount,setAmount]=useState(0);
     const [data,setData]=useState(location.state !== undefined && location.state.data !== undefined ?location.state.data : dummy.data);
-    const [roomData,setRoomData]=useState(dummy.data.rooms);
+    const [roomData,setRoomData]=useState(null);
     const [timeData,setTimeData]=useState(dummy.data.rezTimes);
     const [request, onChangeRequest, setRequest] =useInput("");
     const [timeList,setTimeList]=useState([]);
+    const [roomType, setRoomType] = useState([])
+
+    const [render, setRender] = useState(null);
 
     var getPriceParam = {
       hole:selectedHall,
@@ -316,6 +322,12 @@ const Reservation = ({location,history,match}) =>{
       }
     });
 };
+
+const onChangeRoomType = event => {
+  const val = event.target.value;
+  setSelectedRoomType(val);
+  console.log(event.target.parentElement);
+};
   const validateReservation = () =>{
     if (number1 == 0 || number2 ==0 || selectedRoom == "" ||  selectedHall ==0 || payAmount == 0 || selectedTime ==""){
       alert("예약 정보를 확인해 주세요");
@@ -339,19 +351,35 @@ const Reservation = ({location,history,match}) =>{
     }
   }
 
-  useEffect(()=>{         
-      if (location.state === undefined || location.state.data == undefined){
-        axios.post('/users/refresh').then(response => {
-          if(response.data.isSuccess){
-              const  accessToken  = response.data.result.jwt;
-              // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-              axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-              axios.get(`/reservation/get_rez_store_info/${idx}`).then(response => {
-                // console.log(response.data.result);
-                setData(response.data.result);
-              });
+  useEffect(()=>{
+    axios.post('/users/refresh').then(response => {
+      if(response.data.isSuccess){
+          const  accessToken  = response.data.result.jwt;
+          // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+          axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+          axios.get(`/stores/roomName?storeIdx=${idx}`).then(response => {
+            setRoomData(response.data.result);
+            console.log(response.data.result);
+            const roomDatas = response.data.result;
+            var roomTypes = new Map();
+            for (var i =0;i <roomDatas.length ;i++){
+              var key = roomDatas[i].roomType
+              var r = {roomIdx:roomDatas[i].roomIdx, roomName:roomDatas[i].roomName}
+              if(!roomTypes.has(key))
+                roomTypes.set(key,[r])
+              else {
+                roomTypes.get(key).push(r)
+              }
             }
-        });
+            setRoomType([...roomTypes]);
+            console.log(roomTypes)
+          });
+        }
+    });    
+      if (location.state === undefined || location.state.data == undefined){
+          axios.get(`/reservation/get_rez_store_info/${idx}`).then(response => {
+            setData(response.data.result);
+          });
       }
     },[]);
 
@@ -370,7 +398,7 @@ const Reservation = ({location,history,match}) =>{
                     <S.Info2TitleContainer>
                         <h3>홀 수</h3>
                     </S.Info2TitleContainer>
-                        <S.OneLineContainer >
+                        <S.OneLineContainer>
                             <label 
                             style={{height: '100%'}}
                             className="hall_buttons">
@@ -424,24 +452,46 @@ const Reservation = ({location,history,match}) =>{
             <S.LineBorder />
             <S.SelectRoomInfo>
             <h3>방 선택</h3>
-              <S.PickerContainer>
+              {/* <S.PickerContainer> */}
               {
-                roomData !== null?
-                roomData.map(r=> (
-                      <label
-                      className="hall_buttons"
-                      key={r.roomIdx}>
-                      <input type="radio" name="room"
-                      value= {r.roomIdx}
-                      checked={selectedRoom == r.roomIdx}
-                      onChange={event=>onChangeRoom(event)}
-                      />
-                      <h1>{r.roomName}</h1>
-                      </label>
+                roomType !== null?
+                // console.log(roomType)
+                roomType.map(t=> (
+                      <S.SelcetRoomType>
+                        <S.RoomLabel
+                          id={t[0]}
+                          key={t[0]}
+                          >
+                          <input type="radio" name="roomType"
+                          value= {t[0]}
+                          checked={selectedRoomType == t[0]}
+                          onChange={event=>onChangeRoomType(event)}
+                          />
+                          <h1>{t[0]}</h1>
+                        </S.RoomLabel>
+                      <S.RoomPickerContainer> 
+                        {
+                          t[1].map(r =>(
+                            <label
+                              hidden = {selectedRoomType != t[0]}
+                              className="hall_buttons"
+                              key={r.roomIdx}>
+                              <input type="radio" name="room"
+                              value= {r.roomIdx}
+                              checked={selectedRoom == r.roomIdx}
+                              onChange={event=>onChangeRoom(event)}
+                              />
+                              <h1>{r.roomName}</h1>
+                              </label>
+                            // console.log(r+" "+r.roomIdx+" "+r.roomName)
+                          ))
+                        }
+                      </S.RoomPickerContainer>
+                      </S.SelcetRoomType>
                     ))
                   :<h4>예약 가능한 방이 없습니다.</h4>
               }
-              </S.PickerContainer>
+              {/* </S.PickerContainer> */}
             </S.SelectRoomInfo>
             <S.LineBorder hidden = {selectedRoom == 0}/>
             {
@@ -458,20 +508,21 @@ const Reservation = ({location,history,match}) =>{
                   </S.DatePickerContainer>
                   <S.PickerContainer>
                     {
-                        timeData.map(t=>{
-                          return (
-                            <label
-                            className="hall_buttons"
-                            key={timeIdx++}>
-                            <input type="radio" name="time"
-                            value={`${moment(t.time,'HH:mm').format('a hh:mm')}`}
-                            checked={selectedTime == `${moment(t.time,'HH:mm').format('a hh:mm')}`}
-                            onChange={event=>onChangeTime(event)}
-                            />
-                            <h1>{t.time}</h1>
-                            </label>
-                          )
-                        })
+                      timeData!==null?
+                      timeData.map(t=>{
+                        return (
+                          <label
+                          className="hall_buttons"
+                          key={timeIdx++}>
+                          <input type="radio" name="time"
+                          value={`${moment(t.time,'HH:mm').format('a hh:mm')}`}
+                          checked={selectedTime == `${moment(t.time,'HH:mm').format('a hh:mm')}`}
+                          onChange={event=>onChangeTime(event)}
+                          />
+                          <h1>{t.time}</h1>
+                          </label>
+                        )
+                      }):<h3>예약 가능한 시간이 없습니다.</h3>
                     }
                   </S.PickerContainer>
               </S.SelectReservationinfo1>: null
