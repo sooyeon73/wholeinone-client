@@ -96,7 +96,7 @@ const PayPageMenu = ({location, history}) =>{
                                     }
                                 })
                                 axios.get(`/payment/get_main`).then(response => {
-                                    // console.log(response.data.result);
+                                    console.log(response.data.result);
                                     if (response.data.isSuccess)
                                         setCard(response.data.result);
                                 });
@@ -328,7 +328,7 @@ const PayPageMenu = ({location, history}) =>{
            onChange={event=>handleSelect(event)}
            />간편 결제</h1></label>
             {
-                card !== null
+                card !== null && card!=undefined
             ? 
             <S.Card key={card.userPaymentIdx}
                 hidden={paySelect!=="billingkeyPay"}>
