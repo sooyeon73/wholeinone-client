@@ -53,7 +53,8 @@ const MyReserveDetail = ( {match} ) =>{
                 reservationIdx: idx,
                 refundReason : reason
             }
-            axios.post('/pay/request_refund',data).then(
+            console.log(reason);
+            axios.post('/pay/request_refund',param).then(
                 response=>{
                     // console.log(response.data)
                     if(response.data.isSuccess){

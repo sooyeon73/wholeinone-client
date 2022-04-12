@@ -35,7 +35,7 @@ const PayPageMenu = ({location, history}) =>{
         const value = (event.target.value);
         const selectedIndex = event.target.options.selectedIndex;
         const couponIdx = event.target.options[selectedIndex].getAttribute('data-key');
-        setCouponPrice(value);
+        setCouponPrice(value/100 * parseInt(rzvData.payPrice));
         setCouponIdxSelect(couponIdx)
     }
     
@@ -396,7 +396,7 @@ const PayPageMenu = ({location, history}) =>{
 
                 <option 
                 key ={select.couponIdx}
-                value={select.amount}
+                value={select.couponPercentage}
                 data-key={select.couponIdx}
                 >{select.couponName}</option>
                ))
