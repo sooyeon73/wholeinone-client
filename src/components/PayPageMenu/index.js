@@ -223,7 +223,7 @@ const PayPageMenu = ({location, history}) =>{
         buyer_name:data.userName, // 구매자 이름 추후 api에서 가져오기
         buyer_email:data.userEmail, // 아이디 추후 api에서 가져오기
         buyer_tel:data.phoneNum, // 전화번호 추후 api에서 가져오기
-        m_redirect_url:'http://localhost:3000/paypage'
+        m_redirect_url:'https://seoul.naturemobility.com:18080/pay'
     };
         IMP.request_pay(param,callback);
     }
