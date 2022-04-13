@@ -12,13 +12,14 @@ const PayPageMenu = ({location, history}) =>{
     // console.log("location",location)
     // const data = dummy.data;
     const rzvData=location.state;
+    const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
     const [couponPrice, setCouponPrice] =useState(0);
     const [pointPrice, setPointPrice]=useState(0);
     const [paySelect, setPaySelect]=useState("0");
     const [couponSelect, setCouponSelect]=useState(null);
     const [couponIdxSelect, setCouponIdxSelect]=useState(null);
-    const [payMethodSelect, setPayMethodSelect]=useState(null);
+    const [payMethodSelect, setPayMethodSelect]=useState("card");
     const [card, setCard]=useState(null);
 
     const [data, setData]=useState(dummy.data);
@@ -58,10 +59,12 @@ const PayPageMenu = ({location, history}) =>{
     }
     const onMethodChange = event =>{
         const value = (event.target.value);
+        console.log(value);
         setPayMethodSelect(value);
     }
-    useEffect(()=>{    
-
+    useEffect(()=>{
+        console.log(isMobile);
+        console.log(window.location.hostname);
         const param ={
             startTime : rzvData.reservationTime,
             useTime : rzvData.useTime,
@@ -121,6 +124,7 @@ const PayPageMenu = ({location, history}) =>{
         return () => {document.head.removeChild(jquery);
         document.head.removeChild(iamport);}   
     },[]);
+
     const onClickPay = ()=>{
         // const billingKey="";
         try{
@@ -216,16 +220,24 @@ const PayPageMenu = ({location, history}) =>{
         IMP.init('imp92209873');
 
     const param = {
-        pg:'kcp',
+        pg:'danal_tpay',
         pay_method: payMethod, //client에서 선택 card(신용카드), samsung(삼성페이), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제), payco(페이코 허브형)
         amount:parseInt(rzvData.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice)), // reservation page에서 get
         name:rzvData.storeName+"_예약", // 필수 값(상품명) 추후 api에서 가져오기
         buyer_name:data.userName, // 구매자 이름 추후 api에서 가져오기
         buyer_email:data.userEmail, // 아이디 추후 api에서 가져오기
         buyer_tel:data.phoneNum, // 전화번호 추후 api에서 가져오기
-        m_redirect_url:'https://seoul.naturemobility.com:18080/pay'
+        // m_redirect_url: 'https://'+window.location.hostname+':8080/stores/'+rzvData.storeIdx
     };
+
+    if (isMobile){
+        console.log('mobile');
         IMP.request_pay(param,callback);
+    }else {
+        console.log('pc');
+        param.pg='kcp';
+        IMP.request_pay(param,callback);
+    }
     }
     const callback=(response)=>{
         const {
