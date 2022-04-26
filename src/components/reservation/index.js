@@ -314,7 +314,7 @@ const onChangeRoomType = event => {
     const fetchData = async () =>{
       try {
           setError(null);
-          setData(null);
+          // setData(null);
           // setRoomData(null);
           setRoomType(null);
           setLoading(true);
@@ -336,11 +336,11 @@ const onChangeRoomType = event => {
             setRoomType([...roomTypes]);
             console.log(roomTypes)
         }
-
           if (location.state === undefined || location.state.data == undefined){
             const storeInfo = await axios.get(`/reservation/get_rez_store_info/${idx}`)
             if(storeInfo.data.isSuccess)
               setData(response.data.result);
+            
         }
       } catch (e){
           setError(e);
