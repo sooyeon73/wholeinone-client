@@ -87,7 +87,7 @@ const onClickPayment = ()=>{
             name:"골프장 카드 등록", // 필수 값(상품명) 
             customer_uid: billingKey, // 빌링키와 대응(카드 고유 번호)
             // buyer_name:'kim', // 구매자 이름 (선택)
-            m_redirect_url:'http://localhost:3000/payment'
+            m_redirect_url:`https://seoul.naturemobility.com:18080/payment/m_register_card?billingKey=${billingKey}`
         };
         IMP.request_pay(param,callback);
         });
@@ -136,7 +136,9 @@ if(!data) return null;
            checked={select==d.userPaymentIdx}
            onChange={event=>handleSelect(event)}
            />
-           <h2>{d.cardCode}</h2>
+           <h2>
+               {/* {d.userPaymentIdx} 테스트를 위해 추가 필요 */}
+            {d.cardCode}</h2>
            <h3>{d.cardType}</h3>
          {d.isMain==true? <S.IsMain>기본</S.IsMain>:null}
  
