@@ -144,87 +144,6 @@ const Reservation = ({location,history,match}) =>{
     const [number1, setNumber1]=useState(1);
     const [number2, setNumber2]=useState(30);
 
-
-    const onIncreasePerson=()=>{
-        setNumber1(prevNumber=>prevNumber+1);
-        getPriceParam.count=number1+1;
-        axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
-          if(response.data.isSuccess)
-            setAmount(response.data.result);
-      });
-    };
-    const onDecreasePerson=()=>{
-        if(number1>=1){
-            setNumber1(prevNumber=>prevNumber-1);
-        }
-        getPriceParam.count=number1-1;
-        axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
-          if(response.data.isSuccess)
-            setAmount(response.data.result);
-      });
-    };
-    const onIncreaseTime=()=>{
-      var interval = 30;
-        if (selectedHall == 9){
-          if(timeData[timeData.length-1] == moment(selectedTime,'a hh:mm').format('HH:mm')){
-            setSelectedTime("");
-          }
-          interval = 30;
-        }
-        else if (selectedHall == 18){
-          if(timeData[timeData.length-2] == moment(selectedTime,'a hh:mm').format('HH:mm')){
-            setSelectedTime("");
-          }
-          interval = 60;
-        }
-        else if(selectedHall == 0) {
-          alert("홀 수를 먼저 선택해주세요");
-        }
-        setNumber2(prevNumber=>prevNumber+interval);
-        // if(timeData.length >= interval/30){
-          axios.get(`/reservation/get-can-reservation-time?storeIdx=${idx}&reservationDate=${selectedDay}&roomIdx=${selectedRoom}&hall=${selectedHall}&playTime=${number2+interval}`)
-          .then(response=>{
-            setTimeData(response.data.result);
-          });
-          getPriceParam.period=number2+interval;
-        // }
-        axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
-          if(response.data.isSuccess)
-            setAmount(response.data.result);
-        });
-    };
-    const onDecreaseTime=()=>{
-      var interval = 30;
-        if (selectedHall == 9){
-          if(timeData[timeData.length-1] == moment(selectedTime,'a hh:mm').format('HH:mm')){
-            setSelectedTime("");
-          }
-          interval = 30;
-        }
-        else if (selectedHall == 18){
-          if(timeData[timeData.length-2] == moment(selectedTime,'a hh:mm').format('HH:mm')){
-            setSelectedTime("");
-          }
-          interval = 60;
-        }
-        else if(selectedHall == 0) {
-          alert("홀 수를 먼저 선택해주세요")
-        }
-        if (number2 - interval >= 0) setNumber2(prevNumber=>prevNumber-interval);
-        if(number2-interval >= 0){
-          axios.get(`/reservation/get-can-reservation-time?storeIdx=${idx}&reservationDate=${selectedDay}&roomIdx=${selectedRoom}&hall=${selectedHall}&playTime=${number2-interval}`)
-          .then(response=>{
-            setTimeData(response.data.result);
-          });
-          getPriceParam.period=number2-interval;
-        }
-        axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
-          if(response.data.isSuccess)
-            setAmount(response.data.result);
-        });
-    };
-
-
     const [selectedDay, setSelectedDay]=useState(moment().format('yyyy-MM-DD'));
     const [selectedTime, setSelectedTime] = useState("");
     const [selectedHall,setHall]=useState(9);
@@ -232,22 +151,102 @@ const Reservation = ({location,history,match}) =>{
     const [selectedRoomType,setSelectedRoomType]=useState("");
     const [payAmount,setAmount]=useState(0);
     const [data,setData]=useState(location.state !== undefined && location.state.data !== undefined ?location.state.data : dummy.data);
-    const [roomData,setRoomData]=useState(null);
+    // const [roomData,setRoomData]=useState(null);
     const [timeData,setTimeData]=useState(dummy.data.rezTimes);
     const [request, onChangeRequest, setRequest] =useInput("");
-    const [timeList,setTimeList]=useState([]);
     const [roomType, setRoomType] = useState([])
 
-    const [render, setRender] = useState(null);
+    
+    const fetchPriceData = async (hole, date, time, count, period) => {
+      try {
+        setError(null);
+        setLoading(true);
 
-    var getPriceParam = {
-      hole:selectedHall,
-      date:selectedDay,
-      time:moment(selectedTime,'a hh:mm').format('HH:mm'),
-      count:number1,
-      period:number2
+        const getPriceParam = {
+          hole:hole,
+          date:date,
+          time:time,
+          count:count,
+          period:period
+        };
+
+        const response = await axios.post(`/price/${idx}/current_price`,getPriceParam);
+        if (response.data.isSuccess)
+          setAmount(response.data.result);
+
+      } catch (e){
+          setError(e);
+      }
+      setLoading(false);
+    };
+    
+    const fetchTimeData = async (storeIdx, date, playTime, roomIdx, hall) => {
+      try {
+        setError(null);
+        setLoading(true);
+        
+        const response = await axios.get(`/reservation/get-can-reservation-time?storeIdx=${storeIdx}&reservationDate=${date}&playTime=${playTime}&roomIdx=${roomIdx}&hall=${hall}`)
+        if (response.data.isSuccess)
+          setTimeData(response.data.result);
+
+      } catch (e){
+          setError(e);
+      }
+      setLoading(false);
     };
 
+    const onIncreasePerson=()=>{
+        setNumber1(prevNumber=>prevNumber+1);
+        const time = moment(selectedTime,'a hh:mm').format('HH:mm');
+        fetchPriceData(selectedHall,selectedDay,time,number1+1,number2);
+    };
+
+    const onDecreasePerson=()=>{
+        if(number1>=1){
+            setNumber1(prevNumber=>prevNumber-1);
+        }
+        const time = moment(selectedTime,'a hh:mm').format('HH:mm');
+        fetchPriceData(selectedHall,selectedDay,time,number1-1,number2)
+    };
+    
+    const onIncreaseTime=()=>{
+      var interval = 30;
+        if (selectedHall == 9){
+          interval = 30;
+        }
+        else if (selectedHall == 18){
+          interval = 60;
+        }
+        else if(selectedHall == 0) {
+          alert("홀 수를 먼저 선택해주세요");
+        }
+        setNumber2(prevNumber=>prevNumber+interval);
+        // if(timeData.length >= interval/30){
+          fetchTimeData(idx,selectedDay,number2+interval,selectedRoom,selectedHall);
+
+          const time = moment(selectedTime,'a hh:mm').format('HH:mm');
+          fetchPriceData(selectedHall,selectedDay,time,number1,number2+interval);
+    };
+    const onDecreaseTime=()=>{
+      var interval = 30;
+        if (selectedHall == 9){
+          interval = 30;
+        }
+        else if (selectedHall == 18){
+          interval = 60;
+        }
+        else if(selectedHall == 0) {
+          alert("홀 수를 먼저 선택해주세요")
+        }
+        if (number2 - interval >= 0) setNumber2(prevNumber=>prevNumber-interval);
+        
+        if(number2-interval >= 0){
+          fetchTimeData(idx,selectedDay,number2-interval,selectedRoom,selectedHall);
+          const time = moment(selectedTime,'a hh:mm').format('HH:mm');      
+          fetchPriceData(selectedHall,selectedDay,time,number1-1,number2);
+        }
+    };
+    
     const onChangeTime = event => {
         const val = event.target.value
         const time = moment(val,'a hh:mm').format('HH:mm');
@@ -255,38 +254,15 @@ const Reservation = ({location,history,match}) =>{
         // console.log(val);
         // console.log(time);
         setSelectedTime(val);
-        getPriceParam.time=time;
-        // console.log(getPriceParam);
-        axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
-          if (response.data.isSuccess){
-            setAmount(response.data.result);
-          }
-      });
+        fetchPriceData(selectedHall,selectedDay,time,number1,number2)
     };
 
     const handleSelect = event =>{
       const value = (event.target.value);
       setHall(value);
-      // console.log(selectedHall);
-      getPriceParam.time=value;
       setNumber2(0);
-      
-      // if (value == 9) setTimeData(timeList);
-      // else if (value == 18) setTimeData(timeList.slice(1, timeList.length-1));
-      axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
-        // console.log(response.data.result);
-        if (response.data.isSuccess){
-          setAmount(response.data.result);
-        }
-      });
-      axios.get(`/reservation/get-can-reservation-time?storeIdx=${idx}&reservationDate=${selectedDay}&playTime=${number2}&roomIdx=${selectedRoom}&hall=${value}`)
-    .then(response => {
-      // console.log(response.data.result);
-      if (response.data.isSuccess){
-        setTimeData(response.data.result);
-        setTimeList(Object.assign([],response.data.result));
-      }
-    });
+      setAmount(0);
+      fetchTimeData(idx,selectedDay,number2,selectedRoom,value);
     };
 
 
@@ -294,32 +270,16 @@ const Reservation = ({location,history,match}) =>{
       const day = moment(val).format('yyyy-MM-DD');
       // console.log(day);
       setSelectedDay(day)
-      getPriceParam.time=day;
-      axios.post(`/price/${idx}/current_price`,getPriceParam).then(response => {
-        // console.log(response.data.result);
-      });
-      axios.get(`/reservation/get-can-reservation-time?storeIdx=${idx}&reservationDate=${day}&playTime=${number2}&roomIdx=${selectedRoom}&hall=${selectedHall}`)
-      .then(response => {
-        if (response.data.isSuccess){
-          // console.log(response.data.result);
-          setTimeData(response.data.result);
-          setTimeList(Object.assign([],response.data.result));
-        }
-      });
+      const time = moment(selectedTime,'a hh:mm').format('HH:mm');
+      fetchPriceData(selectedHall,day,time,number1,number2)
+      fetchTimeData(idx,day,number2,selectedRoom,selectedHall);
   };
 
   const onChangeRoom = event => {
     const val = event.target.value
     // console.log(val)
     setRoom(val)
-    axios.get(`/reservation/get-can-reservation-time?storeIdx=${idx}&reservationDate=${selectedDay}&playTime=${number2}&roomIdx=${val}&hall=${selectedHall}`)
-    .then(response => {
-      console.log(response.data.result);
-      if (response.data.isSuccess){
-        setTimeData(response.data.result);
-        setTimeList(Object.assign([],response.data.result));
-      }
-    });
+    fetchTimeData(idx,selectedDay,number2,val,selectedHall);
 };
 
 const onChangeRoomType = event => {
@@ -348,17 +308,20 @@ const onChangeRoomType = event => {
         }
       });
     }
-  }
-
+  };
   useEffect(()=>{
-    axios.post('/users/refresh').then(response => {
-      if(response.data.isSuccess){
-          const  accessToken  = response.data.result.jwt;
-          // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-          axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-          axios.get(`/stores/roomName?storeIdx=${idx}`).then(response => {
-            setRoomData(response.data.result);
-            console.log(response.data.result);
+    
+    const fetchData = async () =>{
+      try {
+          setError(null);
+          setData(null);
+          // setRoomData(null);
+          setRoomType(null);
+          setLoading(true);
+          
+          const response = await axios.get(`/stores/roomName?storeIdx=${idx}`);
+          if(response.data.isSuccess){
+            // setRoomData(response.data.result);
             const roomDatas = response.data.result;
             var roomTypes = new Map();
             for (var i =0;i <roomDatas.length ;i++){
@@ -372,15 +335,20 @@ const onChangeRoomType = event => {
             }
             setRoomType([...roomTypes]);
             console.log(roomTypes)
-          });
         }
-    });    
-      if (location.state === undefined || location.state.data == undefined){
-          axios.get(`/reservation/get_rez_store_info/${idx}`).then(response => {
-            setData(response.data.result);
-          });
+
+          if (location.state === undefined || location.state.data == undefined){
+            const storeInfo = await axios.get(`/reservation/get_rez_store_info/${idx}`)
+            if(storeInfo.data.isSuccess)
+              setData(response.data.result);
+        }
+      } catch (e){
+          setError(e);
       }
-    },[]);
+      setLoading(false);
+  };
+  fetchData();
+},[]);
 
 
     var timeIdx=0;
