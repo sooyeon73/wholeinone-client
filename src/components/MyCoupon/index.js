@@ -6,11 +6,29 @@ import dummy from "./dummy.json"
 const MyCoupon = (  ) =>{
 
     //매장명,이름, 기간, 퍼센트
-    const data = dummy.data;
-    //    const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
-    const [select, setSelect] = useState(1);
+
+ useEffect(()=>{
+        const fetchData = async () =>{
+            try {
+                setError(null);
+                setData(null);
+                setLoading(true);
+                
+                const response = await axios.get("/users/coupon");
+                console.log(response.data.result)
+                setData(response.data.result);
+            } catch (e){
+               setError(e);
+                console.log(e);
+            }
+            setLoading(false);
+        };
+        fetchData();
+    },[]);
+    if(!data) return null;
 
     return(
    <S.Container>

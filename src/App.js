@@ -19,7 +19,7 @@ import SignUpPage from './pages/SignUpPage';
 import PayPage from './pages/PayPage';
 import ReviewPage from './pages/ReviewPage';
 import onSilentRefresh from './components/LoginMenu/index';
-import MyCouponPage from './pages/VisitedPage copy';
+import MyCouponPage from './pages/MyCouponPage';
 
 function App() {
 

@@ -73,8 +73,10 @@ const StoreDetail = ({match}) =>{
                   <S.CouponContainer 
                   value={c.couponIdx}
                   onClick={e=>{   axios.post(`/users/coupon?couponIdx=${c.couponIdx}`).then(response => {
-                    console.log(response);
-                    alert("쿠폰을 다운받았습니다");
+                    if(response.data.code==2032)
+                    alert("이미 다운 받은 쿠폰입니다.")
+                    else
+                    alert("쿠폰을 다운 받았습니다!");
                     
                 });
                   }}
