@@ -13,6 +13,7 @@ function Burger({open}) {
   const [sidebar, setSidebar] = useState(false);
 
   const [data, setData] = useState([]);
+  const [checkLogin, setCheckLogin] = useState(false);
   const [loading, setLoading ]=useState(false);
   const [error, setError] = useState(null);
 
@@ -27,8 +28,10 @@ function Burger({open}) {
           const response = await axios.get('users/mypage');
           console.log(response);
           
-          if(response.data.isSuccess==true)
-          setData((prev)=>[response.data.result]);
+          if(response.data.isSuccess==true){
+            setData((prev)=>[response.data.result]);
+            setCheckLogin(true);
+          }else setCheckLogin(false);
 
           if(response.data.code==403){ //사장님 계정인 경우
             axios.post('/users/logout').then(response => {
@@ -66,7 +69,7 @@ console.log(data);
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' isExpanded={false}>
             <li className='navbar-toggle'></li>
-            {axios.defaults.headers.common['Authorization'] ? (
+            {checkLogin ? (
               data.map(d=>(
                 <S.ImageWrapper>
                   <img src={d.userImage}/>

@@ -12,13 +12,14 @@ const PayPageMenu = ({location, history}) =>{
     // console.log("location",location)
     // const data = dummy.data;
     const rzvData=location.state;
+    const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
     const [couponPrice, setCouponPrice] =useState(0);
     const [pointPrice, setPointPrice]=useState(0);
     const [paySelect, setPaySelect]=useState("0");
     const [couponSelect, setCouponSelect]=useState(null);
     const [couponIdxSelect, setCouponIdxSelect]=useState(null);
-    const [payMethodSelect, setPayMethodSelect]=useState(null);
+    const [payMethodSelect, setPayMethodSelect]=useState("card");
     const [card, setCard]=useState(null);
 
     const [data, setData]=useState(dummy.data);
@@ -35,7 +36,7 @@ const PayPageMenu = ({location, history}) =>{
         const value = (event.target.value);
         const selectedIndex = event.target.options.selectedIndex;
         const couponIdx = event.target.options[selectedIndex].getAttribute('data-key');
-        setCouponPrice(value);
+        setCouponPrice(value/100 * parseInt(rzvData.payPrice));
         setCouponIdxSelect(couponIdx)
     }
     
@@ -58,10 +59,12 @@ const PayPageMenu = ({location, history}) =>{
     }
     const onMethodChange = event =>{
         const value = (event.target.value);
+        console.log(value);
         setPayMethodSelect(value);
     }
-    useEffect(()=>{    
-
+    useEffect(()=>{
+        console.log(isMobile);
+        console.log(window.location.hostname);
         const param ={
             startTime : rzvData.reservationTime,
             useTime : rzvData.useTime,
@@ -71,44 +74,36 @@ const PayPageMenu = ({location, history}) =>{
         const fetchData = async () => {
             try{
                 setError(null);
+                setCard(null);
+                setData(null);
                 setLoading(true);
-                    axios.post('/users/refresh').then(response => {
-                                // console.log(response);
-                                const  accessToken  = response.data.result.jwt;
-                                // console.log(accessToken);
-                                // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-                                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
-                                // console.log(param);
-                                axios.post('/reservation/check-duplicate-rez',param).then(response =>{
-                                    // console.log(response.data.result);
-                                    if(response.data.isSuccess == false){
-                                        alert('중복된 예약입니다');
-                                        setLoading(false);
-                                        history.push({
-                                            pathname:`/storeReservation/${rzvData.storeIdx}`,
-                                            state :{
-                                                data :{
-                                                    storeName: rzvData.storeName,
-                                                    storeLocation: rzvData.storeLocation
-                                            }}
-                                        });
-                                    }
-                                })
-                                axios.get(`/payment/get_main`).then(response => {
-                                    // console.log(response.data.result);
-                                    if (response.data.isSuccess)
-                                        setCard(response.data.result);
-                                });
-                                axios.get(`/pay/get_user_info`).then(response => {
-                                    // console.log(response.data.result);
-                                    if (response.data.isSuccess)
-                                        setData(response.data.result);
-                                });
-                            });
+                const isDuplicate = await axios.post('/reservation/check-duplicate-rez',param);
+                if(isDuplicate.data.isSuccess == false){
+                    alert('중복된 예약입니다');
+                    setLoading(false);
+                    history.push({
+                        pathname:`/storeReservation/${rzvData.storeIdx}`,
+                        state :{
+                            data :{
+                                storeName: rzvData.storeName,
+                                storeLocation: rzvData.storeLocation
+                        }}
+                    });
+                }
+                
+                const mainCard = await axios.get(`/payment/get_main`);
+                if (mainCard.data.isSuccess)
+                    setCard(mainCard.data.result);
+                
+                const userInfo = await axios.get(`/pay/get_user_info`)
+                if (userInfo.data.isSuccess)
+                    setData(userInfo.data.result);
+                
             }catch (e){
                 setError(e);
             }
+            setLoading(false);
         };
         fetchData();
         const jquery = document.createElement("script");
@@ -121,6 +116,7 @@ const PayPageMenu = ({location, history}) =>{
         return () => {document.head.removeChild(jquery);
         document.head.removeChild(iamport);}   
     },[]);
+
     const onClickPay = ()=>{
         // const billingKey="";
         try{
@@ -216,16 +212,24 @@ const PayPageMenu = ({location, history}) =>{
         IMP.init('imp92209873');
 
     const param = {
-        pg:'kcp',
+        pg:'danal_tpay',
         pay_method: payMethod, //client에서 선택 card(신용카드), samsung(삼성페이), trans(실시간계좌이체), vbank(가상계좌), 또는 phone(휴대폰소액결제), payco(페이코 허브형)
         amount:parseInt(rzvData.payPrice) -(parseInt(couponPrice)+parseInt(pointPrice)), // reservation page에서 get
         name:rzvData.storeName+"_예약", // 필수 값(상품명) 추후 api에서 가져오기
         buyer_name:data.userName, // 구매자 이름 추후 api에서 가져오기
         buyer_email:data.userEmail, // 아이디 추후 api에서 가져오기
         buyer_tel:data.phoneNum, // 전화번호 추후 api에서 가져오기
-        m_redirect_url:'http://localhost:3000/paypage'
+        // m_redirect_url: 'https://'+window.location.hostname+':8080/stores/'+rzvData.storeIdx
     };
+
+    if (isMobile){
+        console.log('mobile');
         IMP.request_pay(param,callback);
+    }else {
+        console.log('pc');
+        param.pg='kcp';
+        IMP.request_pay(param,callback);
+    }
     }
     const callback=(response)=>{
         const {
@@ -278,6 +282,7 @@ const PayPageMenu = ({location, history}) =>{
         }
     }
     return(
+        data && rzvData?
    <S.Container>
        <S.ReserveStatusContainer>
            <h1>예약자 이름</h1>
@@ -328,7 +333,7 @@ const PayPageMenu = ({location, history}) =>{
            onChange={event=>handleSelect(event)}
            />간편 결제</h1></label>
             {
-                card !== null
+                card !== null && card!=undefined
             ? 
             <S.Card key={card.userPaymentIdx}
                 hidden={paySelect!=="billingkeyPay"}>
@@ -396,7 +401,7 @@ const PayPageMenu = ({location, history}) =>{
 
                 <option 
                 key ={select.couponIdx}
-                value={select.amount}
+                value={select.couponPercentage}
                 data-key={select.couponIdx}
                 >{select.couponName}</option>
                ))
@@ -458,7 +463,7 @@ const PayPageMenu = ({location, history}) =>{
 
 
     </S.Container>
-    );
+    :null);
 }
 
 export default PayPageMenu;
