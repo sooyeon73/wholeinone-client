@@ -44,10 +44,13 @@ const Search = ({history, title}) =>{
             console.log("3");
             setData([]);
             const response = await axios.get(`stores?storeName=${Sterm}&userLatitude=37.5533535&userLongitude=127.0235435&orderRule=1`);
+            console.log(response.data.result);
             console.log("4");
             setData((prev)=>[...prev,...response.data.result]);
             console.log("5");
         } catch (e){
+            console.log("에러");
+            console.log(e);
             setError(e);
         }
         setLoading(false);
@@ -114,15 +117,17 @@ useEffect(() => {
                 </S.Header>
                 <p>매장</p>
                 {data.filter((val)=>{
-                    console.log("data: "+data);
+                    //console.log("data: "+);
                     console.log(val);
                     //return val
-                    if(term==""){
-                        return val
-                    }//else if (val.name.toLowerCase().includes(this.term.toLowerCase())){
+                    return val;
+                    //if(term==""){
+                    //}
+                    //else if (val.name.toLowerCase().includes(this.term.toLowerCase())){
                         //return val
                     //}
                 }).map((val,key)=>{
+                    console.log(val);
                     console.log("key: "+key);
                     return (
                         <S.LocationList>
