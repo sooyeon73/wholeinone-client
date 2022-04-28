@@ -278,6 +278,7 @@ const GeoLocationAPI = ({}) => {
 
               console.log("         아무것도체크안함");
               const response = await axios.get(`stores/map?storeName=&userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1`);
+              console.log("         아무것도체크안함 리스폰스호출");
               //console.log(response);
               //console.log(response.data);
               //console.log(response.data.result);

@@ -52,6 +52,7 @@ const Search = ({history, title}) =>{
             console.log("에러");
             console.log(e);
             setError(e);
+            console.log(e);
         }
         setLoading(false);
         console.log("6");
@@ -120,12 +121,11 @@ useEffect(() => {
                     //console.log("data: "+);
                     console.log(val);
                     //return val
-                    return val;
                     //if(term==""){
-                    //}
-                    //else if (val.name.toLowerCase().includes(this.term.toLowerCase())){
+                    //}//else if (val.name.toLowerCase().includes(this.term.toLowerCase())){
                         //return val
                     //}
+                    return val
                 }).map((val,key)=>{
                     console.log(val);
                     console.log("key: "+key);
