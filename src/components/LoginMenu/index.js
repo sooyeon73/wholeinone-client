@@ -38,10 +38,10 @@ const LoginMenu = ({history}) =>{
         console.log(e);
     }}
 
-    const onSilentRefresh = () => {
-const response =         axios.post('/users/refresh');
-console.log(response);
-            onLoginSuccess(response);
+     const onSilentRefresh = async () => {
+        let response = await axios.post('/users/refresh');
+        console.log(response);
+        onLoginSuccess(response);
     }
     
     const onLoginSuccess = response => {
