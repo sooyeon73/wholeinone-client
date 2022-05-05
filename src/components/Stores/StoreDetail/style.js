@@ -121,30 +121,71 @@ padding:10px;
 table{
     margin-bottom:5px;
     font-size:16px;
-    font-weight:500;
+    font-weight:600;
     text-align:center;
     width:100%;
-border-collapse: collapse;
+    border-collapse: collapse;
 }
 thead{
     font-size:15px;
     color: #434343;
     background:lightgrey;
-   
 }
 
 th{
     border-bottom: 1px solid lightgrey;
-
     padding:4px;
-border-right: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    font-weight:500;
+    font-size:15px;
+    h1{ font-weight:500;
+        font-size:15px;}
+}
+th:nth-child(2){
+    width:100px;
+}
+a{    
+    font-size:14.5px;
+    color: grey;
+    width:60px;
+    font-weight:400;
+}
+td{
+    h1{ font-weight:500;
+        font-size:15px;}
+    padding:7px;
+    border-bottom: 1px solid lightgray;
+  }
+`
 
+
+export const CostTable2=styled.div`
+display: block;     
+padding:10px;
+table{
+    margin-bottom:5px;
+    font-size:16px;
+    font-weight:600;
+    text-align:center;
+    width:100%;
+    border-collapse: collapse;
+}
+thead{
+    font-size:15px;
+    color: #434343;
+    background:lightgrey;
 }
 
-th:nth-child(1){
+th{
+    border-bottom: 1px solid lightgrey;
+    padding:4px;
+    border-right: 1px solid lightgrey;
+     font-weight:500;
+    font-size:15px;
+
+    h1{ font-weight:500;
+        font-size:15px;}
 }
-
-
 th:nth-child(2){
     width:100px;
 }
@@ -157,13 +198,10 @@ td:nth-child(1),a{
     font-weight:400;
 }
 td{
-
-
     padding:7px;
-
     border-bottom: 1px solid lightgray;
-
   }
+
 `
 
 export const StoreInfoTitle = styled.div`

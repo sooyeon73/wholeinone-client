@@ -4,7 +4,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 
 const ImageSlide = (props)=>{
 
-    console.log(props);
     const images= props.images;
     const main = props.main;
     return(
