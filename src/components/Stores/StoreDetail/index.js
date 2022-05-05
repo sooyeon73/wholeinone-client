@@ -10,33 +10,85 @@ const StoreDetail = ({match}) =>{
     //match.params.storeIdx로 상세 정보 불러옴
     
     const [data, setData] = useState([]);
-    const [cost, setCost] =useState([]);
+    const [cost, setCost]=useState([[],[]]);
+    const [costCount , setCostCount]=useState([0,0]);
+
     const [specialCost, setSpecialCost] =useState([]);
     const [loading, setLoading ]=useState(false);
     const [error, setError] = useState(null);
     const [coupon,setCoupon]=useState([]);
     const [images, setImages]=useState([]);
-    const location = useLocation();
+
+
+    const MakeData = (cost)=>{
+        let costData=[];
+        cost.map(c=>{
+            const time = c.startTime +"~"+c.endTime;
+            const idx = costData.findIndex(c=>c.Time==time);
+            idx==-1 ? costData.push({
+                "Holi" :c.isHoliday,
+                "Time" : c.startTime +"~"+c.endTime,
+                "Data" : [{
+                    "hole":c.hole,
+                    "price":c.price
+                         }]
+            }) : costData[idx].Data.push({
+                "hole": c.hole,
+                "price": c.price
+            })
+        })
+
+        return costData;
+    }
+
+    const MakeData2 = (cost) => {
+        let costData = [];
+
+        cost.map(c=>{
+            const date = c.startDate + "~" + c.endDate;
+            const idx = costData.findIndex(c=>c.Date==date);
+            idx==-1 ? costData.push({
+                "Date": date,
+                "StartDate":c.startDate,
+                "EndDate": c.endDate,
+                "Data" : [{
+                    "Time" : c.startTime +"~"+c.endTime,
+                    "hole":c.hole,
+                    "price":c.price
+                         }]
+            }) : costData[idx].Data.push({
+                "Time" : c.startTime +"~"+c.endTime,
+                "hole": c.hole,
+                "price": c.price
+            })
+        })
+
+        return costData;
+}
+
+
+    
 
     useEffect(()=>{
         const fetchData = async () =>{
             try {
                 setError(null);
                 setLoading(true);
-
                  const response = await axios.get(`/stores/${idx}`);
                  const cost = await axios.get(`/price/${idx}/week_price`);
                  const coup = await axios.get(`/stores/coupons?storeIdx=${idx}`);
                  const specialCost = await axios.get(`/price/${idx}/period_price`)
-                 console.log(response.data);
-                 const img = await axios.get(`/stores/images/${idx}`);
-                console.log(cost.data);
-                console.log(specialCost.data);
+                 const img = await axios.get(`/stores/images/${idx}`);         
                 setData(response.data.result);
-                setCost(cost.data.result);
+            console.log(cost)
+            setCost([MakeData(cost.data.result.filter(c=>c.isHoliday==false)),
+            MakeData(cost.data.result.filter(c=>c.isHoliday==true))])
+               setCostCount([cost.data.result.filter(c=>c.isHoliday==false).length,
+                cost.data.result.filter(c=>c.isHoliday==true).length])
+
                 setCoupon(coup.data.result);
-                setSpecialCost(specialCost.data.result);
-                console.log(img.data.result);
+                setSpecialCost(                MakeData2(specialCost.data.result)
+                );
                 setImages(img.data.result);
 
             } catch (e){
@@ -46,11 +98,8 @@ const StoreDetail = ({match}) =>{
             setLoading(false);
         };
             fetchData();
-    
     },[]);
-
     const history=useHistory();
-
     return(
    <S.Container>
         <S.StoreContainer>
@@ -92,118 +141,70 @@ const StoreDetail = ({match}) =>{
             <h4><S.PlaceIcon />{data.storeLocation}</h4>
             <h4><S.TimeIcon />영업 시간 - {data.storeTime}</h4>
             <h4><S.GolfIcon />타석 수 - {data.batCount}대</h4>
+            <h4><S.GolfIcon />{data.storeInfo}</h4>
 
             <h4><S.CardIcon />가격 정보</h4>
-            
-            <S.CostTable>
-            <table>
-                <thead>
-                <tr>
-                <th> </th>  <th>시간</th> <th colSpan='2'>가격</th>
-                 </tr>
-                </thead>
-                <tbody>
-                    
-                <th rowSpan={cost.filter(c=>c.isHoliday==false).length+1}>평일</th>
-{cost.map(c=>
-c.isHoliday==false ?
-<tr>
-
-{c.hole==cost[0].hole?
-    
-    <th rowSpan='2'>{c.startTime}~<br/>{c.endTime}</th>
-:null}
-<td><a>{c.hole}홀</a></td>
-<td>{c.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
- </tr>
- :
-null
-)}
-
-<th rowSpan='7'>주말</th>
-{cost.map(c=>
-c.isHoliday==true ?
-<tr>
-
-{c.hole==cost[cost.filter(c=>c.isHoliday==false).length].hole?
-    
-    <th rowSpan='2'>{c.startTime}~<br/>{c.endTime}</th>
-:null}
-<td><a>{c.hole}홀</a></td>
-<td>{c.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
- </tr>
- :
-null
-)}
-          
+                    <S.CostTable>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>  <th>시간</th> <th colSpan='2'>가격</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {costCount[0]!=0?
+                                <th rowSpan={costCount[0]+1}>평일</th>
+                                :null}
+                                {cost[0].map(c =>
+                                            c.Data.map(
+                                                (d,index)=> 
+                                                <tr>
+                                                {index==0?<th rowSpan={c.Data.length}><h1>{c.Time}</h1></th>:null}
+                                                <td><a>{d.hole}홀</a></td>
+                                                <td>{d.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
+                                                </tr>
+                                                )
+                            )}
+                            {costCount[1]!=0?
+                            <th rowSpan={costCount[1]+1}>주말</th>:null}
+                                {cost[1].map(c =>
+                                            c.Data.map(
+                                                (d,index)=> 
+                                                <tr>
+                                                {index==0?<th rowSpan={c.Data.length}>{c.Time}</th>:null}
+                                                <td><a>{d.hole}홀</a></td>
+                                                <td>{d.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
+                                                </tr>
+                                                )
+                            )}
                  </tbody>
                 </table>
                 </S.CostTable>
 
-                <h4><S.CardIcon />특별 기간 가격 정보</h4>            
+                <h4><S.CardIcon />특별 기간 가격 정보</h4>     
                 <S.CostTable>
-            <table>
-                <thead>
-                <tr>
-                <th> </th>  <th>시간</th> <th colSpan='2'>가격</th>
-                 </tr>
-                </thead>
-                <tbody>
-{specialCost.map((c,i)=>
-<tr>
-{/* 첫번째 행의 예외 케이스(행을 팽창X) */}
-{ 0 == i
-        && ((c.startDate != specialCost[i+1].startDate) 
-        || (c.startTime!=specialCost[i+1].startTime))?  
-    <th>{c.startDate}~<br/>{c.endDate}</th>
-:null}
-{ 0 == i
-        && ((c.startDate != specialCost[i+1].startDate) 
-        || (c.startTime!=specialCost[i+1].startTime))?  
-    <th>{c.startTime}~<br/>{c.endTime}</th>
-:null}
-
-{/* 중간 행 (행을 팽창O) */}
-{i < specialCost.length-1 && c.startDate == specialCost[i+1].startDate &&c.startTime==specialCost[i+1].startTime?  
-    <th rowSpan='2'>{c.startDate}~<br/>{c.endDate}</th>
-:null}
-{i < specialCost.length-1 && c.startDate == specialCost[i+1].startDate &&c.startTime==specialCost[i+1].startTime?  
-    <th rowSpan='2'>{c.startTime}~<br/>{c.endTime}</th>
-    :null}
-
-{/* 중간 행 (행을 팽창X) */}
-{ 0 < i && i < specialCost.length-1 
-        && ((c.startDate != specialCost[i-1].startDate && c.startDate != specialCost[i+1].startDate) 
-        || (c.startTime!=specialCost[i-1].startTime && c.startTime!=specialCost[i+1].startTime))?  
-    <th>{c.startDate}~<br/>{c.endDate}</th>
-:null}
-{ 0 < i && i < specialCost.length-1 
-        && ((c.startDate != specialCost[i-1].startDate && c.startDate != specialCost[i+1].startDate) 
-        || (c.startTime!=specialCost[i-1].startTime && c.startTime!=specialCost[i+1].startTime))?  
-    <th>{c.startTime}~<br/>{c.endTime}</th>
-:null}
-
-{/* 마지막 행의 예외 케이스(행을 팽창X) */}
-{ i == specialCost.length-1
-        && ((c.startDate != specialCost[i-1].startDate) 
-        || (c.startTime!=specialCost[i-1].startTime))?  
-    <th>{c.startDate}~<br/>{c.endDate}</th>
-:null}
-
-{ i == specialCost.length-1
-        && ((c.startDate != specialCost[i-1].startDate) 
-        || (c.startTime!=specialCost[i-1].startTime))?  
-    <th>{c.startTime}~<br/>{c.endTime}</th>
-:null}
-
-<td><a>{c.hole}홀</a></td>
-<td>{c.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
- </tr>
-)}
-          
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>  <th>시간</th> <th colSpan='2'>가격</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 {specialCost.map(c =>
+                                            c.Data.map(
+                                                (d,index)=> 
+                                                <tr>
+                                                {index==0?<th rowSpan={c.Data.length}>{c.StartDate}<br/>~{c.EndDate}</th>:null}
+                                                <th><h1>{d.Time}</h1></th>
+                                                <td><a>{d.hole}홀</a></td>
+                                                <td>{d.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
+                                                </tr>
+                                                )
+                            )}
                  </tbody>
                 </table>
                 </S.CostTable>
+
 
             <h4><S.ServiceIcon />시설 정보</h4>
             {data.lefthandStatus ==0 &&
