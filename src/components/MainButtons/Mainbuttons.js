@@ -314,11 +314,30 @@ function Mainbuttons(props, props_option, props_lists) {
     const [open, setOpen] = React.useState(false);
     const [open_option, setOpen_option] = React.useState(false);
     const [open_lists, setOpen_lists] = React.useState(false);
-  
-    const toggleDrawer = (newOpen) => () => {
-      setOpen(newOpen);
+
+    const sChecked = () => {
+      let bsc = location.state.brandcheck;
+      let bvu = location.state.brandvalue;
+      
+      let fsc = location.state.facicheck;
+      let fvu = location.state.facivalue;
+      //console.log(fvu);
+      
+      let dsc = location.state.discheck;
+      let dvu = location.state.disvalue;
+      
+      setbrandChecked(bsc);
+      setbrandValue(bvu);
+      
+      setfaciChecked(fsc);
+      setfaciValue(fvu);
+
+      setdistanceChecked(dsc);
+      setdisValue(dvu);
     };
+
     const toggleDrawer_option_filter = (newOpen) => () => {
+      sChecked();
       fetchBrands();
       setOpen_option(newOpen);
     };
@@ -341,8 +360,8 @@ function Mainbuttons(props, props_option, props_lists) {
       listdata = location.state.listdata;
       setLists(listdata);
       //history.push()
-      //console.log("Mainbuttons의 listdata: ");
-      //console.log(listdata);
+      console.log("Mainbuttons의 listdata: ");
+      console.log(listdata);
       //console.log("LIST");
       //console.log(list);
       drawlists();
@@ -445,12 +464,15 @@ function Mainbuttons(props, props_option, props_lists) {
     const [myDate, setmyDate] = useState(new Date());
     const [bChecked, setChecked] = useState(false);
 
-    const faciarr = [0,0,0,0,0,0];
+    //const faciarr = [-1,0,0,0,0,0,0];
+
+    const [faciarr, setFaciarr] = useState([-1,0,0,0,0,0,0]);
 
     const [brandChecked, setbrandChecked] = useState(false);
-    const [brandvalue, setbrandValue] = useState(1);
+    const [brandvalue, setbrandValue] = useState([]);
 
     const [faciChecked, setfaciChecked] = useState(false);
+    const [facivalue, setfaciValue] = useState([]);
     const [distanceChecked, setdistanceChecked] = useState(false);
 
     const [ordervalue, setorderValue] = useState("distance");
@@ -476,8 +498,12 @@ function Mainbuttons(props, props_option, props_lists) {
       // do whatever you want with isChecked value
     }
 
+    let sw=0;
+
     const faciarray = idx => {
       console.log(idx);
+      //console.log(faciarr);
+      console.log(faciarr[idx]);
       if(faciarr[idx]){
         faciarr[idx] = 0;
       } else{
@@ -505,16 +531,27 @@ function Mainbuttons(props, props_option, props_lists) {
       setLoading(false);
     });
 
+    const setbrandtext = () =>{
+      console.log(brandvalue);
+    }
+
+    const vbSet = idx => {
+      console.log(brandvalue);
+      console.log(idx);
+      if(brandvalue[idx]){
+        brandvalue[idx] = 0;
+      } else{
+        brandvalue[idx] = 1;
+      }
+      console.log(brandvalue);
+    }
+
     return (
         <>
             <S.Container>
                 <IconContext.Provider value={{ color: '#000' }}>
                     <div className='btn_filter' onClick={toggleDrawer_option_filter(true)}>
                         <BiIcons.BiSliderAlt className='filter_icon'/>
-                    </div>
-
-                    <div className='btn_time' onClick={toggleDrawer(true)}>
-                        <BiIcons.BiTimeFive className='time_icon'/>
                     </div>
 
                     <div className='btn_bottom_list_view' onClick={
@@ -580,16 +617,17 @@ function Mainbuttons(props, props_option, props_lists) {
                             >
                             <div className='filter_menu_subtitle'>
                                 <div className='filter_brand_off'>
-                                    <input type="checkbox" id="brand_checkboxall" name="brandall" onChange={e=>handlebrandChange(e)} /><label classname="brandall" for="brand_checkboxall"> √</label>
+                                    <input type="checkbox" id="brand_checkboxall" name="brandall" onChange={e=>handlebrandChange(e)} checked = {brandChecked ? true : false}/><label classname="brandall" for="brand_checkboxall"> √</label>
                                 </div>  
                                 <h3>브랜드</h3>
                             </div>
                             <div className='filter_menu_buttons' height="800px">
                                 {data && data.map(d=>{
                                   let brandid = "brand_checkbox"+d.brandIdx;
+                                  //console.log(d.brandIdx);
                                   return(
                                     <>
-                                    <input type="radio" id={brandid} name="brand" disabled={!brandChecked} onChange={e=>setbrandValue(d.brandIdx)}/><label for={brandid}>{d.brandName}</label>
+                                    <input type="checkbox" id={brandid} name="brand" disabled={!brandChecked} onChange={e=>vbSet(d.brandIdx)} checked = {brandvalue[d.brandIdx]==1 ? true: false}/><label for={brandid}>{d.brandName}</label>
                                     </>    
                                   )
                                 })}
@@ -609,17 +647,17 @@ function Mainbuttons(props, props_option, props_lists) {
                             >
                             <div className='filter_menu_subtitle'>
                                 <div className='filter_brand_off'>
-                                  <input type="checkbox" id="faci_checkboxall" name="faciall" onChange={e=>handlefaciChange(e)}/><label classname="faciall" for="faci_checkboxall"> √</label>
+                                  <input type="checkbox" id="faci_checkboxall" name="faciall" onChange={e=>handlefaciChange(e)} checked = {faciChecked ? true : false} /><label classname="faciall" for="faci_checkboxall"> √</label>
                                 </div> 
                                 <h3>시설</h3>   
                             </div>
                             <div className='filter_menu_buttons'>
-                                <input type="checkbox" name="option" id="facility_checkbox1" disabled={!faciChecked} onChange = {e => faciarray(1)}/><label for="facility_checkbox1">왼손타석</label>
-                                <input type="checkbox" name="option" id="facility_checkbox2" disabled={!faciChecked} onChange = {e => faciarray(2)}/><label for="facility_checkbox2">주차시설</label>
-                                <input type="checkbox" name="option" id="facility_checkbox3" disabled={!faciChecked} onChange = {e => faciarray(3)}/><label for="facility_checkbox3">단체석</label>
-                                <input type="checkbox" name="option" id="facility_checkbox4" disabled={!faciChecked} onChange = {e => faciarray(4)}/><label for="facility_checkbox4">바닥스크린</label>
-                                <input type="checkbox" name="option" id="facility_checkbox5" disabled={!faciChecked} onChange = {e => faciarray(5)}/><label for="facility_checkbox5">프로교습</label>
-                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)}/><label for="facility_checkbox6">장비보관</label>
+                                <input type="checkbox" name="option" id="facility_checkbox1" disabled={!faciChecked} onChange = {e => faciarray(1)} /><label for="facility_checkbox1">왼손타석</label>
+                                <input type="checkbox" name="option" id="facility_checkbox2" disabled={!faciChecked} onChange = {e => faciarray(2)} /><label for="facility_checkbox2">주차시설</label>
+                                <input type="checkbox" name="option" id="facility_checkbox3" disabled={!faciChecked} onChange = {e => faciarray(3)} /><label for="facility_checkbox3">단체석</label>
+                                <input type="checkbox" name="option" id="facility_checkbox4" disabled={!faciChecked} onChange = {e => faciarray(4)} /><label for="facility_checkbox4">바닥스크린</label>
+                                <input type="checkbox" name="option" id="facility_checkbox5" disabled={!faciChecked} onChange = {e => faciarray(5)} /><label for="facility_checkbox5">프로교습</label>
+                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)} />{console.log(facivalue[6])}<label for="facility_checkbox6">장비보관</label>
                             </div>
 
 
@@ -638,7 +676,7 @@ function Mainbuttons(props, props_option, props_lists) {
                             >
                             <div className='filter_menu_subtitle'>
                                 <div className='filter_brand_off'>
-                                  <input type="checkbox" id="distance_checkboxall" name="distanceall" onChange={e=>handledistanceChange(e)} /><label classname="distanceall" for="distance_checkboxall"> √</label>
+                                  <input type="checkbox" id="distance_checkboxall" name="distanceall" onChange={e=>handledistanceChange(e)} checked = {distanceChecked ? true : false}/><label classname="distanceall" for="distance_checkboxall"> √</label>
                                 </div>
                                 <h3>거리</h3>
                             </div>
@@ -675,6 +713,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                     //console.log("Filter click -> Object filter to Main")
                                     }>
                                     <span className='btn_center' onClick={()=>{
+                                      setbrandtext();
                                       history.push({
                                         // 필터 내용 전송 -> 메인 화면
                                         // 전송 data: 필터 obj
@@ -696,134 +735,6 @@ function Mainbuttons(props, props_option, props_lists) {
                             </div>
                         </SwipeableDrawer>
                     </Root_option>
-
-
-                    <Root>
-                        <CssBaseline />
-                            <Global
-                                styles={{
-                                '.MuiPaper-root': {
-                                    height: `auto`,
-                                    overflow: 'visible',
-                                    borderTopLeftRadius: 24,
-                                    borderTopRightRadius: 24,
-                                    },
-                                }}
-                            />
-                            <SwipeableDrawer
-                                container={container}
-                                anchor="bottom"
-                                open={open}
-                                onClose={toggleDrawer(false)}
-                                onOpen={toggleDrawer(true)}
-                                swipeAreaWidth={drawerBleeding}
-                                disableSwipeToOpen={false}
-                                ModalProps={{
-                                    keepMounted: true,
-                                }}
-                            >
-                            <StyledBox
-                                sx={{
-                                    position: 'relative',
-                                    top: -drawerBleeding-0,
-                                    borderTopLeftRadius: 24,
-                                    borderTopRightRadius: 24,
-                                    visibility: 'visible',
-                                    right: 0,
-                                    left: 0,
-                                }}
-                            >
-                                <Puller />
-                                <div className='time_filter_title'>
-                                  <span className='time_filter_title_text'>티업 일시</span>
-                                  <span id="tee-up_time" className='time_filter_time_text'>티업 날짜를 선택해주세요!</span>
-                                </div>
-                            </StyledBox>
-                            <StyledBox
-                                sx={{
-                                    position: 'relative',
-                                    px: 2,
-                                    pb: 2,
-                                    borderTopLeftRadius: 24,
-                                    borderTopRightRadius: 24,
-                                    visibility: 'visible',
-                                    height: '120px',
-                                    overflow: 'auto',
-                                }}
-                            >
-                                <div className='time_filter_select_day'>
-                                    <DatePicker id='datepicker'
-                                        getSelectedDay={selectedDay}
-                                        defaultValue={selectedDay}
-                                        endDate={0}
-                                        labelFormat={"y.M."}
-                                        color={"#22A8A5"}
-                                    />
-                                </div>
-                            </StyledBox>
-                            <StyledBox
-                                sx={{
-                                    position: 'relative',
-                                    px: 2,
-                                    pb: 2,
-                                    borderTopLeftRadius: 24,
-                                    borderTopRightRadius: 24,
-                                    visibility: 'visible',
-                                    height: '120px',
-                                    overflow: 'auto',
-                                }}
-                            >
-                                <div className='time_filter_select_time'>
-                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                      <Stack>
-                                      </Stack>
-                                    </LocalizationProvider>
-                                    <ThemeProvider theme={materialTheme}>
-                                        <MuiPickersUtilsProvider utils={MomentUtils}>
-                                            <TimePicker id='timepicker'
-                                                ampm={false}
-                                                style={{ marginTop: "0px", width:"100%", borderRadius:"12px", border:"2px solid #22A8A5"}}
-                                                format={"HH:mm"}
-                                                inputVariant="filled"
-                                                defaultValue={(value)=>{
-                                                  selectedTime(value)
-                                                }}
-                                                TextFieldComponent={CssTextField}
-                                                size="medium"
-                                                value={myDate}
-                                                onChange={(value)=>{
-                                                  setmyDate(value)
-                                                  selectedTime(value)
-                                                }}
-                                                label="티업 시각"
-                                            />
-                                        </MuiPickersUtilsProvider>
-                                    </ThemeProvider>
-                                </div>
-                            </StyledBox>
-                            <div className='time_filter_apply_area'>
-                                <div className='time_filter_reset_btn'>
-                                    <span className='btn_center'>재설정</span>
-                                </div>
-                                <div className='time_filter_apply_btn' onClick={()=>{history.push({
-                                      // 시간 내용 전송 -> 메인 화면
-                                      // 전송 data: 시간 객체 data의 obj
-                                    pathname: `/`,
-                                    //state: {}
-                                  })
-                                    
-                                    console.log("Time_filter_click ==> Date obj to Main")
-                                    }}>
-                                    <span className='btn_center'>필터 적용</span>
-                                </div>
-                            </div>
-                        </SwipeableDrawer>
-                    </Root>
-
-
-
-
-
 
                     <Root_lists>
                         <CssBaseline />

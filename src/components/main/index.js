@@ -90,6 +90,9 @@ const GeoLocationAPI = ({}) => {
       let brandcheck = location.state.brandcheck;
       let brandvalue = location.state.brandvalue;
 
+      //console.log(brandcheck);
+      //console.log(brandvalue);
+
       nowbrandch=brandcheck;
       if(nowbrandch==null) nowbrandch=false;
       nowbrandvu=brandvalue;
@@ -97,6 +100,9 @@ const GeoLocationAPI = ({}) => {
       let facicheck = location.state.facicheck;
       let facivalue = location.state.facivalue;
     
+      //console.log(facicheck);
+      //console.log(facivalue);
+
       nowfacich=facicheck;
       if(nowfacich==null) nowfacich=false;
       nowfacivu=facivalue;
@@ -104,6 +110,9 @@ const GeoLocationAPI = ({}) => {
       let discheck = location.state.discheck;
       let disvalue = location.state.disvalue;
     
+      //console.log(discheck);
+      //console.log(disvalue);
+
       nowdisch=discheck;
       if(nowdisch==null) nowdisch=false;
       nowdisvu=disvalue;
@@ -238,7 +247,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         brandvalue: "+nowbrandvu);
               console.log("         facivalue: "+nowfacivu);
               console.log("         disvalue: "+ nowdisvu);
-              const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=`+nowdisvu+``);
+              const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1,2,3,4,5,6,7,8,9,10&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=`+nowdisvu+``);
               //console.log(response);
               console.log(response.data);
               //console.log(response.data.result);
@@ -251,7 +260,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         brandvalue: "+nowbrandvu);
               console.log("         facivalue: "+nowfacivu);
               console.log("         disvalue: "+ nowdisvu);
-              const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=16`);
+              const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1,2,3,4,5,6,7,8,9,10&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=16`);
               //console.log(response);
               console.log(response.data);
               //console.log(response.data.result);
@@ -267,7 +276,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         brandvalue: "+nowbrandvu);
               console.log("         facivalue: "+nowfacivu);
               console.log("         disvalue: "+ nowdisvu);
-              const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1&lefthandStatus=0&parkingStatus=0&groupseatStatus=0&floorscreenStatus=0&storageStatus=0&lessonStatus=0&distance=`+nowdisvu+``);
+              const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=1,2,3,4,5,6,7,8,9,10&lefthandStatus=0&parkingStatus=0&groupseatStatus=0&floorscreenStatus=0&storageStatus=0&lessonStatus=0&distance=`+nowdisvu+``);
               //console.log(response);
               console.log(response.data);
               //console.log(response.data.result);
@@ -279,7 +288,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         아무것도체크안함");
               const response = await axios.get(`stores/map?storeName=&userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1`);
               //console.log(response);
-              //console.log(response.data);
+              console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -290,7 +299,7 @@ const GeoLocationAPI = ({}) => {
         //console.log("체크밸류 종료");
         let tomainbtns = () =>{
           //console.log("tomainbtns!");
-          //console.log(listdata);
+          console.log(listdata);
           if(listdata==undefined){
             //console.log("리스트데이터 undefined");
           }else{
