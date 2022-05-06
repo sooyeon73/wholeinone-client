@@ -28,8 +28,10 @@ const LoginMenu = ({history}) =>{
 
         try{
 
-        axios.post('/users/login', data).then(
-        onLoginSuccess)
+        axios.post('/users/login', data).then(res=>{
+            if(onLoginSuccess(res))
+                goBack();
+        })
         .catch(error => {
             setErr0("로그인에 실패했습니다.");
             console.log(error);
@@ -37,10 +39,9 @@ const LoginMenu = ({history}) =>{
     }catch(e){
         console.log(e);
     }}
-
-     const onSilentRefresh = async () => {
+    const onSilentRefresh = async () => {
         let response = await axios.post('/users/refresh');
-        console.log(response);
+        console.log("refresh now");
         onLoginSuccess(response);
     }
     
@@ -64,10 +65,8 @@ const LoginMenu = ({history}) =>{
                 else if (code==2030){
                     setErr0("비밀번호가 틀렸습니다. 비밀번호를 다시 입력해주세요.");
                 }
-                else{
-                    goBack();
-                }      
-
+                else
+                    return true;
 
       }
       
