@@ -9,8 +9,9 @@ import {GiGolfTee} from "react-icons/gi";
 export const IconContainer =styled.div`
 
 display:inline-block;
-padding:22px;
+padding:25px 22px 30px 22px;
 width:120px;
+cursor:pointer;
 h3{
     display:inline;
     font-size: 17px;
@@ -24,7 +25,7 @@ h3{
 export const CallIcon = styled(IoCall)`
     width: 25px;
     height: 25px;
-    padding: 6px;
+    padding-right: 7px;
     vertical-align:top;  
 `
 
@@ -80,7 +81,7 @@ export const PlaceIcon = styled(MdPlace)`
 export const ShareIcon = styled(BsShareFill)`
     width: 25px;
     height: 25px;
-    padding: 6px;
+    padding-right: 7px;
     vertical-align:top;  
 `
 
@@ -90,6 +91,7 @@ height: 23px;
 padding: 0px 0px 5px 13px;
 vertical-align:middle;  
 color: #434343;
+cursor:pointer;
 
 
 `
@@ -114,6 +116,12 @@ h4{
     line-height: 35px;
 
 }
+`
+export const Info =styled.div`
+width:85%;
+display:inline-block;
+vertical-align:top;  
+
 `
 export const CostTable=styled.div`
 display: block;     
