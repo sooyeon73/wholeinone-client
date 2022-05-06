@@ -20,6 +20,7 @@ import PayPage from './pages/PayPage';
 import ReviewPage from './pages/ReviewPage';
 import onSilentRefresh from './components/LoginMenu/index';
 import MyCouponPage from './pages/MyCouponPage';
+import UserEditPage from './pages/UserEditPage';
 
 function App() {
 
@@ -34,7 +35,8 @@ return (
             <Route path="/signup" component={SignUpPage} />
 
            <PrivateRoute path="/mypage" component={MyPage} />
-           <Route path="/mycoupon" component={MyCouponPage} />
+           <PrivateRoute path="/useredit" component={UserEditPage} />
+           <PrivateRoute path="/mycoupon" component={MyCouponPage} />
 
             <PrivateRoute path="/favorites" component={FavoritesPage} />
             <Route path="/visited" component={VisitedPage} />

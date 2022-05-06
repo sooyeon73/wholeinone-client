@@ -16,7 +16,6 @@ const history=useHistory();
         const fetchUsers = async () =>{
             try {
                 setError(null);
-                setData(null);
                 setLoading(true);
                 
                 const response = await axios.get("users/mypage");
@@ -48,7 +47,9 @@ const history=useHistory();
             data.userImage ? 
             <img src={data.userImage} alt="userimg"/> :  <img src={"https://via.placeholder.com/65"} alt="userimg"/>
             }
-           <h3>{data.nickName} 님</h3>
+           <h3>{data.nickName} 님 
+           <Link to={{pathname:`/useredit`}} style={{ color: 'inherit', textDecoration: 'inherit'}}> 
+           <S.Button>수정</S.Button></Link></h3>
        </S.UserWrapper>
        <S.Menu>
         <table>
