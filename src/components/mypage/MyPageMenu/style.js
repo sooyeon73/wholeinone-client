@@ -22,6 +22,20 @@ export const UserWrapper = styled.div`
    
 `
 
+export const Button=styled.div`
+    position:fixed;
+    right:50px;
+    width:55px;
+    height: 35px;
+    line-height:35px;
+    font-size: 14px;
+    text-align:center;
+    display: inline-block;
+    border-radius: 7px; 
+    border: 1px solid #A0A0A0;
+`
+
+
 export const Menu = styled.div`
     padding:13px;    
     display: block;

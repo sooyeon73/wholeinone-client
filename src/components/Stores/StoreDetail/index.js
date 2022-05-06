@@ -100,6 +100,18 @@ const StoreDetail = ({match}) =>{
             fetchData();
     },[]);
     const history=useHistory();
+
+    const linkCopy = () =>{
+        let url ="";
+        let textarea = document.createElement("textarea");
+        document.body.appendChild(textarea);
+        url = window.document.location.href;
+        textarea.value=url;
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        alert("URL이 복사되었습니다");
+    }
     return(
    <S.Container>
         <S.StoreContainer>
@@ -107,13 +119,15 @@ const StoreDetail = ({match}) =>{
             <S.StoreInfoTitle>
             <h1>{data.storeName}</h1>
          
-            <h2><a>★</a> <h3>{data.reviewStar}</h3> {data.storeBrand}</h2>
+            <h2><a>★</a> <h3>{data.reviewStar}{(""+data.reviewStar).length==1?".0":null}</h3> {data.storeBrand}</h2>
             <a  href={`tel:${data.storePhoneNumber}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
             <S.IconContainer>
             <S.CallIcon/> <h3>전화</h3>
             </S.IconContainer>
             </a>
-            <S.IconContainer>
+            <S.IconContainer
+            onClick={()=>linkCopy()}
+            >
             <S.ShareIcon/> <h3>공유</h3>
             </S.IconContainer>
             </S.StoreInfoTitle>
@@ -141,7 +155,7 @@ const StoreDetail = ({match}) =>{
             <h4><S.PlaceIcon />{data.storeLocation}</h4>
             <h4><S.TimeIcon />영업 시간 - {data.storeTime}</h4>
             <h4><S.GolfIcon />타석 수 - {data.batCount}대</h4>
-            <h4><S.GolfIcon />{data.storeInfo}</h4>
+            <h4><S.GolfIcon /><S.Info>{data.storeInfo}</S.Info></h4>
 
             <h4><S.CardIcon />가격 정보</h4>
                     <S.CostTable>
@@ -180,7 +194,8 @@ const StoreDetail = ({match}) =>{
                  </tbody>
                 </table>
                 </S.CostTable>
-
+{specialCost.length!=0?
+<div>
                 <h4><S.CardIcon />특별 기간 가격 정보</h4>     
                 <S.CostTable>
                         <table>
@@ -203,7 +218,7 @@ const StoreDetail = ({match}) =>{
                             )}
                  </tbody>
                 </table>
-                </S.CostTable>
+                </S.CostTable></div>:null}
 
 
             <h4><S.ServiceIcon />시설 정보</h4>
