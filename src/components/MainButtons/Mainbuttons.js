@@ -180,6 +180,9 @@ const drawerBleeding = 0;
 const drawerBleeding_option = 0
 const drawerBleeding_lists = 0
 
+
+let brandState="";
+
 const Root = styled('div')(({ theme }) => ({
   height: '100%',
   backgroundColor:
@@ -290,6 +293,8 @@ function valueLabelFormat(value) {
 }
 
 function calculateValue(value) {
+  //console.log("칼큘레이트");
+  //console.log(value);
   if(value>1) return 2 ** value / 2;
   else if(value==1) return value;
   else return value;
@@ -324,7 +329,8 @@ function Mainbuttons(props, props_option, props_lists) {
       //console.log(fvu);
       
       let dsc = location.state.discheck;
-      let dvu = location.state.disvalue;
+      let dvu = disvalue;
+      console.log("DVU: "+dvu);
       
       setbrandChecked(bsc);
       setbrandValue(bvu);
@@ -359,7 +365,6 @@ function Mainbuttons(props, props_option, props_lists) {
     function getlist(){
       listdata = location.state.listdata;
       setLists(listdata);
-      //history.push()
       console.log("Mainbuttons의 listdata: ");
       console.log(listdata);
       //console.log("LIST");
@@ -408,7 +413,7 @@ function Mainbuttons(props, props_option, props_lists) {
     const [lists, setlists] = useState(false);
     const showlists = () => setlists(!lists);
 
-    const [disvalue, setdisValue] = React.useState(4);
+    const [disvalue, setdisValue] = React.useState(5);
 
     const handledisChange = (event, newValue) => {
       console.log("거리: "+newValue);
@@ -467,6 +472,7 @@ function Mainbuttons(props, props_option, props_lists) {
     //const faciarr = [-1,0,0,0,0,0,0];
 
     const [faciarr, setFaciarr] = useState([-1,0,0,0,0,0,0]);
+    const [brandarr, setBrandarr] = useState([]);
 
     const [brandChecked, setbrandChecked] = useState(false);
     const [brandvalue, setbrandValue] = useState([]);
@@ -481,24 +487,22 @@ function Mainbuttons(props, props_option, props_lists) {
       let isChecked = e.target.checked;
       console.log("브랜드 체크? : " + isChecked);
       setbrandChecked(isChecked);
-      // do whatever you want with isChecked value
     }
 
     const handlefaciChange = e => {
       let isChecked = e.target.checked;
       console.log("시설 체크? : " + isChecked);
       setfaciChecked(isChecked);
-      // do whatever you want with isChecked value
     }
 
     const handledistanceChange = e => {
       let isChecked = e.target.checked;
       console.log("거리 체크? : " + isChecked);
       setdistanceChecked(isChecked);
-      // do whatever you want with isChecked value
     }
 
     let sw=0;
+    let cnt=0;
 
     const faciarray = idx => {
       console.log(idx);
@@ -512,22 +516,38 @@ function Mainbuttons(props, props_option, props_lists) {
       console.log(faciarr);
     }
 
+    const brandarray = idx => {
+      console.log(idx);
+      console.log(brandarr);
+      //console.log(brandarr[idx]);
+      if(brandarr[idx]==1){
+        brandarr[idx] = 0;
+      } else{
+        brandarr[idx] = 1;
+      }
+      console.log(brandarr);
+      let midbrandState="";
+      for(var i=1 ; i<brandarr.length ; i++){
+        if(brandarr[i]==1){
+          midbrandState += (i+",").toString();
+        }
+      }
+      brandState = midbrandState.slice(0,-1);
+      //console.log(midbrandstate);
+      console.log(brandState);
+    }
+
     const fetchBrands = useCallback(async () =>{
       console.log("fb");
       try {
           setError(null);
-          setLoading(true);    
-          //setData([]);
-          //console.log("브랜드 패치");
+          setLoading(true);
           const response = await axios.get(`stores/brand`);
-          //console.log("브랜드 패치2");
           setData(response.data.result);
-          //console.log(data);
       } catch (e){
           setError(e);
           console.log(e);
       }
-      //console.log(data);
       setLoading(false);
     });
 
@@ -535,16 +555,23 @@ function Mainbuttons(props, props_option, props_lists) {
       console.log(brandvalue);
     }
 
-    const vbSet = idx => {
-      console.log(brandvalue);
-      console.log(idx);
-      if(brandvalue[idx]){
-        brandvalue[idx] = 0;
-      } else{
-        brandvalue[idx] = 1;
-      }
-      console.log(brandvalue);
-    }
+    useEffect(() => {
+      history.replace({
+      pathname: `/`,
+      state: {
+        brandcheck: false,
+        brandvalue: brandvalue,
+
+        facicheck: false,
+        facivalue: faciarr,
+
+        discheck: false,
+        disvalue: 2 ** (disvalue-1),
+
+        loccode: 0,
+        brandstate: brandState,
+      }});
+    },[]);
 
     return (
         <>
@@ -627,7 +654,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                   //console.log(d.brandIdx);
                                   return(
                                     <>
-                                    <input type="checkbox" id={brandid} name="brand" disabled={!brandChecked} onChange={e=>vbSet(d.brandIdx)} checked = {brandvalue[d.brandIdx]==1 ? true: false}/><label for={brandid}>{d.brandName}</label>
+                                    <input type="checkbox" id={brandid} name="brand" disabled={!brandChecked} onChange={e=>brandarray(d.brandIdx)} /><label for={brandid}>{d.brandName}</label>
                                     </>    
                                   )
                                 })}
@@ -644,10 +671,11 @@ function Mainbuttons(props, props_option, props_lists) {
                                     height: '100%',
                                     overflow: 'auto',
                                 }}
+
                             >
                             <div className='filter_menu_subtitle'>
                                 <div className='filter_brand_off'>
-                                  <input type="checkbox" id="faci_checkboxall" name="faciall" onChange={e=>handlefaciChange(e)} checked = {faciChecked ? true : false} /><label classname="faciall" for="faci_checkboxall"> √</label>
+                                  <input type="checkbox" id="faci_checkboxall" name="faciall" onChange={e=>handlefaciChange(e)} checked = {faciChecked ? true : false}/><label classname="faciall" for="faci_checkboxall"> √</label>
                                 </div> 
                                 <h3>시설</h3>   
                             </div>
@@ -657,7 +685,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <input type="checkbox" name="option" id="facility_checkbox3" disabled={!faciChecked} onChange = {e => faciarray(3)} /><label for="facility_checkbox3">단체석</label>
                                 <input type="checkbox" name="option" id="facility_checkbox4" disabled={!faciChecked} onChange = {e => faciarray(4)} /><label for="facility_checkbox4">바닥스크린</label>
                                 <input type="checkbox" name="option" id="facility_checkbox5" disabled={!faciChecked} onChange = {e => faciarray(5)} /><label for="facility_checkbox5">프로교습</label>
-                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)} />{console.log(facivalue[6])}<label for="facility_checkbox6">장비보관</label>
+                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)} /><label for="facility_checkbox6">장비보관</label>
                             </div>
 
 
@@ -705,16 +733,36 @@ function Mainbuttons(props, props_option, props_lists) {
                               
                             </StyledBox_option>
                             <div className='time_filter_apply_area'>
-                                <div className='time_filter_reset_btn'>
-                                    <span className='btn_center'>재설정</span>
+                                <div className='time_filter_reset_btn' onClick={toggleDrawer_option_filter(false)}>
+                                    <span className='btn_center' onClick={()=>{
+                                      //alert("재설정");
+                                      history.replace({
+                                        // 필터 내용 전송 -> 메인 화면
+                                        // 전송 data: 필터 obj
+                                      pathname: `/`,
+                                      state: {
+                                        brandcheck: false,
+                                        brandvalue: brandvalue,
+
+                                        facicheck: false,
+                                        facivalue: faciarr,
+
+                                        discheck: false,
+                                        disvalue: 2 ** (disvalue-1),
+
+                                        loccode: 0,
+                                        brandstate: brandState,
+                                            }})
+                                    }}>재설정</span>
                                 </div>
-                                <div className='time_filter_apply_btn' onClick={
-                                      toggleDrawer_option_filter(false)
-                                    //console.log("Filter click -> Object filter to Main")
-                                    }>
+
+                                <div className='time_filter_apply_btn' onClick={toggleDrawer_option_filter(false)}>
                                     <span className='btn_center' onClick={()=>{
                                       setbrandtext();
-                                      history.push({
+                                      console.log("disvalue");
+                                      console.log(disvalue);
+                                      console.log(2 ** (disvalue-1));
+                                      history.replace({
                                         // 필터 내용 전송 -> 메인 화면
                                         // 전송 data: 필터 obj
                                       pathname: `/`,
@@ -726,9 +774,10 @@ function Mainbuttons(props, props_option, props_lists) {
                                         facivalue: faciarr,
 
                                         discheck: distanceChecked,
-                                        disvalue: calculateValue(disvalue),
+                                        disvalue: 2 ** (disvalue-1),
 
-                                        loccode: 0
+                                        loccode: 0,
+                                        brandstate: brandState,
                                             }})
                                     }}>필터 적용</span>
                                 </div>
@@ -781,7 +830,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                     borderTopLeftRadius: 24,
                                     borderTopRightRadius: 24,
                                     visibility: 'visible',
-                                    height: '10%',
+                                    top: 8,
+                                    height: 100,
                                     overflow: 'auto',
                                 }}
                             >
@@ -796,6 +846,7 @@ function Mainbuttons(props, props_option, props_lists) {
                               borderTopLeftRadius: 24,
                               borderTopRightRadius: 24,
                               visibility: 'visible',
+                              top:10,
                               height: '50%',
                               overflow: 'auto',
                             }}
