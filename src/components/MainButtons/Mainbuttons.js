@@ -560,13 +560,13 @@ function Mainbuttons(props, props_option, props_lists) {
       pathname: `/`,
       state: {
         brandcheck: false,
-        brandvalue: brandvalue,
+        brandvalue: -1,
 
         facicheck: false,
-        facivalue: faciarr,
+        facivalue: [-1,-1,-1,-1,-1,-1,-1],
 
         discheck: false,
-        disvalue: 2 ** (disvalue-1),
+        disvalue: 16,
 
         loccode: 0,
         brandstate: brandState,
@@ -748,7 +748,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                         facivalue: faciarr,
 
                                         discheck: false,
-                                        disvalue: 2 ** (disvalue-1),
+                                        disvalue: 16,
 
                                         loccode: 0,
                                         brandstate: brandState,
@@ -762,6 +762,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                       console.log("disvalue");
                                       console.log(disvalue);
                                       console.log(2 ** (disvalue-1));
+                                      let resdisvalue = 2 ** (disvalue-1);
+                                      if(resdisvalue<1) resdisvalue=1;
                                       history.replace({
                                         // 필터 내용 전송 -> 메인 화면
                                         // 전송 data: 필터 obj
@@ -774,7 +776,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                         facivalue: faciarr,
 
                                         discheck: distanceChecked,
-                                        disvalue: 2 ** (disvalue-1),
+                                        disvalue: resdisvalue,
 
                                         loccode: 0,
                                         brandstate: brandState,
