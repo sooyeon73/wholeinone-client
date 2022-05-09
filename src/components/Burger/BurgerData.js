@@ -14,8 +14,8 @@ export const BurgerData = [
   },
   {
     id: 3,
-    title: '찜 매장',
-    path: '/favorites',
+    title: '최근 본 매장',
+    path: '/visited',
     cName: 'nav-text'
   },
   {
