@@ -112,17 +112,19 @@ const GeoLocationAPI = ({}) => {
       let discheck = location.state.discheck;
       let disvalue = location.state.disvalue;
     
-      console.log(discheck);
-      console.log(disvalue);
+      //console.log(discheck);
+      //console.log(disvalue);
 
       nowdisch=discheck;
       if(nowdisch==null) nowdisch=false;
       nowdisvu=disvalue;
 
       let nowbrandstate = location.state.brandstate;
-      console.log("브스");
-      console.log(brandstate);
+      //console.log("브스");
+      //console.log(brandstate);
       brandstate=nowbrandstate;
+
+      console.log("록코드: " + location.state.loccode);
 
     } catch(e){
       nowbrandch=false;
@@ -154,9 +156,11 @@ const GeoLocationAPI = ({}) => {
   };
   
   useEffect(()=>{
-    //console.log("location 변화 감지!");
-    checksetiings();
-    onChange();
+    console.log("location 변화 감지!");
+    if(location.state.loccode!=1){
+      checksetiings();
+      onChange();
+    }
   },[location]);
 
   const fetch = useCallback(async() =>{
@@ -294,15 +298,17 @@ const GeoLocationAPI = ({}) => {
           //console.log("tomainbtns!");
           console.log(listdata);
           if(listdata==undefined){
-            //console.log("리스트데이터 undefined");
+            console.log("리스트데이터 undefined");
           }else{
-            //console.log("리스트데이터 값 존재");
+            console.log("리스트데이터 값 존재");
             //history.replace('/');
-            //console.log(listdata);
-            //console.log(loccode);
-            if(!loccode){
-              loccode=1;
-              //console.log("MAP ---> Mainbtns");
+            console.log(listdata);
+            console.log("loccode:" + loccode);
+            console.log("loccode1: "+location.state.loccode);
+            console.log(listdata);
+            //loccode=location.state.loccode;
+            if(!location.state.loccode){
+              console.log("MAP ---> Mainbtns");
               history.replace({
                 pathname: "/",
                 state:{
@@ -319,8 +325,9 @@ const GeoLocationAPI = ({}) => {
                   disvalue : nowdisvu,
 
                   brandstate : brandstate,
+                  loccode: 1,
                 }
-              })
+              });
             }
             loccode=1;
             listdata=null;
@@ -363,26 +370,11 @@ const GeoLocationAPI = ({}) => {
     console.log("naver map Idle event!!");
     bounds=naverMapRef.getCenter();
     setBounds(naverMapRef.getCenter());
-    //console.log("현재 지도의 중심 위도: "+bounds._lat); // 지도의 중심 위도
-    //console.log("현재 지도의 중심 경도: "+bounds._lng); // 지도의 중심 경도
     setCenter({lat: bounds._lat, lng: bounds._lng});
     nowlati=bounds._lat;
     nowlong=bounds._lng;
-    //console.log("now lati: "+nowlati);
-    //console.log("now long: "+nowlong);
-    //console.log(mkdisplay);
     onChange();
     loccode=0;
-  }
-  function makediv(mk){
-    return(
-        <S.Briefinfo className='markerclickdiv'>
-          <h1>asdf</h1>
-          <h1>asdf</h1>
-          <h1>{mk.storeName}</h1>
-          {console.log(mk.storeName)}
-        </S.Briefinfo>
-    )
   }
   function drawMarkers(mk){
     let pos=new navermaps.LatLng(mk.storeLatitude, mk.storeLongitude)

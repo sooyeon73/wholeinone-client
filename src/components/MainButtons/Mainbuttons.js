@@ -684,8 +684,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <input type="checkbox" name="option" id="facility_checkbox2" disabled={!faciChecked} onChange = {e => faciarray(2)} /><label for="facility_checkbox2">주차시설</label>
                                 <input type="checkbox" name="option" id="facility_checkbox3" disabled={!faciChecked} onChange = {e => faciarray(3)} /><label for="facility_checkbox3">단체석</label>
                                 <input type="checkbox" name="option" id="facility_checkbox4" disabled={!faciChecked} onChange = {e => faciarray(4)} /><label for="facility_checkbox4">바닥스크린</label>
-                                <input type="checkbox" name="option" id="facility_checkbox5" disabled={!faciChecked} onChange = {e => faciarray(5)} /><label for="facility_checkbox5">프로교습</label>
-                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)} /><label for="facility_checkbox6">장비보관</label>
+                                <input type="checkbox" name="option" id="facility_checkbox5" disabled={!faciChecked} onChange = {e => faciarray(5)} /><label for="facility_checkbox5">장비보관</label>
+                                <input type="checkbox" name="option" id="facility_checkbox6" disabled={!faciChecked} onChange = {e => faciarray(6)} /><label for="facility_checkbox6">프로교습</label>
                             </div>
 
 
@@ -759,9 +759,9 @@ function Mainbuttons(props, props_option, props_lists) {
                                 <div className='time_filter_apply_btn' onClick={toggleDrawer_option_filter(false)}>
                                     <span className='btn_center' onClick={()=>{
                                       setbrandtext();
-                                      console.log("disvalue");
-                                      console.log(disvalue);
-                                      console.log(2 ** (disvalue-1));
+                                      console.log("MAIN ---> MAP");
+                                      //console.log(disvalue);
+                                      //console.log(2 ** (disvalue-1));
                                       let resdisvalue = 2 ** (disvalue-1);
                                       if(resdisvalue<1) resdisvalue=1;
                                       history.replace({
@@ -814,26 +814,26 @@ function Mainbuttons(props, props_option, props_lists) {
                             <StyledBox_lists
                                 sx={{
                                     position: 'relative',
-                                    top: -drawerBleeding-0,
+                                    top: 0,
                                     borderTopLeftRadius: 8,
                                     borderTopRightRadius: 8,
                                     visibility: 'visible',
                                     right: 0,
                                     left: 0,
-                                    height: '50px'
+                                    height: '50px',
+                                    overflow: 'auto',
                                 }}
                             >
                                 <Puller_lists />
                             </StyledBox_lists>
                             <StyledBox_lists
                                 sx={{
-                                    position: 'relative',
+                                    position: 'absolute',
                                     px: 2,
                                     borderTopLeftRadius: 24,
                                     borderTopRightRadius: 24,
                                     visibility: 'visible',
-                                    top: 8,
-                                    height: 100,
+                                    top: 30,
                                     overflow: 'auto',
                                 }}
                             >
@@ -845,11 +845,8 @@ function Mainbuttons(props, props_option, props_lists) {
                             <StyledBox_lists
                             sx={{
                               position: 'relative',
-                              borderTopLeftRadius: 24,
-                              borderTopRightRadius: 24,
                               visibility: 'visible',
-                              top:10,
-                              height: '50%',
+                              marginTop: 7,
                               overflow: 'auto',
                             }}
                             >
