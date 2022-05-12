@@ -19,7 +19,7 @@ const MyCoupon = (  ) =>{
                 
                 const response = await axios.get("/users/coupon");
                 console.log(response.data.result)
-                setData(response.data.result);
+                setData(response.data.result.filter(d=>d.couponStatus==0));
             } catch (e){
                setError(e);
                 console.log(e);
