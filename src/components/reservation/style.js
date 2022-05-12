@@ -87,6 +87,8 @@ export const DatePickerContainer = styled.div`
     margin-left: 1rem;
     margin-right: 1rem;
     margin-bottom: 1rem;
+    position: relative;
+    z-index:0;
 `
 export const PickerContainer = styled.div`
     -ms-overflow-style: none;
@@ -163,13 +165,14 @@ export const OneLineContainer = styled.div`
 `
 
 export const Footer = styled.div`
-    position: fixed;
+    position: relative;
     display: block;
     bottom: 0px;
     padding: 0px;
     width: 100%;
     height: 130px;
     background-color: white;
+    z-index:10;
     //border-bottom: 1px solid lightgrey;
     //filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.30));
 `
