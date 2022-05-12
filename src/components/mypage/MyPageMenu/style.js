@@ -6,7 +6,7 @@ import { IoChevronBackSharp } from "react-icons/io5"
 export const UserWrapper = styled.div`
     text-align: left;
     display: block;
-    padding: 15px 40px 15px 40px;
+    padding: 15px 0px 15px 40px;
     img{
         height:65px;
         width: 65px;
@@ -23,8 +23,7 @@ export const UserWrapper = styled.div`
 `
 
 export const Button=styled.div`
-    position:fixed;
-    right:50px;
+    margin:0px 0px 0px 80px;
     width:55px;
     height: 35px;
     line-height:35px;
@@ -45,19 +44,24 @@ export const Menu = styled.div`
     width:295px;
     border-collapse: collapse;
     margin: auto;    
-    box-shadow: 0 0 0 1px #A0A0A0;
-    border-style: hidden;
+ //   border-style: hidden;
     border-radius:15px;
     table-layout: fixed;
+    box-shadow: 0 0 0 1px #A0A0A0;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.18));
-}
-
-    th,tr{
+    }
+    tr, th{
         text-align: center;
-        border: 1px solid #A0A0A0;
         height:85px;   
     }
-
+    th: nth-child(1){
+        border-right: 1px solid #A0A0A0;
+    }   
+    tr: nth-child(1){
+        border-bottom: 1px solid #A0A0A0;
+    } 
+    
+    
     h4{
         color:black;
         font-weight: 900;
@@ -101,7 +105,7 @@ export const AdContainer = styled.div`
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.18));
     position: relative;
     left: 0; right: 0; 
-    margin-top:100px;
+    margin-top:40px;
     img{
         height:110px;
         width: 340px;
