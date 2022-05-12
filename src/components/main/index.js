@@ -157,9 +157,14 @@ const GeoLocationAPI = ({}) => {
   
   useEffect(()=>{
     console.log("location 변화 감지!");
-    if(location.state.loccode!=1){
-      checksetiings();
-      onChange();
+    //console.log(location);
+    try{
+      if(location.state.loccode!=1){
+        checksetiings();
+        onChange(); 
+      }
+    } catch(e){
+      console.log(e);
     }
   },[location]);
 
@@ -405,6 +410,7 @@ const GeoLocationAPI = ({}) => {
               disvalue : nowdisvu,
 
               brandstate : brandstate,
+              loccode: 1,
             }
           })
         }}
