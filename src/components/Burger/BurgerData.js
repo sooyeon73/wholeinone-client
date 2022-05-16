@@ -15,7 +15,7 @@ export const BurgerData = [
   {
     id: 3,
     title: '최근 본 매장',
-    path: '/visited',
+    path: '/visit',
     cName: 'nav-text'
   },
   {

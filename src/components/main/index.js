@@ -462,7 +462,7 @@ const Main = () => {
       <S.MarkClickConatiner>
       {mkmk!=null && mkdisplay &&
         <S.StoreContainer onClick={()=>{history.push({
-          pathname: `/stores/${mkmk.storeIdx}`,
+          pathname: `/store/${mkmk.storeIdx}`,
           state: {data: mkmk}})}}>
         <img src={mkmk.storeImage} alt="storeimg"/>
         <S.TextWrapper>

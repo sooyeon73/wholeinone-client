@@ -61,7 +61,7 @@ const history=useHistory();
             </Link>
             </th>
             <th>
-            <Link to={{pathname:`/visited`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+            <Link to={{pathname:`/visit`}} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <h4>최근 본 매장</h4><br/>
                 <h5>{data.cntLikeStore} 개</h5>
             </Link>

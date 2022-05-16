@@ -860,7 +860,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                 //console.log(d);
                                 return(
                                   <S.StoreContainer onClick={()=>{history.push({
-                                    pathname: `/stores/${d.storeIdx}`,
+                                    pathname: `/store/${d.storeIdx}`,
                                     state: {data: d}})}}>
                                   <img src={d.storeImage} alt="storeimg"/>
                                   <S.TextWrapper>

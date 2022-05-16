@@ -39,7 +39,7 @@ return (
            <PrivateRoute path="/mycoupon" component={MyCouponPage} />
 
             <PrivateRoute path="/favorites" component={FavoritesPage} />
-            <Route path="/visited" component={VisitedPage} />
+            <Route path="/visit" component={VisitedPage} />
             <Route path="/search" component={SearchPage}/>
             
             <PrivateRoute path="/myreserve" component={MyReserveListPage}/>
@@ -47,7 +47,7 @@ return (
             <PrivateRoute path="/storeReservation/:storeIdx" component={ReservationPage}/>
 
             <PrivateRoute path="/reservedetail/:reservationIdx" component={ReserveDetailPage}/>
-            <Route path="/stores/:storeIdx" component={StoreDetailPage}/>
+            <Route path="/store/:storeIdx" component={StoreDetailPage}/>
             <PrivateRoute path="/pay" component={PayPage}/>
             <PrivateRoute path="/review/:reservationIdx" component={ReviewPage}/>
 

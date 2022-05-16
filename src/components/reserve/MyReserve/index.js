@@ -106,7 +106,7 @@ useEffect(() => {
         </Link>)}
         
 
-        <Link to={`/stores/${d.storeIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
+        <Link to={`/store/${d.storeIdx}`} style={{ color: 'inherit', textDecoration: 'inherit'} }>
 
             <S.ReviewButton>재예약 하기</S.ReviewButton>
             </Link>
