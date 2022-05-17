@@ -50,7 +50,7 @@ function Burger({open}) {
     fetchUsers();    
 },[, sidebar]);
 
-console.log(data);
+//console.log(data);
   if(loading) console.log("loading");
   if(error) console.log("error");
   if(!data) return null;
