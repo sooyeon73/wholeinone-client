@@ -17,8 +17,8 @@ import { getButtonUnstyledUtilityClass } from '@mui/material';
 import { map } from 'jquery';
 import { Breifinfo } from './Navermap/style';
 
-let nowlati=null;
-let nowlong=null;
+let nowlati=37.5662952;
+let nowlong=126.9779451;
 
 let nowbrandch=false;
 let nowbrandvu=null;
@@ -40,8 +40,8 @@ let mkdisplay=false;
 let brandstate = null;
 
 const GeoLocationAPI = ({}) => {
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLogitude] = useState(null);
+    const [latitude, setLatitude] = useState(37.5662952);
+    const [longitude, setLogitude] = useState(126.9779451);
 
     const geoLocation = () => {
         Geolocation.getCurrentPosition(
@@ -75,18 +75,6 @@ const GeoLocationAPI = ({}) => {
 
   const history = useHistory();
 
-  const geoLocation = () => {
-    Geolocation.getCurrentPosition(
-        position => {
-            const latitude = JSON.stringify(position.coords.latitude);
-            const longitude = JSON.stringify(position.coords.longitude);
-            nowlati=latitude;
-            nowlong=longitude;
-        },
-        error => { console.log(error.code, error.message); },
-        {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
-    )
-  }
   const checksetiings = () =>{
     try{
       let brandcheck = location.state.brandcheck;
@@ -124,7 +112,7 @@ const GeoLocationAPI = ({}) => {
       //console.log(brandstate);
       brandstate=nowbrandstate;
 
-      console.log("록코드: " + location.state.loccode);
+      //console.log("록코드: " + location.state.loccode);
 
     } catch(e){
       nowbrandch=false;
@@ -170,7 +158,7 @@ const GeoLocationAPI = ({}) => {
 
   const fetch = useCallback(async() =>{
     try {
-      //console.log("         fetch 진입");
+      console.log("         fetch 진입");
       //console.log("         "+nowbrandch + ", "+nowfacich+", "+nowdisch);
       //checksetiings();
       //console.log(nowbrandch + ", "+nowfacich+", "+nowdisch);
@@ -357,8 +345,7 @@ const GeoLocationAPI = ({}) => {
     loccode=0;
   }
   function dragstartlistener(e){
-    //console.log("naver map dragstart listener");    
-
+    //console.log("naver map dragstart listener");
   }
   function handleBoundsChanged(e){
     //console.log("BoundsChanged event: 지도 경계가 변경될 때 발생");
@@ -368,19 +355,22 @@ const GeoLocationAPI = ({}) => {
   }
   function handleCenterPointChanged(e){
     //console.log("센터포인터체인지");
+    //console.log(nowlati);
   }
   function handleTilesLoaded(e){
-    //console.log("네이버 map 타일 로딩됨");
+    console.log("네이버 map 타일 로딩됨");
   }
   function handleIdle(e){
     console.log("naver map Idle event!!");
     bounds=naverMapRef.getCenter();
+    console.log(bounds);
     setBounds(naverMapRef.getCenter());
     setCenter({lat: bounds._lat, lng: bounds._lng});
     nowlati=bounds._lat;
     nowlong=bounds._lng;
     onChange();
     loccode=0;
+
   }
   function drawMarkers(mk){
     let pos=new navermaps.LatLng(mk.storeLatitude, mk.storeLongitude)
@@ -455,7 +445,7 @@ const Main = () => {
   if(mkdisplay==false){
     makeclickdiv();
   }
-  //console.log("메인메인");
+  console.log("메인메인");
   console.log(mkdisplay);
   function makeclickdiv(){
     return(
@@ -464,13 +454,15 @@ const Main = () => {
         <S.StoreContainer onClick={()=>{history.push({
           pathname: `/store/${mkmk.storeIdx}`,
           state: {data: mkmk}})}}>
+            {console.log(mkmk)}
         <img src={mkmk.storeImage} alt="storeimg"/>
         <S.TextWrapper>
-          {mkmk.reserveStatus === true ?  <h4>당일 예약</h4>: null}
-          {mkmk.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+          {mkmk.reserveStatus == true ?  <h4>당일 예약</h4>: null}
+          {mkmk.couponStatus == true ?   <h5>할인 쿠폰</h5>: null}
           <h1>{mkmk.storeName}</h1>
           <h2>{mkmk.storeBrand}</h2>
-          <h2>★{mkmk.reviewStar}</h2>
+          <h3><a>★</a> <span>{mkmk.reviewStar}</span> 점</h3>
+
           <h2>{mkmk.distanceFromUser}km</h2>
           {/*
           <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>

@@ -305,7 +305,6 @@ function valuetext(value) {
   }
 
   let loccode=1;
-
 function Mainbuttons(props, props_option, props_lists) {
 
     const { window } = props;
@@ -341,6 +340,12 @@ function Mainbuttons(props, props_option, props_lists) {
       setdistanceChecked(dsc);
       setdisValue(dvu);
     };
+    let listdata = null;
+    let markerdata = null;
+    useEffect(() => {
+      listdata = null;
+      markerdata = null;
+    },[listdata]);
 
     const toggleDrawer_option_filter = (newOpen) => () => {
       sChecked();
@@ -356,34 +361,54 @@ function Mainbuttons(props, props_option, props_lists) {
     const [list, setLists] = useState([]);
     const [marker, setMarker] = useState([]);
     
-    let listdata = null;
-    let markerdata = null;
-    
     const history = useHistory();
     const location = useLocation();
-    const savelocation = location;
     function getlist(){
-      listdata = location.state.listdata;
-      setLists(listdata);
-      console.log("Mainbuttons의 listdata: ");
-      console.log(listdata);
-      //console.log("LIST");
-      //console.log(list);
-      drawlists();
+      try{
+        console.log("겟리스트");
+        console.log(listdata);
+        console.log("겟리스트");
+        console.log(location);
+        if(location.state.listdata!=null){
+          listdata = location.state.listdata;
+          console.log(location.state.listdata);
+          setLists(listdata);
+        }
+        console.log("Mainbuttons의 listdata: ");
+        console.log(listdata);
+        console.log("LIST");
+        console.log(list);
+        drawlists();
+      } catch(e){
+        console.log(e);
+      }
     }
 
+    useEffect(() => {
+      try{
+        console.log("메인로케이션");
+        console.log(listdata);
+        console.log(location.state.listdata);
+        console.log(list);
+
+        listdata = list;
+      } catch(e) {
+        console.log(e);
+      }
+    },[location]);
 
     const drawlists = () =>{
       try{
-        console.log(listdata);
-        listdata.map((item)=>{
+        console.log("드로우리스트");
+        console.log(list);
+        list.map((item)=>{
           //console.log(item);
           return(
             <S.StoreContainer>
               <img src={item.storeImage} alt="storeimg"/>
               <S.TextWrapper>
-                {item.reserveStatus === true ?  <h4>당일 예약</h4>: null}
-                {item.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+                {item.reserveStatus == true ?  <h4>당일 예약</h4>: null}
+                {item.couponStatus == true ?   <h5>할인 쿠폰</h5>: null}
                 <h1>{item.storeName}</h1>
                 <h2>{item.storeType}</h2>
               </S.TextWrapper>
@@ -555,10 +580,16 @@ function Mainbuttons(props, props_option, props_lists) {
       console.log(brandvalue);
     }
 
+    const drawerlistelements = () => {
+      
+    }
+
     useEffect(() => {
       history.replace({
       pathname: `/`,
       state: {
+        listdata: listdata,
+
         brandcheck: false,
         brandvalue: -1,
 
@@ -741,6 +772,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                         // 전송 data: 필터 obj
                                       pathname: `/`,
                                       state: {
+                                        listdata: listdata, 
+
                                         brandcheck: false,
                                         brandvalue: brandvalue,
 
@@ -769,6 +802,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                         // 전송 data: 필터 obj
                                       pathname: `/`,
                                       state: {
+                                        listdata: listdata,
+
                                         brandcheck: brandChecked,
                                         brandvalue: brandvalue,
 
@@ -804,7 +839,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                 anchor="bottom"
                                 open={open_lists}
                                 onClose={toggleDrawer_lists(false)}
-                                onOpen={toggleDrawer_lists(true)}
+                                onOpen={list!=null && toggleDrawer_lists(true)}
                                 swipeAreaWidth={drawerBleeding_lists}
                                 disableSwipeToOpen={false}
                                 ModalProps={{
@@ -850,6 +885,7 @@ function Mainbuttons(props, props_option, props_lists) {
                               overflow: 'auto',
                             }}
                             >
+                              {console.log(list)}
                               {list && list.sort(function(a,b){
                                 if(ordervalue=="distance"){
                                   return a.distanceFromUser < b.distanceFromUser ? -1: a.distanceFromUser > b.distanceFromUser ? 1:0;
@@ -857,18 +893,19 @@ function Mainbuttons(props, props_option, props_lists) {
                                   return a.reviewStar > b.reviewStar ? -1: a.reviewStar < b.reviewStar ? 1:0;
                                 }
                               }) && list.map(d=>{
-                                //console.log(d);
+                                //console.log("리스트리스트리스트리스트");
+                                //console.log(d.reserveStatus + ", " + d.couponStatus);
                                 return(
                                   <S.StoreContainer onClick={()=>{history.push({
                                     pathname: `/store/${d.storeIdx}`,
                                     state: {data: d}})}}>
                                   <img src={d.storeImage} alt="storeimg"/>
                                   <S.TextWrapper>
-                                    {d.reserveStatus === true ?  <h4>당일 예약</h4>: null}
-                                    {d.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
+                                    {d.reserveStatus == true ? <h4>당일 예약</h4>: null}
+                                    {d.couponStatus == true ? <h5>할인 쿠폰</h5>: null}
                                     <h1>{d.storeName}</h1>
                                     <h2>{d.storeBrand}</h2>
-                                    <h2>★{d.reviewStar}</h2>
+                                    <h3><a>★</a> <span>{d.reviewStar}</span> 점</h3>
                                     <h2>{d.distanceFromUser}km</h2>
                                     {/*
                                     <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>
@@ -877,7 +914,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                 </S.StoreContainer> 
                                 );
                               })}
-
+                              {console.log("드로워드로워")}
                                   </StyledBox_lists>
                                   </SwipeableDrawer>
                     </Root_lists>
