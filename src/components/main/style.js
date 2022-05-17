@@ -80,6 +80,9 @@ export const TextWrapper = styled.div`
         font-size: 1.2em;
         font-weight: 700;
         margin:0px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     h2{
         font-size: 1em;
