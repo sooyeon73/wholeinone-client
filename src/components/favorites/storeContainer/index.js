@@ -41,7 +41,7 @@ const StoreContainer = ({props}) =>{
             {d.couponStatus === true ?   <h5>할인 쿠폰</h5>: null}
             <h1>{d.storeName}</h1>
             <h2>{d.storeType}</h2>
-            <h3><a>★</a> <span>{d.reviewStar}</span> 점</h3>
+            <h2><a>★</a> <span>{d.reviewStar}</span> 점</h2>
             </S.TextWrapper>
             </Link>
         </S.StoreContainer>

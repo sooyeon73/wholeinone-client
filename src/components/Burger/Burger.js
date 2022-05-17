@@ -64,7 +64,7 @@ console.log(data);
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={showSidebar} isExpanded={true}/>
           </Link>
-          <div className='navsearch'><a href='/search'>성남시 분당구 구미동</a></div>
+          <div className='navsearch'><a href='/search'>골프장을 검색하세요!</a></div>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' isExpanded={false}>
