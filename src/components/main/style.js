@@ -50,7 +50,7 @@ export const StoreContainer = styled.div`
     left:50%;
     bottom:20px;
     transform: translate(-50%, -50%);
-    margin: 0 auto;
+    margin: 0;
     border-radius: 15px;
     padding:25px 25px 25px 25px;
     border-bottom: 1px solid lightgrey;   
@@ -58,8 +58,8 @@ export const StoreContainer = styled.div`
     z-index: 10;
     box-shadow: 0px 0px 5px #bbbbbb ;
     img{
-        height:115px;
-        width: 115px;
+        height:100px;
+        width: 100px;
         object-fit: cover;
         border-radius: 5px;
         vertical-align:top;
@@ -68,18 +68,22 @@ export const StoreContainer = styled.div`
 
 export const TextWrapper = styled.div`
     display: inline-block;
-    width:220px;//
     padding-left:15px;
     vertical-align: top;
+    max-width: 800px;
     height: 110px;
     line-height:1.6em;
     position: absolute;
     z-index: 10;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     h1{
+        max-width:200px;
         font-size: 1.2em;
         font-weight: 700;
-        margin:0px;
+        margin: 0px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -97,11 +101,12 @@ export const TextWrapper = styled.div`
 
     }
     h3{
-        position: absolute;
-        right:30px;
+        position: fixed;
+        right: 30px;
         font-weight: 400;
         font-size: 1em;
         margin:0px;
+        float: right;
     }
     a{
         color: red;
@@ -109,7 +114,7 @@ export const TextWrapper = styled.div`
 
     h4{
         color: white;
-        width:95px;
+        width: auto;
         font-size: 14px;
         text-align:center;
         border-radius: 4px; 
@@ -118,11 +123,13 @@ export const TextWrapper = styled.div`
         margin-top:0px;
         margin-bottom:5px;
         margin-right:5px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
     
     h5{
         color: white;
-        width:95px;
+        width: auto;
         font-size: 14px;
         text-align:center;
         display: inline-block;
@@ -131,6 +138,8 @@ export const TextWrapper = styled.div`
         margin-top:0px;
         margin-bottom:5px;
         margin-right:5px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
 `

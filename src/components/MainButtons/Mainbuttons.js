@@ -885,7 +885,6 @@ function Mainbuttons(props, props_option, props_lists) {
                               overflow: 'auto',
                             }}
                             >
-                              {console.log(list)}
                               {list && list.sort(function(a,b){
                                 if(ordervalue=="distance"){
                                   return a.distanceFromUser < b.distanceFromUser ? -1: a.distanceFromUser > b.distanceFromUser ? 1:0;
@@ -914,7 +913,6 @@ function Mainbuttons(props, props_option, props_lists) {
                                 </S.StoreContainer> 
                                 );
                               })}
-                              {console.log("드로워드로워")}
                                   </StyledBox_lists>
                                   </SwipeableDrawer>
                     </Root_lists>

@@ -158,7 +158,7 @@ const GeoLocationAPI = ({}) => {
 
   const fetch = useCallback(async() =>{
     try {
-      console.log("         fetch 진입");
+      //console.log("         fetch 진입");
       //console.log("         "+nowbrandch + ", "+nowfacich+", "+nowdisch);
       //checksetiings();
       //console.log(nowbrandch + ", "+nowfacich+", "+nowdisch);
@@ -178,7 +178,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+brandstate+`&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=`+nowdisvu+``);
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -191,7 +191,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+brandstate+`&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=16`);
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -208,7 +208,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+brandstate+`&lefthandStatus=-1&parkingStatus=-1&groupseatStatus=-1&floorscreenStatus=-1&storageStatus=-1&lessonStatus=-1&distance=`+nowdisvu+``);
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -221,7 +221,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=`+brandstate+`&lefthandStatus=-1&parkingStatus=-1&groupseatStatus=-1&floorscreenStatus=-1&storageStatus=-1&lessonStatus=-1&distance=16`); 
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -239,7 +239,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=`+nowdisvu+``);
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -252,7 +252,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=&lefthandStatus=`+nowfacivu[1]+`&parkingStatus=`+nowfacivu[2]+`&groupseatStatus=`+nowfacivu[3]+`&floorscreenStatus=`+nowfacivu[4]+`&storageStatus=`+nowfacivu[5]+`&lessonStatus=`+nowfacivu[6]+`&distance=16`);
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -268,7 +268,7 @@ const GeoLocationAPI = ({}) => {
               console.log("         disvalue: "+ nowdisvu);
               const response = await axios.get(`stores/map/filter?userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1&brand=&lefthandStatus=-1&parkingStatus=-1&groupseatStatus=-1&floorscreenStatus=-1&storageStatus=-1&lessonStatus=-1&distance=`+nowdisvu+``);
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -279,7 +279,7 @@ const GeoLocationAPI = ({}) => {
               const response = await axios.get(`stores/map?storeName=&userLatitude=`+nowlati+`&userLongitude=`+nowlong+`&orderRule=1`);
               console.log("         아무것도체크안함 리스폰스호출");
               //console.log(response);
-              console.log(response.data);
+              //console.log(response.data);
               //console.log(response.data.result);
               listdata=response.data.result;
               setData(response.data.result);
@@ -292,17 +292,17 @@ const GeoLocationAPI = ({}) => {
           //console.log("tomainbtns!");
           console.log(listdata);
           if(listdata==undefined){
-            console.log("리스트데이터 undefined");
+            //console.log("리스트데이터 undefined");
           }else{
-            console.log("리스트데이터 값 존재");
+            //console.log("리스트데이터 값 존재");
             //history.replace('/');
-            console.log(listdata);
-            console.log("loccode:" + loccode);
-            console.log("loccode1: "+location.state.loccode);
-            console.log(listdata);
+            //console.log(listdata);
+            //console.log("loccode:" + loccode);
+            //console.log("loccode1: "+location.state.loccode);
+            //console.log(listdata);
             //loccode=location.state.loccode;
             if(!location.state.loccode){
-              console.log("MAP ---> Mainbtns");
+              //console.log("MAP ---> Mainbtns");
               history.replace({
                 pathname: "/",
                 state:{
@@ -338,6 +338,7 @@ const GeoLocationAPI = ({}) => {
   
   function clicklistener(e){
     console.log("클릭 리스너");
+    mkdisplay=true;
     mkdisplay=false;
   }
   function draglistener(e){
@@ -358,12 +359,12 @@ const GeoLocationAPI = ({}) => {
     //console.log(nowlati);
   }
   function handleTilesLoaded(e){
-    console.log("네이버 map 타일 로딩됨");
+    //console.log("네이버 map 타일 로딩됨");
   }
   function handleIdle(e){
     console.log("naver map Idle event!!");
     bounds=naverMapRef.getCenter();
-    console.log(bounds);
+    //console.log(bounds);
     setBounds(naverMapRef.getCenter());
     setCenter({lat: bounds._lat, lng: bounds._lng});
     nowlati=bounds._lat;
@@ -442,6 +443,15 @@ const GeoLocationAPI = ({}) => {
 
 const Main = () => { 
   const history = useHistory();
+  
+  useEffect(() => {
+    console.log("클릭했다!");
+    console.log(mkdisplay);
+    if(mkdisplay==true){
+      makeclickdiv();
+    }
+  },[mkdisplay]);
+
   if(mkdisplay==false){
     makeclickdiv();
   }
@@ -454,7 +464,6 @@ const Main = () => {
         <S.StoreContainer onClick={()=>{history.push({
           pathname: `/store/${mkmk.storeIdx}`,
           state: {data: mkmk}})}}>
-            {console.log(mkmk)}
         <img src={mkmk.storeImage} alt="storeimg"/>
         <S.TextWrapper>
           {mkmk.reserveStatus == true ?  <h4>당일 예약</h4>: null}
