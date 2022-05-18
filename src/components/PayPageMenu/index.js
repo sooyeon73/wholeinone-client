@@ -96,7 +96,7 @@ const PayPageMenu = ({location, history}) =>{
                 if (mainCard.data.isSuccess)
                     setCard(mainCard.data.result);
                 
-                const userInfo = await axios.get(`/pay/get_user_info`)
+                const userInfo = await axios.get(`/pay/get_user_info?storeIdx=${rzvData.storeIdx}`)
                 if (userInfo.data.isSuccess)
                     setData(userInfo.data.result);
                 
