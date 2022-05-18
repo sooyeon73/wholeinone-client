@@ -83,7 +83,7 @@ const PayPageMenu = ({location, history}) =>{
                     alert('중복된 예약입니다');
                     setLoading(false);
                     history.push({
-                        pathname:`/storeReservation/${rzvData.storeIdx}`,
+                        pathname:`/store/${rzvData.storeIdx}`,
                         state :{
                             data :{
                                 storeName: rzvData.storeName,
