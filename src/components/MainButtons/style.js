@@ -60,12 +60,12 @@ export const TextWrapper = styled.div`
     span{
         font-size: 1em;
         display:inline;
-        font-weight: 400;
+        font-weight: 600;
 
     }
     h3{
         position: absolute;
-        right:30px;
+        right:55px;
         font-weight: 400;
         font-size: 1em;
         margin:0px;

@@ -22,26 +22,22 @@ export const TextWrapper = styled.div`
         font-weight: 400;
     }
     span{
+        font-size: 1em;
         display:inline;
-        
-       
-        font-weight: 700;
-        font-size: 18px;
-        line-height:30px;
-        margin:0px;
+        font-weight: 600;
 
     }
     h3{
         display:inline-block;
-        width:80px;
-        height:15px;
-        font-weight: 500;
-        font-size:18px;
         position: absolute;
-        bottom: 0px;
-        right:0px;
-        a{color:red;}
+        right:12px;
+        font-weight: 400;
+        font-size:17px;
+        top:65px;
 
+    }
+    a{
+        color: red;
     }
 
     h4{
@@ -89,4 +85,9 @@ export const StoreContainer = styled.div`
 
 export const Container = styled.div`
     width:100%;
+`
+
+export const LastIndex = styled.div`
+height:30px;
+
 `

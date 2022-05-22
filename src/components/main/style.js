@@ -97,7 +97,7 @@ export const TextWrapper = styled.div`
     span{
         font-size: 1em;
         display:inline;
-        font-weight: 400;
+        font-weight: 600;
 
     }
     h3{
