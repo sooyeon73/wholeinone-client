@@ -83,7 +83,7 @@ const PayPageMenu = ({location, history}) =>{
                     alert('중복된 예약입니다');
                     setLoading(false);
                     history.push({
-                        pathname:`/storeReservation/${rzvData.storeIdx}`,
+                        pathname:`/store/${rzvData.storeIdx}`,
                         state :{
                             data :{
                                 storeName: rzvData.storeName,
@@ -96,7 +96,7 @@ const PayPageMenu = ({location, history}) =>{
                 if (mainCard.data.isSuccess)
                     setCard(mainCard.data.result);
                 
-                const userInfo = await axios.get(`/pay/get_user_info`)
+                const userInfo = await axios.get(`/pay/get_user_info?storeIdx=${rzvData.storeIdx}`)
                 if (userInfo.data.isSuccess)
                     setData(userInfo.data.result);
                 
@@ -159,7 +159,7 @@ const PayPageMenu = ({location, history}) =>{
             if (response.data.code == 1000){
                 if (response.data.result.status=="결제 성공"){
                     alert("예약에 성공했습니다.");
-                    history.push(`/stores/${rzvData.storeIdx}`);
+                    history.push(`/store/${rzvData.storeIdx}`);
                 }
                 else{
                     alert("예약에 실패했습니다.");
@@ -194,7 +194,7 @@ const PayPageMenu = ({location, history}) =>{
             if (response.data.code == 1000){
                 if (response.data.result.status=="결제 성공"){
                     alert("예약에 성공했습니다.");
-                    history.push(`/stores/${rzvData.storeIdx}`);
+                    history.push(`/store/${rzvData.storeIdx}`);
                 }
                 else{
                     alert("결제에 실패했습니다.");
@@ -264,7 +264,7 @@ const PayPageMenu = ({location, history}) =>{
                 if (response.data.code == 1000){
                     if (response.data.result.status=="결제 성공"){
                         alert("예약에 성공했습니다.");
-                        history.push(`/stores/${rzvData.storeIdx}`);
+                        history.push(`/store/${rzvData.storeIdx}`);
                     }
                     else{
                         alert("결제에 실패했습니다.");

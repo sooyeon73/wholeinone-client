@@ -904,7 +904,7 @@ function Mainbuttons(props, props_option, props_lists) {
                                     {d.couponStatus == true ? <h5>할인 쿠폰</h5>: null}
                                     <h1>{d.storeName}</h1>
                                     <h2>{d.storeBrand}</h2>
-                                    <h3><a>★</a> <span>{d.reviewStar}</span> 점</h3>
+                                    <h3><a>★</a> <span>{d.reviewStar}{(""+d.reviewStar).length==1?".0":null}</span> 점</h3>
                                     <h2>{d.distanceFromUser}km</h2>
                                     {/*
                                     <h3>{d.storeCost.toLocaleString('ko-KR')} 원</h3>

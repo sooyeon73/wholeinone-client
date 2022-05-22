@@ -84,6 +84,7 @@ const LoginMenu = ({history}) =>{
         <S.InputBar
         placeholder="비밀번호"
                 value={pw}
+                type="password"
         onChange={onChangePw}
         required/>
         </h1>
