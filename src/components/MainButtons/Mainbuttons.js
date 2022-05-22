@@ -900,8 +900,8 @@ function Mainbuttons(props, props_option, props_lists) {
                                     state: {data: d}})}}>
                                   <img src={d.storeImage} alt="storeimg"/>
                                   <S.TextWrapper>
-                                    {d.reserveStatus == true ? <h4>당일 예약</h4>: null}
-                                    {d.couponStatus == true ? <h5>할인 쿠폰</h5>: null}
+                                    {d.reserveStatus >= 1 ? <h4>당일 예약</h4>: null}
+                                    {d.couponStatus >= 1 ? <h5>할인 쿠폰</h5>: null}
                                     <h1>{d.storeName}</h1>
                                     <h2>{d.storeBrand}</h2>
                                     <h3><a>★</a> <span>{d.reviewStar}{(""+d.reviewStar).length==1?".0":null}</span> 점</h3>
