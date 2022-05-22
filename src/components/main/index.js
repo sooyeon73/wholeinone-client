@@ -455,8 +455,8 @@ const Main = () => {
   if(mkdisplay==false){
     makeclickdiv();
   }
-  console.log("메인메인");
-  console.log(mkdisplay);
+  //console.log("메인메인");
+  //console.log(mkdisplay);
   function makeclickdiv(){
     return(
       <S.MarkClickConatiner>
@@ -467,7 +467,7 @@ const Main = () => {
         <img src={mkmk.storeImage} alt="storeimg"/>
         <S.TextWrapper>
           {mkmk.reserveStatus == true ?  <h4>당일 예약</h4>: null}
-          {mkmk.couponStatus == true ?   <h5>할인 쿠폰</h5>: null}
+          {mkmk.couponStatus >= 1 ?   <h5>할인 쿠폰</h5>: null}
           <h1>{mkmk.storeName}</h1>
           <h2>{mkmk.storeBrand}</h2>
           <h3><a>★</a> <span>{mkmk.reviewStar}</span> 점</h3>
