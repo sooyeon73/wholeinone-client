@@ -35,18 +35,23 @@ export const StoreContainer = styled.div`
 
 export const TextWrapper = styled.div`
     display: inline-block;
-    width:280px;//
     padding-left:15px;
     vertical-align: top;
+    min-width: 220px;
+    max-width: 800px;
     height: 110px;
     line-height:1.6em;
     position: absolute;
     z-index: 10;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     h1{
+        max-width:200px;
         font-size: 1.2em;
         font-weight: 700;
-        margin:0px;
+        margin: 0px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -76,7 +81,7 @@ export const TextWrapper = styled.div`
 
     h4{
         color: white;
-        width:95px;
+        width: auto;
         font-size: 14px;
         text-align:center;
         border-radius: 4px; 
@@ -85,11 +90,13 @@ export const TextWrapper = styled.div`
         margin-top:0px;
         margin-bottom:5px;
         margin-right:5px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
     
     h5{
         color: white;
-        width:95px;
+        width: auto;
         font-size: 14px;
         text-align:center;
         display: inline-block;
@@ -98,6 +105,8 @@ export const TextWrapper = styled.div`
         margin-top:0px;
         margin-bottom:5px;
         margin-right:5px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
 `

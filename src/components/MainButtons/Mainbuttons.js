@@ -917,7 +917,6 @@ function Mainbuttons(props, props_option, props_lists) {
                                   </SwipeableDrawer>
                     </Root_lists>
                 </IconContext.Provider>
-                <div className={timefilter? 'nav-mask1 active' : 'nav-mask1'} onClick={showTimefilter}></div>
                 <div className={filter? 'nav-mask2 active' : 'nav-mask2'} onClick={showfilter}></div>
                 <div className={lists? 'nav-mask2 active' : 'nav-mask2'} onClick={showlists}></div>
                 {/*<div classname={marker? 'markerdiv active' : 'markerdiv'} onClick={}></div>*/}
