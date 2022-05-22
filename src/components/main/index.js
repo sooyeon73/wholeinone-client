@@ -466,7 +466,7 @@ const Main = () => {
           state: {data: mkmk}})}}>
         <img src={mkmk.storeImage} alt="storeimg"/>
         <S.TextWrapper>
-          {mkmk.reserveStatus == true ?  <h4>당일 예약</h4>: null}
+          {mkmk.reserveStatus >= 1 ?  <h4>당일 예약</h4>: null}
           {mkmk.couponStatus >= 1 ?   <h5>할인 쿠폰</h5>: null}
           <h1>{mkmk.storeName}</h1>
           <h2>{mkmk.storeBrand}</h2>
