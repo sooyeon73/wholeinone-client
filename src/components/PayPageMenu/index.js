@@ -159,7 +159,7 @@ const PayPageMenu = ({location, history}) =>{
             if (response.data.code == 1000){
                 if (response.data.result.status=="결제 성공"){
                     alert("예약에 성공했습니다.");
-                    history.push(`/store/${rzvData.storeIdx}`);
+                    history.push(`/`);
                 }
                 else{
                     alert("예약에 실패했습니다.");
@@ -194,7 +194,7 @@ const PayPageMenu = ({location, history}) =>{
             if (response.data.code == 1000){
                 if (response.data.result.status=="결제 성공"){
                     alert("예약에 성공했습니다.");
-                    history.push(`/store/${rzvData.storeIdx}`);
+                    history.push(`/`);
                 }
                 else{
                     alert("결제에 실패했습니다.");
@@ -264,7 +264,7 @@ const PayPageMenu = ({location, history}) =>{
                 if (response.data.code == 1000){
                     if (response.data.result.status=="결제 성공"){
                         alert("예약에 성공했습니다.");
-                        history.push(`/store/${rzvData.storeIdx}`);
+                        history.push(`/`);
                     }
                     else{
                         alert("결제에 실패했습니다.");
