@@ -1,4 +1,4 @@
-## KW 산학연계SW  - 실시간 골프장/스크린 골프장 간편 예약 플랫폼 - 관리자용 pc web
+## KW 산학연계SW  - 실시간 골프장/스크린 골프장 간편 예약 플랫폼 - 사용자용 mobile web
 👑 **2021 산학연계SW 졸업전시 우수상** 👑
 - **실시간 골프장/스크린 골프장 간편 예약 플랫폼**
 - **사용자용 mobile web** / [관리자용 pc web](https://github.com/kimchan122/argon-dashboard-react)
